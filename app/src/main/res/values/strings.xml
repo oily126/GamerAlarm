@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GamerAlarm</string>
+    <string name="snoozeBtn">Snooze</string>
+    <string name="offBtn">Turn off</string>
 </resources>

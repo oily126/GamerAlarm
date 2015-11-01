@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/normalAlarm">
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textClock"
+        android:layout_marginTop="120dp"
+        android:textSize="80dp"
+        android:format24Hour="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/snoozeAlarm"
+        android:text="@string/snoozeBtn"
+        android:layout_below="@+id/textClock"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/textClock"
+        android:layout_alignStart="@+id/textClock"
+        android:layout_marginTop="145dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/offBtn"
+        android:id="@+id/offAlarm"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/snoozeAlarm"
+        android:layout_alignRight="@+id/textClock"
+        android:layout_alignEnd="@+id/textClock" />
+
+</RelativeLayout>
