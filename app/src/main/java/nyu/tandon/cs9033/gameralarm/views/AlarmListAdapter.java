@@ -1,6 +1,7 @@
-package nyu.tandon.cs9033.gameralarm.view;
+package nyu.tandon.cs9033.gameralarm.views;
 
 import android.content.Context;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class AlarmListAdapter extends BaseAdapter {
         public TextView alarmTime;
         public TextView alarmWeek;
         public TextView alarmMode;
-        public Switch enableAlarm;
+        public SwitchCompat enableAlarm;
     }
 
     public AlarmListAdapter(Context context, List<Map<String, Object>> listItems) {
@@ -60,7 +61,7 @@ public class AlarmListAdapter extends BaseAdapter {
             alarmItems.alarmTime = (TextView) convertView.findViewById(R.id.alarmTime);
             alarmItems.alarmWeek = (TextView) convertView.findViewById(R.id.alarmWeek);
             alarmItems.alarmMode = (TextView) convertView.findViewById(R.id.alarmMode);
-            alarmItems.enableAlarm = (Switch) convertView.findViewById(R.id.enableAlarm);
+            alarmItems.enableAlarm = (SwitchCompat) convertView.findViewById(R.id.enableAlarm);
             convertView.setTag(alarmItems);
         } else {
             alarmItems = (AlarmItemView) convertView.getTag();

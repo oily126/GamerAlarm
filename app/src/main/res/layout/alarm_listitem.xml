@@ -27,9 +27,9 @@
         android:layout_toRightOf="@+id/leftPart"
         android:layout_marginLeft="30dp"
         android:layout_centerVertical="true"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
 
-    <Switch
+    <android.support.v7.widget.SwitchCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

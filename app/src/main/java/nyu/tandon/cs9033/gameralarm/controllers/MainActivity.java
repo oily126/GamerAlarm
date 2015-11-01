@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import nyu.tandon.cs9033.gameralarm.R;
-import nyu.tandon.cs9033.gameralarm.view.AlarmListAdapter;
+import nyu.tandon.cs9033.gameralarm.views.AlarmListAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
