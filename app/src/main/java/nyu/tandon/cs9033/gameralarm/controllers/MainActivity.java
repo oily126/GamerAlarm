@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 alarmListItems.remove(alarmToDelete);
                                 alarmListAdapter.notifyDataSetChanged();
+                                setAlarmVisible();
                             }
                         })
                         .show();
@@ -64,13 +65,7 @@ public class MainActivity extends AppCompatActivity {
         noAlarmImage = (ImageView) findViewById(R.id.noAlarm);
         noAlarmImage.setImageDrawable(getResources().getDrawable(R.drawable.alarm));
 
-        if (alarmListItems.size() == 0) {
-            noAlarmImage.setVisibility(View.VISIBLE);
-            alarmList.setVisibility(View.INVISIBLE);
-        } else {
-            noAlarmImage.setVisibility(View.INVISIBLE);
-            alarmList.setVisibility(View.VISIBLE);
-        }
+        setAlarmVisible();
 
         Button btn_add = (Button) findViewById(R.id.addAlarm);
         btn_add.setOnClickListener(new View.OnClickListener() {
@@ -105,4 +100,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void setAlarmVisible() {
+        if (alarmListItems.size() == 0) {
+            noAlarmImage.setVisibility(View.VISIBLE);
+            alarmList.setVisibility(View.INVISIBLE);
+        } else {
+            noAlarmImage.setVisibility(View.INVISIBLE);
+            alarmList.setVisibility(View.VISIBLE);
+        }
+    }
 }
