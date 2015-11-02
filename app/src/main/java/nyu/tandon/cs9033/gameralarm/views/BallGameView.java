@@ -31,9 +31,7 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
     SurfaceHolder mSurfaceHolder = null;
 
     /** Game looping flag **/
-    public boolean mRunning = false;
-
-    boolean mIsRunning = false;
+    public boolean mIsRunning = false;
 
     //Thread BGVThread = null;
 
@@ -83,6 +81,7 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
         this.setFocusable(true);
         /** Set whether current view can receive focus while in touch mode. **/
         //this.setFocusableInTouchMode(true);
+
         /** Access to the underlying surface **/
         mSurfaceHolder = this.getHolder();
         mSurfaceHolder.addCallback(this);
@@ -97,11 +96,6 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
         mBitmapBg = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballgame_background);
         mBitmapHole = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballgame_hole);
 
-
-        mBallUpperPosX = mBallPosX + Float.valueOf(mBitmapBall.getWidth());
-        mBallUpperPosY = mBallPosY + Float.valueOf(mBitmapBall.getHeight());
-
-
         /** Get a SensorManager object and **/
         mSensorMgr = (SensorManager)paramContext.getSystemService(paramContext.SENSOR_SERVICE);
         mSensor = mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -112,6 +106,7 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
          SENSOR_DELAY_NORMAL  Normal speed mode
          SENSOR_DELAY_UI 	   Lowest speed mode **/
         mSensorMgr.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
+        mIsRunning = true;
     }
 
 
@@ -122,9 +117,9 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
         /** Draw the game ball **/
         mCanvas.drawBitmap(mBitmapHole, mHolePosX, mHolePosY, mPaint);
         mCanvas.drawBitmap(mBitmapBall, mBallPosX, mBallPosY, mPaint);
-        mCanvas.drawText("X axis：" + mGX, 10, 20, mPaint);
+        /*mCanvas.drawText("X axis：" + mGX, 10, 20, mPaint);
         mCanvas.drawText("Y axis：" + mGY, 10, 40, mPaint);
-        mCanvas.drawText("Z axis：" + mGZ, 10, 60, mPaint);
+        mCanvas.drawText("Z axis：" + mGZ, 10, 60, mPaint);*/
         /*
         Calculate the point on the circle using angle and radius of circle (x = r * cos(angle), y = r * sin(angle)).
         deltaY = P2_y - P1_y
@@ -145,8 +140,6 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        mIsRunning = true;
-        //BGVThread = new Thread(this);
         new Thread(this).start();
         /** Get the current screen width and height **/
         mScreenWidth = this.getWidth();
@@ -199,12 +192,15 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        mGX = event.values[SensorManager.DATA_X];
-        mGY= event.values[SensorManager.DATA_Y];
-        mGZ = event.values[SensorManager.DATA_Z];
+        mGX = event.values[0];
+        mGY= event.values[1];
+        mGZ = event.values[2];
 
         mBallPosX -= mGX * 2;
         mBallPosY += mGY * 2;
+
+        mBallUpperPosX = mBallPosX + Float.valueOf(mBitmapBall.getWidth());
+        mBallUpperPosY = mBallPosY + Float.valueOf(mBitmapBall.getHeight());
 
         if (mBallPosX < 0) {
             mBallPosX = 0;
@@ -219,10 +215,9 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
 
         if (mBallPosX >= mHolePosX && mBallPosY >= mHolePosY && mBallUpperPosX <= mHoleUpperPosX && mBallUpperPosY <= mHoleUpperPosY ) {
 
-            Toast.makeText(BallGameView.this.getContext(), "You Win!", Toast.LENGTH_LONG);
-            //Log.i("SSSSSS", String.valueOf(mBallUpperPosX) + "   " + String.valueOf(mHoleUpperPosX));
-            //Log.i("SSSSSS", String.valueOf(mBallUpperPosY) + "   " + String.valueOf(mHoleUpperPosY));
+            Toast.makeText(BallGameView.this.getContext(), "You Win!", Toast.LENGTH_LONG).show();
             mSensorMgr.unregisterListener(BallGameView.this);
+            surfaceDestroyed(mSurfaceHolder);
         }
     }
 
