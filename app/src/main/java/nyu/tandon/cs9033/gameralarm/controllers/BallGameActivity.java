@@ -5,7 +5,6 @@ package nyu.tandon.cs9033.gameralarm.controllers;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,13 +40,13 @@ public class BallGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 timeLimit.cancel();
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startMain);
+                //Intent startMain = new Intent(BallGameActivity.this, MainActivity.class);
+                //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                //startActivity(startMain);
                 finish();
             }
         };
-        timeLimit.schedule(timeTask, 10000);
+        timeLimit.schedule(timeTask, 16000);
 
         // Check game status every 10 milliseconds
         final Timer checkTime = new Timer();
@@ -56,9 +55,9 @@ public class BallGameActivity extends AppCompatActivity {
             public void run() {
                 if (!BGV_instance.mIsRunning) {
                     checkTime.cancel();
-                    Intent startMain = new Intent(BallGameActivity.this, MainActivity.class);
-                    startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(startMain);
+                    //Intent startMain = new Intent(BallGameActivity.this, MainActivity.class);
+                    //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //startActivity(startMain);
                     finish();
                 }
             }
