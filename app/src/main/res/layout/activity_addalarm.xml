@@ -47,10 +47,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Cancel Alarm"
+        android:layout_marginBottom="35dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="77dp" />
+        android:layout_alignParentStart="true" />
     <TextView
         android:id="@+id/alarmprompt"
         android:layout_width="fill_parent"
@@ -149,5 +149,14 @@
         android:layout_alignTop="@+id/normalmode"
         android:layout_toRightOf="@+id/normalmode"
         android:layout_toEndOf="@+id/normalmode" />
+
+    <Button
+        android:id="@+id/ringtone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Ringtone"
+        android:layout_above="@+id/setalarmbutton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

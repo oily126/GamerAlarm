@@ -78,6 +78,14 @@ public class AddAlarmActivity extends Activity{
         });
         //need to set the normal mode button and trick mode button in the future
         normalMode = (Button) findViewById(R.id.normalmode);
+        normalMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //for the first demo, just start the normal mode
+                Intent intent = new Intent(AddAlarmActivity.this, NormalAlarmActivity.class);
+                startActivity(intent);
+            }
+        });
 
         trickMode = (Button) findViewById(R.id.trickmode);
     }

@@ -25,6 +25,14 @@
             android:name=".controllers.AddAlarmActivity"
             android:label="@string/app_name" >
         </activity>
+<<<<<<< HEAD
+=======
+        <activity
+            android:name=".controllers.NormalAlarmActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+>>>>>>> 89c3b9477ee3446e5311935504d12e140fa75fd5
         <receiver
             android:name=".controllers.AlarmReceiver"
             android:label="@string/app_name">
