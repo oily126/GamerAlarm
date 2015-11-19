@@ -1,10 +1,13 @@
 package nyu.tandon.cs9033.gameralarm.models;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 /**
  * Created by oily on 11/17/2015.
  */
 public class Alarm {
-    private static String[] weekday = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    private static String[] weekday = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static String[] modeStr = {"Normal", "BallGame", "Tetris", "Math"};
     private int alarmId;
     private long time;
@@ -29,6 +32,19 @@ public class Alarm {
         this.time = time;
         if (repeat == 0) this.repeat = false; else this.repeat = true;
         this.week = week;
+        this.mode = mode;
+        this.ringtone = ringtone;
+        if (enable == 0) this.enable = false; else this.enable = true;
+    }
+
+    public Alarm(long time, int repeat, Set<Integer> week, int mode, String ringtone, int enable) {
+        this.alarmId = 0;
+        this.time = time;
+        if (repeat == 0) this.repeat = false; else this.repeat = true;
+        this.week = 0;
+        for (int a: week) {
+            this.week += (int) Math.pow(2, a - 1);
+        }
         this.mode = mode;
         this.ringtone = ringtone;
         if (enable == 0) this.enable = false; else this.enable = true;
@@ -63,10 +79,10 @@ public class Alarm {
     }
 
     public String getTimeStr() {
-        if (time % 60 < 10) {
-            return  String.valueOf(time / 60) + ":0" + String.valueOf(time % 60);
+        if (time % 100 < 10) {
+            return  String.valueOf(time / 100) + ":0" + String.valueOf(time % 100);
         } else {
-            return String.valueOf(time / 60) + ":" +  String.valueOf(time % 60);
+            return String.valueOf(time / 100) + ":" +  String.valueOf(time % 100);
         }
     }
 
@@ -87,6 +103,16 @@ public class Alarm {
     }
 
     public String getModeStr() {
-        return modeStr[mode];
+        return modeStr[mode / 10];
+    }
+
+    public ArrayList<Integer> getWeekBitmap() {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int cur = week;
+        while (cur > 0) {
+            list.add(cur % 2);
+            cur /= 2;
+        }
+        return list;
     }
 }
