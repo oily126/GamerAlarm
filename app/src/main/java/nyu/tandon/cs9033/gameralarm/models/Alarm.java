@@ -10,14 +10,14 @@ public class Alarm {
     private static String[] weekday = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static String[] modeStr = {"Normal", "BallGame", "Tetris", "Math"};
     private int alarmId;
-    private long time;
+    private int time;
     private boolean repeat;
     private int week;
     private int mode;
     private String ringtone;
     private boolean enable;
 
-    public Alarm(long time, boolean repeat, int week, int mode, String ringtone, boolean enable) {
+    public Alarm(int time, boolean repeat, int week, int mode, String ringtone, boolean enable) {
         this.alarmId = 0;
         this.time = time;
         this.repeat = repeat;
@@ -27,7 +27,7 @@ public class Alarm {
         this.enable = enable;
     }
 
-    public Alarm(int alarmId, long time, int repeat, int week, int mode, String ringtone, int enable) {
+    public Alarm(int alarmId, int time, int repeat, int week, int mode, String ringtone, int enable) {
         this.alarmId = alarmId;
         this.time = time;
         if (repeat == 0) this.repeat = false; else this.repeat = true;
@@ -37,7 +37,7 @@ public class Alarm {
         if (enable == 0) this.enable = false; else this.enable = true;
     }
 
-    public Alarm(long time, int repeat, Set<Integer> week, int mode, String ringtone, int enable) {
+    public Alarm(int time, int repeat, Set<Integer> week, int mode, String ringtone, int enable) {
         this.alarmId = 0;
         this.time = time;
         if (repeat == 0) this.repeat = false; else this.repeat = true;
@@ -54,7 +54,7 @@ public class Alarm {
         return alarmId;
     }
 
-    public long getTime() {
+    public int getTime() {
         return time;
     }
 

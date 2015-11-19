@@ -33,7 +33,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         // create alarm table
         db.execSQL("create table " + TABLE_ALARM + "("
                 + COLUMN_ALARM_ID + " long primary key, "
-                + COLUMN_ALARM_TIME + " long, "
+                + COLUMN_ALARM_TIME + " integer, "
                 + COLUMN_ALARM_REPEAT + " integer, "
                 + COLUMN_ALARM_WEEK + " integer, "
                 + COLUMN_ALARM_MODE + " integer, "
@@ -66,10 +66,10 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         if (c.getCount() > 0) {
             c.moveToFirst();
             while (!c.isLast()) {
-                list.add(new Alarm(c.getInt(0), c.getLong(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6)));
+                list.add(new Alarm(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6)));
                 c.moveToNext();
             }
-            list.add(new Alarm(c.getInt(0), c.getLong(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6)));
+            list.add(new Alarm(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6)));
             return list;
         } else return list;
     }
