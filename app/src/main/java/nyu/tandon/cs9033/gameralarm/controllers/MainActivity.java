@@ -1,6 +1,9 @@
 package nyu.tandon.cs9033.gameralarm.controllers;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +26,12 @@ import nyu.tandon.cs9033.gameralarm.views.AlarmListAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private ArrayList<Alarm> alarmListArray;
     private List<Map<String, Object>> alarmListItems;
     private AlarmListAdapter alarmListAdapter;
     private ListView alarmList;
     private ImageView noAlarmImage;
+    private final static int ADD__ALARM = 1;
 
 
     @Override
@@ -41,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         alarmList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final int alarmToDelete = position;
+                final int positionToDelete = position;
+                final int alarmIdToDelete = alarmListArray.get(position).getAlarmId();
+                final Alarm alarmToDelete =  alarmListArray.get(position);
                 AlertDialog tmp = new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Delete alarm confirm")
                         .setMessage("Are you sure to delete this alarm?")
@@ -53,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
                         }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                alarmListItems.remove(alarmToDelete);
+                                alarmListItems.remove(positionToDelete);
                                 alarmListAdapter.notifyDataSetChanged();
+                                AlarmDatabaseHelper helper = new AlarmDatabaseHelper(MainActivity.this);
+                                helper.deleteAlarmById(alarmIdToDelete);
+                                MainActivity.this.deleteAlarmIntent(alarmToDelete);
                                 setAlarmVisible();
                             }
                         })
@@ -79,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void readAlarmList() {
         AlarmDatabaseHelper helper = new AlarmDatabaseHelper(this);
-        ArrayList<Alarm> alarmList = helper.getAllAlarms();
+        alarmListArray = helper.getAllAlarms();
         Map<String, Object> tmp;
         alarmListItems = new ArrayList<Map<String, Object>>();
-        for (Alarm a: alarmList) {
+        for (Alarm a: alarmListArray) {
             tmp = new HashMap<String, Object>();
             tmp.put("alarmTime", a.getTimeStr());
             tmp.put("alarmWeek", a.getWeekStr());
@@ -96,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private void addNewAlarm() {
         //TODO go to the addAlarmActivity
         Intent intent = new Intent(this, AddAlarmActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ADD__ALARM);
     }
 
     public void setAlarmVisible() {
@@ -108,7 +118,23 @@ public class MainActivity extends AppCompatActivity {
             alarmList.setVisibility(View.VISIBLE);
         }
     }
+    public void deleteAlarmIntent(Alarm alarm){
+        ArrayList<Integer> days = alarm.getWeekBitmap();
+        if(days.size() == 0){
+            Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarm.getAlarmId()*10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+        }
+        else{
+            for(int day: days){
+                Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this,alarm.getAlarmId()*10+day, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);}
+            }
 
+    }
     private void addAlarmForTest() {
         AlarmDatabaseHelper helper = new AlarmDatabaseHelper(this);
         helper.addAlarm(new Alarm(600, false, 0, 0, "", false));

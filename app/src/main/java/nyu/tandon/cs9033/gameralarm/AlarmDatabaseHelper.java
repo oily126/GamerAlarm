@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // create alarm table
         db.execSQL("create table " + TABLE_ALARM + "("
-                + COLUMN_ALARM_ID + " long primary key, "
+                + COLUMN_ALARM_ID + " integer primary key autoincrement, "
                 + COLUMN_ALARM_TIME + " integer, "
                 + COLUMN_ALARM_REPEAT + " integer, "
                 + COLUMN_ALARM_WEEK + " integer, "
@@ -90,6 +91,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         String[] arg = new String[] {
             String.valueOf(id)
         };
+        Log.i(AlarmDatabaseHelper.this.toString(), String.valueOf(id));
         return getWritableDatabase().delete(TABLE_ALARM, where, arg);
     }
 

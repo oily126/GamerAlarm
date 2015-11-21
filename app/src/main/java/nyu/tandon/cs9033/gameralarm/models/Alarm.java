@@ -37,17 +37,17 @@ public class Alarm {
         if (enable == 0) this.enable = false; else this.enable = true;
     }
 
-    public Alarm(int time, int repeat, Set<Integer> week, int mode, String ringtone, int enable) {
+    public Alarm(int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable) {
         this.alarmId = 0;
         this.time = time;
-        if (repeat == 0) this.repeat = false; else this.repeat = true;
+        this.repeat = repeat;
         this.week = 0;
         for (int a: week) {
             this.week += (int) Math.pow(2, a - 1);
         }
         this.mode = mode;
         this.ringtone = ringtone;
-        if (enable == 0) this.enable = false; else this.enable = true;
+        this.enable = enable;
     }
 
     public int getAlarmId() {
@@ -108,10 +108,11 @@ public class Alarm {
 
     public ArrayList<Integer> getWeekBitmap() {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        int cur = week;
+        int cur = week, i = 1;
         while (cur > 0) {
-            list.add(cur % 2);
+            if (cur % 2 != 0) list.add(i);
             cur /= 2;
+            i++;
         }
         return list;
     }
