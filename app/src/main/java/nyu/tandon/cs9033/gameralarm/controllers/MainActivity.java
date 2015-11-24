@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView alarmList;
     private ImageView noAlarmImage;
     private final static int ADD__ALARM = 1;
+    private final static int EDIT__ALARM = 1;
 
 
     @Override
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 alarmListItems.remove(positionToDelete);
                                 alarmListAdapter.notifyDataSetChanged();
+                                alarmListArray.remove(positionToDelete);
                                 AlarmDatabaseHelper helper = new AlarmDatabaseHelper(MainActivity.this);
                                 helper.deleteAlarmById(alarmIdToDelete);
                                 MainActivity.this.deleteAlarmIntent(alarmToDelete);
@@ -70,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .show();
                 return false;
+            }
+        });
+
+        alarmList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MainActivity.this.editAlarm(position);
             }
         });
 
@@ -105,8 +114,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void addNewAlarm() {
         //TODO go to the addAlarmActivity
+
         Intent intent = new Intent(this, AddAlarmActivity.class);
         startActivityForResult(intent, ADD__ALARM);
+        /*
+        Intent intent = new Intent(this, JewelsActivity.class);
+        intent.putExtra("score", 100);
+        intent.putExtra("time", 30);
+        startActivity(intent);*/
+    }
+
+    private void editAlarm(int postion) {
+        Intent intent = new Intent(this, AddAlarmActivity.class);
+        intent.putExtra("alarm", alarmListArray.get(postion));
+        startActivityForResult(intent, EDIT__ALARM);
     }
 
     public void setAlarmVisible() {
@@ -140,5 +161,18 @@ public class MainActivity extends AppCompatActivity {
         helper.addAlarm(new Alarm(600, false, 0, 0, "", false));
         helper.addAlarm(new Alarm(60 * 8 + 50, true, 3, 0, "", true));
         helper.addAlarm(new Alarm(600, true, 5, 2, "", true));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 0) {
+            if (requestCode == ADD__ALARM) {
+                readAlarmList();
+                alarmListAdapter.notifyDataSetChanged();
+            } else if (requestCode == EDIT__ALARM) {
+                readAlarmList();
+                alarmListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

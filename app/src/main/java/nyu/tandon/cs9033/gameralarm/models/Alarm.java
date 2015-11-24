@@ -1,12 +1,15 @@
 package nyu.tandon.cs9033.gameralarm.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Set;
 
 /**
  * Created by oily on 11/17/2015.
  */
-public class Alarm {
+public class Alarm implements Parcelable{
     private static String[] weekday = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static String[] modeStr = {"Normal", "BallGame", "Tetris", "Math"};
     private int alarmId;
@@ -30,11 +33,11 @@ public class Alarm {
     public Alarm(int alarmId, int time, int repeat, int week, int mode, String ringtone, int enable) {
         this.alarmId = alarmId;
         this.time = time;
-        if (repeat == 0) this.repeat = false; else this.repeat = true;
+        this.repeat = repeat != 0;
         this.week = week;
         this.mode = mode;
         this.ringtone = ringtone;
-        if (enable == 0) this.enable = false; else this.enable = true;
+        this.enable = enable != 0;
     }
 
     public Alarm(int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable) {
@@ -115,5 +118,41 @@ public class Alarm {
             i++;
         }
         return list;
+    }
+
+    public static final Parcelable.Creator<Alarm> CREATOR = new Parcelable.Creator<Alarm>() {
+        public Alarm createFromParcel(Parcel p) {
+            return new Alarm(p);
+        }
+
+        public Alarm[] newArray(int size) {
+            return new Alarm[size];
+        }
+    };
+
+    public Alarm(Parcel p) {
+        this.alarmId = p.readInt();
+        this.time = p.readInt();
+        this.repeat = p.readInt() == 1;
+        this.week = p.readInt();
+        this.mode = p.readInt();
+        this.ringtone = p.readString();
+        this.enable = p.readInt() == 1;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(alarmId);
+        dest.writeInt(time);
+        if (repeat) dest.writeInt(1); else dest.writeInt(0);
+        dest.writeInt(week);
+        dest.writeInt(mode);
+        dest.writeString(ringtone);
+        if (enable) dest.writeInt(1); else dest.writeInt(0);
     }
 }
