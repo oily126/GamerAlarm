@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final int positionToDelete = position;
                 final int alarmIdToDelete = alarmListArray.get(position).getAlarmId();
-                final Alarm alarmToDelete =  alarmListArray.get(position);
+                final Alarm alarmToDelete = alarmListArray.get(position);
                 AlertDialog tmp = new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Delete alarm confirm")
                         .setMessage("Are you sure to delete this alarm?")
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                                 helper.deleteAlarmById(alarmIdToDelete);
                                 MainActivity.this.deleteAlarmIntent(alarmToDelete);
                                 setAlarmVisible();
+                                helper.close();
                             }
                         })
                         .show();
@@ -94,6 +95,17 @@ public class MainActivity extends AppCompatActivity {
                 addNewAlarm();
             }
         });
+
+        Button btn_setting = (Button) findViewById(R.id.Setting);
+        btn_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, JewelsActivity.class);
+                intent.putExtra("score", 100000);
+                intent.putExtra("time", 6000);
+                startActivity(intent);
+            }
+        });
     }
 
     private void readAlarmList() {
@@ -110,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
             alarmListItems.add(tmp);
         }
+        helper.close();
     }
 
     private void addNewAlarm() {
@@ -161,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         helper.addAlarm(new Alarm(600, false, 0, 0, "", false));
         helper.addAlarm(new Alarm(60 * 8 + 50, true, 3, 0, "", true));
         helper.addAlarm(new Alarm(600, true, 5, 2, "", true));
+        helper.close();
     }
 
     @Override

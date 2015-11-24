@@ -17,6 +17,8 @@ import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolic
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
 import org.anddev.andengine.entity.shape.modifier.LoopShapeModifier;
+import org.anddev.andengine.entity.shape.modifier.RotationModifier;
+import org.anddev.andengine.entity.shape.modifier.ScaleModifier;
 import org.anddev.andengine.entity.shape.modifier.SequenceShapeModifier;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.text.ChangeableText;
@@ -69,6 +71,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     private final int SPEED = 4;
     private int moveValue = 0;
+    private int mCount = 0;
 
     private Camera mCamera;
     protected Scene mMainScene;
@@ -102,6 +105,11 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     private int mLastRow,mLastCol;
     private ArrayList<String> mDeadArrList;
     private int mTime = 0;
+
+    private Sprite mSpark,mSpark2;
+    private Texture mSparkTexture,mSpark2Texture;
+    private TextureRegion mSparkTextureRegion,mSpark2TextureRegion;
+
     @Override
     public Engine onLoadEngine() {
         this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -148,6 +156,15 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mScoreFont = FontFactory.createFromAsset(this.mScoreFontTexture, this, "fonts/bluehigh.ttf", 44, true, Color.WHITE);
         this.mEngine.getTextureManager().loadTexture(this.mScoreFontTexture);
         this.mEngine.getFontManager().loadFont(this.mScoreFont);
+
+        this.mSparkTexture = new Texture(64, 64, TextureOptions.DEFAULT);
+        this.mSparkTextureRegion = TextureRegionFactory.createFromAsset
+                (this.mSparkTexture, this, "spark1.png", 0, 0);
+        this.mEngine.getTextureManager().loadTexture(this.mSparkTexture);
+        this.mSpark2Texture = new Texture(64, 64, TextureOptions.DEFAULT);
+        this.mSpark2TextureRegion = TextureRegionFactory.createFromAsset
+                (this.mSpark2Texture, this, "spark2.png", 0, 0);
+        this.mEngine.getTextureManager().loadTexture(this.mSpark2Texture);
     }
 
     @Override
@@ -161,6 +178,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.prepareGame();
         this.prepareToBack();
         this.gameLoop();
+        this.autoTips();
         return this.mMainScene;
     }
 
@@ -185,7 +203,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                 if(this.isNext()){
                     this.mBorder.getSprite().setVisible(false);
                     this.setMoveDirection();
-                }else if(this.mCurRow == this.mLastRow && this.mCurCol == this.mLastCol){//两次点击是同一个
+                }else if(this.mCurRow == this.mLastRow && this.mCurCol == this.mLastCol){
                     this.mLastRow = -2;
                     this.mLastCol = -2;
                     this.mBorder.getSprite().setVisible(false);
@@ -198,6 +216,71 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             }
         }
         return false;
+    }
+    private void autoTips(){
+        if (mSpark != null) {
+            mSpark.setVisible(false);
+            mSpark2.setVisible(false);
+            this.mMainScene.getTopLayer().addEntity(mSpark);
+            this.mMainScene.getTopLayer().addEntity(mSpark2);
+        }
+        this.mMainScene.registerUpdateHandler(new TimerHandler(3f, true, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                if(mGameRunning){
+                    if(STATE == CHECK){
+                        mTime ++;
+                        if(mTime >= 0){
+                            doTips();
+                            mTime = 0;
+                        }
+                    }else{
+                        mTime = 0;
+                    }
+                }
+            }
+        }));
+    }
+
+    private void doTips(){
+        if(mSpark == null){
+            mSpark = new Sprite(0, 0, mSparkTextureRegion);
+            mSpark2 = new Sprite(0, 0, mSpark2TextureRegion);
+            mSpark.setVisible(false);
+            mSpark2.setVisible(false);
+            this.mMainScene.getTopLayer().addEntity(mSpark);
+            this.mMainScene.getTopLayer().addEntity(mSpark2);
+        }
+        checkMapDead();
+        if(mDeadArrList.size() > 0){
+            String key = mDeadArrList.get(MathUtils.random(0, mDeadArrList.size()-1));
+
+            mCount = 0;
+
+            mSpark.setPosition(Integer.parseInt(key.substring(0, 1))*CELL_WIDTH + 8,
+                    Integer.parseInt(key.substring(1, 2))*CELL_HEIGHT + 8);
+            mSpark2.setPosition(Integer.parseInt(key.substring(0, 1))*CELL_WIDTH + 4,
+                    Integer.parseInt(key.substring(1, 2))*CELL_HEIGHT + 4);
+            mSpark.setVisible(true);
+            mSpark2.setVisible(true);
+            mSpark2.addShapeModifier(new RotationModifier(1.5f, 0, 90));
+            mSpark.addShapeModifier(new SequenceShapeModifier(
+                    new ScaleModifier(1.5f, 0.4f, 0.6f),new ScaleModifier(0.1f, 0.6f, 0f)));
+            mSpark2.addShapeModifier(new SequenceShapeModifier(
+                    new ScaleModifier(1.5f, 0.5f, 1.1f),new ScaleModifier(0.1f, 1.1f, 0f)));
+        }else{
+            if (mDeadArrList.isEmpty()) {
+                mCount++;
+                if (mCount > 3) {
+                    Log.i(JewelsActivity.class.toString(), "DEAD for a time");
+                    int mScore = JewelsActivity.this.mScore;
+                    JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
+                    JewelsActivity.this.mScore = mScore;
+                    JewelsActivity.this.adjustScorePanel();
+                    JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
+                }
+            }
+        }
     }
 
     private void setMoveDirection(){
@@ -509,88 +592,88 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             }
         }
         if(count == 64){
-            if(this.mDeadArrList.size() == 0){
-                int i = 0;
-                while(i < CELLS_HORIZONTAL){
-                    int j = 0;
-                    while(j < CELLS_HORIZONTAL){
-                        if(checkDead(mHashMap.get(getKey(j, i))) == true){
-                            this.mDeadArrList.add(getKey(j, i));
-                        }
-                        j += 1;
+            int i = 0;
+            mDeadArrList.clear();
+            while (i < CELLS_HORIZONTAL) {
+                int j = 0;
+                while (j < CELLS_HORIZONTAL) {
+                    if (checkDead(mHashMap.get(getKey(j, i))) == true) {
+                        this.mDeadArrList.add(getKey(j, i));
                     }
-                    i += 1;
+                    j += 1;
                 }
+                i += 1;
             }
         }
     }
 
     private boolean checkDead(final JewelSprite sprite){
-        boolean flag = false;
-        int row = sprite.getRow();
-        int col = sprite.getCol();
-        JewelSprite temp = sprite;
+        int row = sprite.getRow(), nrow, row_num = 1;
+        int col = sprite.getCol(), ncol, col_num = 1;
+        JewelSprite temp;
+        int mv[][] = {{-1, 0},{0, -1}, {1, 0}, {0, 1}};
+        int t;
 
-        if((col - 1) >= 0){
-            mHashMap.put(getKey(row, col), mHashMap.get(getKey(row, col-1)));
-            mHashMap.put(getKey(row, col-1), temp);
-            int v = 0;
-            for(v = 1; col-1-v >= 0
-                    &&  mHashMap.get(getKey(row,col-1)).getStyle() == mHashMap.get(getKey(row, col-1-v)).getStyle()
-                    &&  mHashMap.get(getKey(row, col-1)).getState() == mHashMap.get(getKey(row, col-1-v)).getState();
-                v++);
-            if(v >= 3){
-                flag = true;
-            }
-            mHashMap.put(getKey(row, col-1), mHashMap.get(getKey(row, col)));
-            mHashMap.put(getKey(row, col), temp);
-        }
+        for (int i = 0; i < 4; i++) {
+            nrow = mv[i][0] + row;
+            ncol = mv[i][1] + col;
+            if (nrow >= 0 && ncol >= 0 && nrow < CELLS_VERTICAL && ncol < CELLS_HORIZONTAL) {
+                row_num = 1;
+                col_num = 1;
+                t = nrow - 1;
+                while (t >= 0) {
+                    if (t == row && ncol == col) {
+                        if (mHashMap.get(getKey(nrow, ncol)).getStyle() == sprite.getStyle()) row_num++;
+                        else break;
+                    } else {
+                        if (mHashMap.get(getKey(t, ncol)).getStyle() == sprite.getStyle()) row_num++;
+                        else break;
+                    }
+                    t--;
+                }
 
-        if((col + 1) < CELLS_HORIZONTAL){
-            mHashMap.put(getKey(row, col), mHashMap.get(getKey(row, col+1)));
-            mHashMap.put(getKey(row, col+1), temp);
-            int v1 = 0;
-            for(v1 = 1; col+1+v1 < CELLS_HORIZONTAL
-                    &&  mHashMap.get(getKey(row,col+1)).getStyle() == mHashMap.get(getKey(row, col+1+v1)).getStyle()
-                    &&  mHashMap.get(getKey(row, col+1)).getState() == mHashMap.get(getKey(row, col+1+v1)).getState();
-                v1++);
-            if(v1 >= 3){
-                flag = true;
-            }
-            mHashMap.put(getKey(row, col+1), mHashMap.get(getKey(row, col)));
-            mHashMap.put(getKey(row, col), temp);
-        }
+                t = nrow + 1;
+                while (t < CELLS_VERTICAL) {
+                    if (t == row && ncol == col) {
+                        if (mHashMap.get(getKey(nrow, ncol)).getStyle() == sprite.getStyle()) row_num++;
+                        else break;
+                    } else {
+                        if (mHashMap.get(getKey(t, ncol)).getStyle() == sprite.getStyle()) row_num++;
+                        else break;
+                    }
+                    t++;
+                }
 
-        if((row - 1) >= 0){
-            mHashMap.put(getKey(row, col), mHashMap.get(getKey(row-1, col)));
-            mHashMap.put(getKey(row-1, col), temp);
-            int v2 = 0;
-            for(v2 = 1; row-1-v2 >= 0
-                    &&  mHashMap.get(getKey(row-1,col)).getStyle() == mHashMap.get(getKey(row-1-v2, col)).getStyle()
-                    &&  mHashMap.get(getKey(row-1, col)).getState() == mHashMap.get(getKey(row-1-v2, col)).getState();
-                v2++);
-            if(v2 >= 3){
-                flag = true;
-            }
-            mHashMap.put(getKey(row-1, col), mHashMap.get(getKey(row, col)));
-            mHashMap.put(getKey(row, col), temp);
-        }
+                if (row_num >= 3) return true;
 
-        if((row + 1) < CELLS_VERTICAL){
-            mHashMap.put(getKey(row, col), mHashMap.get(getKey(row+1, col)));
-            mHashMap.put(getKey(row+1, col), temp);
-            int v3 = 0;
-            for(v3 = 1; row+1+v3 < CELLS_VERTICAL
-                    &&  mHashMap.get(getKey(row+1,col)).getStyle() == mHashMap.get(getKey(row+1+v3, col)).getStyle()
-                    &&  mHashMap.get(getKey(row+1, col)).getState() == mHashMap.get(getKey(row+1+v3, col)).getState();
-                v3++);
-            if(v3 >= 3){
-                flag = true;
+                t = ncol - 1;
+                while (t >= 0) {
+                    if (nrow == row && t == col) {
+                        if (mHashMap.get(getKey(nrow, ncol)).getStyle() == sprite.getStyle()) col_num++;
+                        else break;
+                    } else {
+                        if (mHashMap.get(getKey(nrow, t)).getStyle() == sprite.getStyle()) col_num++;
+                        else break;
+                    }
+                    t--;
+                }
+
+                t = ncol + 1;
+                while (t < CELLS_HORIZONTAL) {
+                    if (nrow == row && t == col) {
+                        if (mHashMap.get(getKey(nrow, ncol)).getStyle() == sprite.getStyle()) col_num++;
+                        else break;
+                    } else {
+                        if (mHashMap.get(getKey(nrow, t)).getStyle() == sprite.getStyle()) col_num++;
+                        else break;
+                    }
+                    t++;
+                }
+
+                if (col_num >= 3) return true;
             }
-            mHashMap.put(getKey(row+1, col), mHashMap.get(getKey(row, col)));
-            mHashMap.put(getKey(row, col), temp);
         }
-        return flag;
+        return false;
     }
 
     private void removeHorizontal(){
@@ -607,7 +690,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                     if(k >= 3)
                     {
                         this.addScore(k);
-                        removeVrtical(); //这样调T(十)字都可以消
+                        removeVrtical();
                         for(int n = 0; n < k; n++)
                         {
                             mHashMap.get(getKey(j++, i)).setState(STATE_SCALEINT);
@@ -715,7 +798,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         {
             for(int j = CELLS_VERTICAL - 1; j >= 0; j--)
             {
-                if(mHashMap.get(getKey(i, j)).getJewel().getY() < j*CELL_HEIGHT)//还没有下落到位
+                if(mHashMap.get(getKey(i, j)).getJewel().getY() < j*CELL_HEIGHT)
                 {
                     mHashMap.get(getKey(i, j)).getJewel()
                             .setPosition(i*CELL_WIDTH, mHashMap.get(getKey(i, j)).getJewel().getY()+ CELL_HEIGHT/2);
@@ -736,7 +819,6 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
             @Override
             public void onUpdate(float pSecondsElapsed) {
-
                 if (JewelsActivity.this.mGameRunning) {
                     switch (STATE) {
                         case MOVE_UP:
@@ -762,8 +844,9 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                             fillEmpty();
                             break;
                         case DEAD:
+                            Log.i(JewelsActivity.class.toString(), "DEAD for a time");
                             int mScore = JewelsActivity.this.mScore;
-                            JewelsActivity.this.init();
+                            JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
                             JewelsActivity.this.mScore = mScore;
                             JewelsActivity.this.adjustScorePanel();
                             JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
@@ -834,6 +917,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mLastCol = -2;
         this.mIsSwaping = false;
         mDeadArrList = new ArrayList<String>();
+        mCount = 0;
     }
 
     private void initBG(){
