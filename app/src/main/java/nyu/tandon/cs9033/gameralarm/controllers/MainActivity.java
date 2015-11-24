@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 0) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == ADD__ALARM) {
                 readAlarmList();
                 alarmListAdapter.notifyDataSetChanged();
