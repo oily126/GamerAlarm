@@ -227,26 +227,19 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mMainScene.registerUpdateHandler(new TimerHandler(0.5f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                checkMapDead();
-                if (mDeadArrList.isEmpty()) {
-                    Log.i(JewelsActivity.class.toString(), "DEAD for a time");
-                    int mScore = JewelsActivity.this.mScore;
-                    JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
-                    JewelsActivity.this.mScore = mScore;
-                    JewelsActivity.this.adjustScorePanel();
-                    JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
-                } else {
-                    if (mGameRunning) {
-                        if (STATE == CHECK) {
-                            mTime++;
-                            if (mTime >= 10) {
-                                doTips();
-                                mTime = 0;
-                            }
-                        } else {
-                            mTime = 0;
-                        }
-                    }
+                 if (mGameRunning) {
+                     if (STATE == CHECK) {
+                         if (mTime == 0) {
+                             checkMapDead();
+                         }
+                         mTime++;
+                         if (mTime >= 10) {
+                             doTips();
+                             mTime = 0;
+                         }
+                     } else {
+                         mTime = 0;
+                     }
                 }
             }
         }));
@@ -276,6 +269,15 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                     new ScaleModifier(1.5f, 0.4f, 0.6f), new ScaleModifier(0.1f, 0.6f, 0f)));
             mSpark2.addShapeModifier(new SequenceShapeModifier(
                     new ScaleModifier(1.5f, 0.5f, 1.1f), new ScaleModifier(0.1f, 1.1f, 0f)));
+        }
+
+        if (mDeadArrList.isEmpty()) {
+            Log.i(JewelsActivity.class.toString(), "DEAD for a time");
+            int mScore = JewelsActivity.this.mScore;
+            JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
+            JewelsActivity.this.mScore = mScore;
+            JewelsActivity.this.adjustScorePanel();
+            JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
         }
     }
 
