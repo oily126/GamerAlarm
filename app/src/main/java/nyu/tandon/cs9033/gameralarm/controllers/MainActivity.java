@@ -5,15 +5,33 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +45,14 @@ import nyu.tandon.cs9033.gameralarm.views.AlarmListAdapter;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ArrayList<Alarm> alarmListArray;
-    private List<Map<String, Object>> alarmListItems;
+    private List<Map<String, Object>> alarmListItems = new ArrayList<Map<String, Object>>();;
     private AlarmListAdapter alarmListAdapter;
     private ListView alarmList;
     private ImageView noAlarmImage;
     private final static int ADD__ALARM = 1;
-    private final static int EDIT__ALARM = 1;
-
+    private final static int EDIT__ALARM = 2;
+    private final static int BACKGOUND_SELECTION = 3;
+    public static Drawable bgPic = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //addAlarmForTest();
         readAlarmList();
+        if (MainActivity.bgPic != null) {
+            ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackground(MainActivity.bgPic);
+        }
         alarmList = (ListView) findViewById(R.id.alarmList);
         alarmListAdapter = new AlarmListAdapter(this, alarmListItems);
         alarmList.setAdapter(alarmListAdapter);
@@ -72,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
                         .show();
-                return false;
+                return true;
             }
         });
 
@@ -88,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         setAlarmVisible();
 
-        Button btn_add = (Button) findViewById(R.id.addAlarm);
+        final Button btn_add = (Button) findViewById(R.id.addAlarm);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,10 +122,27 @@ public class MainActivity extends AppCompatActivity {
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, JewelsActivity.class);
-                intent.putExtra("score", 100000);
-                intent.putExtra("time", 6000);
-                startActivity(intent);
+                AlertDialog diag = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Setting")
+                        .setItems(R.array.setting_items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0: /*background*/
+                                        MainActivity.this.setUserBackground();
+                                        break;
+                                    case 1: /*about*/
+                                        MainActivity.this.getAbout();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
+                WindowManager.LayoutParams layoutParams = diag.getWindow().getAttributes();
+                layoutParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+                diag.getWindow().setAttributes(layoutParams);
             }
         });
     }
@@ -112,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
         AlarmDatabaseHelper helper = new AlarmDatabaseHelper(this);
         alarmListArray = helper.getAllAlarms();
         Map<String, Object> tmp;
-        alarmListItems = new ArrayList<Map<String, Object>>();
-        for (Alarm a: alarmListArray) {
+        alarmListItems.clear();
+        for (Alarm a : alarmListArray) {
             tmp = new HashMap<String, Object>();
             tmp.put("alarmTime", a.getTimeStr());
             tmp.put("alarmWeek", a.getWeekStr());
@@ -152,29 +191,68 @@ public class MainActivity extends AppCompatActivity {
             alarmList.setVisibility(View.VISIBLE);
         }
     }
-    public void deleteAlarmIntent(Alarm alarm){
+
+    public void deleteAlarmIntent(Alarm alarm) {
         ArrayList<Integer> days = alarm.getWeekBitmap();
-        if(days.size() == 0){
+        if (days.size() == 0) {
             Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarm.getAlarmId()*10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarm.getAlarmId() * 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
-        }
-        else{
-            for(int day: days){
+        } else {
+            for (int day : days) {
                 Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this,alarm.getAlarmId()*10+day, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                alarmManager.cancel(pendingIntent);}
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarm.getAlarmId() * 10 + day, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
             }
+        }
 
     }
+
     private void addAlarmForTest() {
         AlarmDatabaseHelper helper = new AlarmDatabaseHelper(this);
         helper.addAlarm(new Alarm(600, false, 0, 0, "", false));
         helper.addAlarm(new Alarm(60 * 8 + 50, true, 3, 0, "", true));
         helper.addAlarm(new Alarm(600, true, 5, 2, "", true));
         helper.close();
+    }
+
+    private void setUserBackground() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//pick one from the list
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");//get all the image in the file system
+        startActivityForResult(intent, BACKGOUND_SELECTION);
+    }
+
+    private void getAbout() {
+        new AlertDialog.Builder(this)
+                .setTitle("About the GamerAlarm")
+                .setMessage("This app is developed by Zhiyuan Hu, Baicheng Zhang, Ze Wang.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void setPicAsBackground(String path) {
+        Bitmap bm = BitmapFactory.decodeFile(path);
+        bgPic = new BitmapDrawable(this.getResources(), zoomImg(bm, 800, 450));
+        ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackground(bgPic);
+    }
+
+    public  Bitmap zoomImg(Bitmap bm, int newWidth ,int newHeight){
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+        return newbm;
     }
 
     @Override
@@ -186,6 +264,13 @@ public class MainActivity extends AppCompatActivity {
             } else if (requestCode == EDIT__ALARM) {
                 readAlarmList();
                 alarmListAdapter.notifyDataSetChanged();
+            } else if (requestCode == BACKGOUND_SELECTION) {
+                String[] proj = {MediaStore.Images.Media.DATA};
+                Cursor c = managedQuery(data.getData(), proj, null, null, null);
+                int photocolumn = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                c.moveToFirst();
+                String path = c.getString(photocolumn);
+                setPicAsBackground(path);
             }
         }
     }

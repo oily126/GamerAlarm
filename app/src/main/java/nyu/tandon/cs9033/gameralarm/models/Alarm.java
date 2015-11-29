@@ -83,9 +83,11 @@ public class Alarm implements Parcelable{
 
     public String getTimeStr() {
         if (time % 100 < 10) {
-            return  String.valueOf(time / 100) + ":0" + String.valueOf(time % 100);
+            if (time / 100 < 10) return "0" + String.valueOf(time / 100) + ":0" +  String.valueOf(time % 100);
+            else return String.valueOf(time / 100) + ":0" +  String.valueOf(time % 100);
         } else {
-            return String.valueOf(time / 100) + ":" +  String.valueOf(time % 100);
+            if (time / 100 < 10) return "0" + String.valueOf(time / 100) + ":" +  String.valueOf(time % 100);
+            else return String.valueOf(time / 100) + ":" +  String.valueOf(time % 100);
         }
     }
 

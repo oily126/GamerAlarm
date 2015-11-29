@@ -23,13 +23,20 @@ public class AlarmReceiver extends BroadcastReceiver{
         if(mode/10 == 0){
             Log.d("mode = 0", "received");
             //Toast.makeText(context, "This a test alarm!", Toast.LENGTH_SHORT).show();
-            MediaPlayer player =  MediaPlayer.create(context, R.raw.ringtone1);
+            //MediaPlayer player =  MediaPlayer.create(context, R.raw.ringtone1);
             //player.setLooping(true);
-            player.start();
+            //player.start();
+            Intent nomalIntent = new Intent(context, NormalAlarmActivity.class);
+            nomalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(nomalIntent);
         }
         else if(mode/10 ==1){
             Log.i(AddAlarmActivity.class.toString(), "received");
             Intent gameIntent = new Intent(context, BallGameActivity.class);
+            gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(gameIntent);
+        } else if(mode/10 ==2) {
+            Intent gameIntent = new Intent(context, JewelsActivity.class);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(gameIntent);
         }
