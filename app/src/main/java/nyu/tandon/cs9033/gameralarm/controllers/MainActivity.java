@@ -27,9 +27,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
