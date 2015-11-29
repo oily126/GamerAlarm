@@ -54,6 +54,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     private static final int LAYER_BG_CELL = LAYER_BACKGROUND + 1;
     private static final int LAYER_JEWELS = LAYER_BG_CELL + 1;
     private static final int LAYER_SCORE = LAYER_JEWELS + 1;
+    private static int mv[][] = {{-1, 0},{0, -1}, {1, 0}, {0, 1}};
 
     private int mScoreLimit;
     private int mTimeLimit;
@@ -71,7 +72,6 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     private final int SPEED = 4;
     private int moveValue = 0;
-    private int mCount = 0;
 
     private Camera mCamera;
     protected Scene mMainScene;
@@ -122,7 +122,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         TextureRegionFactory.setAssetBasePath("gfx/");
 
         this.mCurBGNum = MathUtils.random(1, 4);
-        String bgPath = "bground" + String.valueOf(this.mCurBGNum) + ".png";
+        String bgPath = "bground1.png";
         this.mBackgroundTexture = new Texture(512, 1024, TextureOptions.DEFAULT);
         this.mBackgroundTextureRegion = TextureRegionFactory.createFromAsset
                 (this.mBackgroundTexture, this, bgPath, 0, 0);
@@ -224,19 +224,22 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             this.mMainScene.getTopLayer().addEntity(mSpark);
             this.mMainScene.getTopLayer().addEntity(mSpark2);
         }
-        this.mMainScene.registerUpdateHandler(new TimerHandler(3f, true, new ITimerCallback() {
+        this.mMainScene.registerUpdateHandler(new TimerHandler(0.5f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                if(mGameRunning){
-                    if(STATE == CHECK){
-                        mTime ++;
-                        if(mTime >= 0){
-                            doTips();
-                            mTime = 0;
-                        }
-                    }else{
-                        mTime = 0;
-                    }
+                 if (mGameRunning) {
+                     if (STATE == CHECK) {
+                         if (mTime == 0) {
+                             checkMapDead();
+                         }
+                         mTime++;
+                         if (mTime >= 10) {
+                             doTips();
+                             mTime = 0;
+                         }
+                     } else {
+                         mTime = 0;
+                     }
                 }
             }
         }));
@@ -251,35 +254,30 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             this.mMainScene.getTopLayer().addEntity(mSpark);
             this.mMainScene.getTopLayer().addEntity(mSpark2);
         }
-        checkMapDead();
-        if(mDeadArrList.size() > 0){
-            String key = mDeadArrList.get(MathUtils.random(0, mDeadArrList.size()-1));
 
-            mCount = 0;
+        if(mDeadArrList.size() > 0) {
+            String key = mDeadArrList.get(MathUtils.random(0, mDeadArrList.size() - 1));
 
-            mSpark.setPosition(Integer.parseInt(key.substring(0, 1))*CELL_WIDTH + 8,
-                    Integer.parseInt(key.substring(1, 2))*CELL_HEIGHT + 8);
-            mSpark2.setPosition(Integer.parseInt(key.substring(0, 1))*CELL_WIDTH + 4,
-                    Integer.parseInt(key.substring(1, 2))*CELL_HEIGHT + 4);
+            mSpark.setPosition(Integer.parseInt(key.substring(0, 1)) * CELL_WIDTH + 8,
+                    Integer.parseInt(key.substring(1, 2)) * CELL_HEIGHT + 8);
+            mSpark2.setPosition(Integer.parseInt(key.substring(0, 1)) * CELL_WIDTH + 4,
+                    Integer.parseInt(key.substring(1, 2)) * CELL_HEIGHT + 4);
             mSpark.setVisible(true);
             mSpark2.setVisible(true);
             mSpark2.addShapeModifier(new RotationModifier(1.5f, 0, 90));
             mSpark.addShapeModifier(new SequenceShapeModifier(
-                    new ScaleModifier(1.5f, 0.4f, 0.6f),new ScaleModifier(0.1f, 0.6f, 0f)));
+                    new ScaleModifier(1.5f, 0.4f, 0.6f), new ScaleModifier(0.1f, 0.6f, 0f)));
             mSpark2.addShapeModifier(new SequenceShapeModifier(
-                    new ScaleModifier(1.5f, 0.5f, 1.1f),new ScaleModifier(0.1f, 1.1f, 0f)));
-        }else{
-            if (mDeadArrList.isEmpty()) {
-                mCount++;
-                if (mCount > 3) {
-                    Log.i(JewelsActivity.class.toString(), "DEAD for a time");
-                    int mScore = JewelsActivity.this.mScore;
-                    JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
-                    JewelsActivity.this.mScore = mScore;
-                    JewelsActivity.this.adjustScorePanel();
-                    JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
-                }
-            }
+                    new ScaleModifier(1.5f, 0.5f, 1.1f), new ScaleModifier(0.1f, 1.1f, 0f)));
+        }
+
+        if (mDeadArrList.isEmpty()) {
+            Log.i(JewelsActivity.class.toString(), "DEAD for a time");
+            int mScore = JewelsActivity.this.mScore;
+            JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
+            JewelsActivity.this.mScore = mScore;
+            JewelsActivity.this.adjustScorePanel();
+            JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
         }
     }
 
@@ -344,19 +342,19 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     private boolean isSwapFall(){
         int count = 0;
 
-        if(checkHorizontal(mHashMap.get(getKey(mCurRow, mCurCol))).size() >= 3){
+        if(checkHorizontal(mHashMap.get(getKey(mCurRow, mCurCol))) >= 3){
             count += 1;
         }
 
-        if(checkHorizontal(mHashMap.get(getKey(mLastRow, mLastCol))).size() >= 3){
+        if(checkHorizontal(mHashMap.get(getKey(mLastRow, mLastCol))) >= 3){
             count += 1;
         }
 
-        if(checkVertical(mHashMap.get(getKey(mCurRow, mCurCol))).size() >= 3){
+        if(checkVertical(mHashMap.get(getKey(mCurRow, mCurCol))) >= 3){
             count += 1;
         }
 
-        if(checkVertical(mHashMap.get(getKey(mLastRow, mLastCol))).size() >= 3){
+        if(checkVertical(mHashMap.get(getKey(mLastRow, mLastCol))) >= 3){
             count += 1;
         }
 
@@ -611,7 +609,6 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         int row = sprite.getRow(), nrow, row_num = 1;
         int col = sprite.getCol(), ncol, col_num = 1;
         JewelSprite temp;
-        int mv[][] = {{-1, 0},{0, -1}, {1, 0}, {0, 1}};
         int t;
 
         for (int i = 0; i < 4; i++) {
@@ -843,14 +840,6 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                             refreshScale();
                             fillEmpty();
                             break;
-                        case DEAD:
-                            Log.i(JewelsActivity.class.toString(), "DEAD for a time");
-                            int mScore = JewelsActivity.this.mScore;
-                            JewelsActivity.this.mEngine.setScene(JewelsActivity.this.onLoadScene());
-                            JewelsActivity.this.mScore = mScore;
-                            JewelsActivity.this.adjustScorePanel();
-                            JewelsActivity.this.mScoreText.setText(String.valueOf(mScore));
-                            break;
                         default:
                             break;
                     }
@@ -917,7 +906,6 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mLastCol = -2;
         this.mIsSwaping = false;
         mDeadArrList = new ArrayList<String>();
-        mCount = 0;
     }
 
     private void initBG(){
@@ -953,8 +941,8 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         return jewelSprite;
     }
 
-    private ArrayList<JewelSprite> checkHorizontal(final JewelSprite jewel){
-        ArrayList<JewelSprite> deadArrayList  = new ArrayList<JewelSprite>();
+    private int checkHorizontal(final JewelSprite jewel){
+        int list_length = 0;
         if(jewel != null){
             int curRow = jewel.getRow();
             final int curCol =jewel.getCol();
@@ -963,7 +951,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             while((curRow-1) >= 0){
                 if(mHashMap.get(getKey(curRow-1, curCol)) != null){
                     if(curStyle == mHashMap.get(getKey(curRow-1, curCol)).getStyle()){
-                        deadArrayList.add(mHashMap.get(getKey(curRow-1, curCol)));
+                        list_length++;
                     }else {
                         curRow = 0;
                     }
@@ -971,12 +959,12 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                 curRow -= 1;
             }
             curRow = jewel.getRow();
-            deadArrayList.add(mHashMap.get(getKey(curRow, curCol)));
+            list_length++;
 
             while((curRow+1) < CELLS_VERTICAL){
                 if(mHashMap.get(getKey(curRow+1, curCol)) != null){
                     if(curStyle == mHashMap.get(getKey(curRow+1, curCol)).getStyle()){
-                        deadArrayList.add(mHashMap.get(getKey(curRow+1, curCol)));
+                        list_length++;
                     }else {
                         curRow = CELLS_VERTICAL;
                     }
@@ -984,13 +972,12 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                 curRow += 1;
             }
         }
-        return deadArrayList;
+        return list_length;
     }
 
-    private ArrayList<JewelSprite> checkVertical(final JewelSprite jewel){
-        ArrayList<JewelSprite> deadArrayList  = new ArrayList<JewelSprite>();
+    private int checkVertical(final JewelSprite jewel){
+        int list_length = 0;
         if(jewel != null){
-            ArrayList<JewelSprite> temp = new ArrayList<JewelSprite>();
             final int curRow = jewel.getRow();
             int curCol =jewel.getCol();
             final int curStyle = jewel.getStyle();
@@ -998,24 +985,20 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             while((curCol-1) >= 0){
                 if(mHashMap.get(getKey(curRow, curCol-1)) != null){
                     if(curStyle == mHashMap.get(getKey(curRow, curCol-1)).getStyle()){
-                        temp.add(mHashMap.get(getKey(curRow, curCol-1)));
+                        list_length++;
                     }else {
                         curCol = 0;
                     }
                 }
                 curCol -= 1;
             }
-            if(temp.size() > 0){
-                for(int p = temp.size()-1; p >= 0; p--){
-                    deadArrayList.add(temp.get(p));
-                }
-            }
+
             curCol =jewel.getCol();
-            deadArrayList.add(mHashMap.get(getKey(curRow, curCol)));
+            list_length++;
             while((curCol+1) < CELLS_HORIZONTAL){
                 if(mHashMap.get(getKey(curRow, curCol+1)) != null){
                     if(curStyle == mHashMap.get(getKey(curRow, curCol+1)).getStyle()){
-                        deadArrayList.add(mHashMap.get(getKey(curRow, curCol+1)));
+                        list_length++;
                     }else {
                         curCol = CELLS_HORIZONTAL;
                     }
@@ -1023,7 +1006,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                 curCol += 1;
             }
         }
-        return deadArrayList;
+        return list_length;
     }
 
     private void initJewels(){
@@ -1032,7 +1015,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             for(int j = 0; j < CELLS_VERTICAL; j++){
                 String key = getKey(i, j);
                 JewelSprite value = getRandomJewel(i, j);
-                while(checkHorizontal(value).size() >= 3 || checkVertical(value).size() >= 3){
+                while(checkHorizontal(value) >= 3 || checkVertical(value) >= 3){
                     value = getRandomJewel(i, j);
                 }
                 mHashMap.put(key, value);
