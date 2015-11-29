@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,7 +32,6 @@ import nyu.tandon.cs9033.gameralarm.models.Alarm;
 public class AddAlarmActivity extends Activity{
     public final static String EXTRA_MESSAGE = "nyu.tandon.cs9033.gameralarm.controllers.AddAlarmActivity.Message";
     public final static String TAG = "AddAlarmActivity";
-    static final int RESULT_OK = 1;
     Button setButton;
     Button buttonCancelAlarm;
     Button funMode;
@@ -43,7 +43,6 @@ public class AddAlarmActivity extends Activity{
     TimePicker timePicker;
     Set<Integer> weekdays;
     int mode = 0;
-    AlarmDatabaseHelper db;
     boolean isRepeat = false;
 
     final static int REQUEST_CODE_1 = 1;
@@ -54,13 +53,16 @@ public class AddAlarmActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addalarm);
         weekdays = new HashSet<>();
-        db = new AlarmDatabaseHelper(this);
         //time picker
         timePicker = (TimePicker)findViewById(R.id.picker);
         textAlarmPrompt = (TextView)findViewById(R.id.alarmprompt);
 
         //set listener for the weekday buttons:
         addListenerOnToggleButton();
+
+        if (MainActivity.bgPic != null) {
+            ((RelativeLayout) findViewById(R.id.addAlarmView)).setBackground(MainActivity.bgPic);
+        }
 
         //SetAlarm button
         setButton = (Button)findViewById(R.id.setalarmbutton);
@@ -69,6 +71,7 @@ public class AddAlarmActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Alarm alarm = createAlarm();
+                AlarmDatabaseHelper db = new AlarmDatabaseHelper(AddAlarmActivity.this);
                 int alarmID = (int) db.addAlarm(alarm);
                 mode = alarm.getMode();
                 ArrayList<Integer> days = alarm.getWeekBitmap();
@@ -79,8 +82,8 @@ public class AddAlarmActivity extends Activity{
                     Log.i(AddAlarmActivity.TAG, String.valueOf(day));
                     setAlarm(alarmID * 10 + day, day);
                 }
-                Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
-                setResult(RESULT_OK, intent);
+                db.close();
+                setResult(RESULT_OK);
                 finish();
             }});
 

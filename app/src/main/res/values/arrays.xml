@@ -1,0 +1,7 @@
+<?xml version ="1.0" encoding = "utf-8"?>
+<resources>
+    <string-array name="setting_items">
+        <item>Background Setting</item>
+        <item>About</item>
+    </string-array>
+</resources>
