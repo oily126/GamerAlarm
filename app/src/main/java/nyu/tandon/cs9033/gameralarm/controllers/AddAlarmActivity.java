@@ -1,11 +1,11 @@
 package nyu.tandon.cs9033.gameralarm.controllers;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,23 +13,22 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import nyu.tandon.cs9033.gameralarm.AlarmDatabaseHelper;
 import nyu.tandon.cs9033.gameralarm.R;
 import nyu.tandon.cs9033.gameralarm.models.Alarm;
+import nyu.tandon.cs9033.gameralarm.views.FunModePreviewFragment;
 
 /**
  * Created by Zhe Wang on 10/30/2015.
  */
-public class AddAlarmActivity extends Activity{
+public class AddAlarmActivity extends AppCompatActivity{
     public final static String EXTRA_MESSAGE = "nyu.tandon.cs9033.gameralarm.controllers.AddAlarmActivity.Message";
     public final static String TAG = "AddAlarmActivity";
     Button setButton;
@@ -44,9 +43,20 @@ public class AddAlarmActivity extends Activity{
     Set<Integer> weekdays;
     int mode = 0;
     boolean isRepeat = false;
+    private FunModePreviewFragment funModePreviewFragment;
+
 
     final static int REQUEST_CODE_1 = 1;
 
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+        getSupportFragmentManager().beginTransaction()
+                .remove(funModePreviewFragment).commit();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +113,10 @@ public class AddAlarmActivity extends Activity{
             @Override
             public void onClick(View v) {
                 //for the first demo, just start the ball game
-                mode = 10;
+                //mode = 10;
+                funModePreviewFragment = new FunModePreviewFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.PreviewContainer, funModePreviewFragment).commit();
 //                Intent intent = new Intent(AddAlarmActivity.this, BallGameActivity.class);
 //                startActivity(intent);
             }

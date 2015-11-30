@@ -1,163 +1,189 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    android:id="@+id/addAlarmView">
-    <TextView
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
-    <TimePicker
-        android:id="@+id/picker"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
-    <ToggleButton
-        android:id="@+id/sunday"
-        android:background="@drawable/bg_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="S"
-        android:textOn="S"
-        android:textSize="25dp"
-        android:layout_below="@+id/picker"
-        android:layout_marginLeft="5dp"
-        />
-    <ToggleButton
-        android:id="@+id/monday"
-        android:background="@drawable/bg_button"
-        android:textSize="25dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="M"
-        android:textOn="M"
-        android:layout_below="@+id/picker"
-        android:layout_toRightOf="@+id/sunday"
-        android:layout_toEndOf="@+id/sunday" />
+        android:layout_height="fill_parent">
 
-    <Button
-        android:id="@+id/setalarmbutton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="SET ALARM"
-        android:layout_alignTop="@+id/alarmprompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel Alarm"
-        android:layout_marginBottom="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <TextView
-        android:id="@+id/alarmprompt"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/cancel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="31dp" />
+        <RelativeLayout
+            android:orientation="vertical" android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1"
+            android:id="@+id/addAlarmView">
 
-    <ToggleButton
-        android:id="@+id/tuesday"
-        android:background="@drawable/bg_button"
-        android:textSize="25dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="T"
-        android:textOn="T"
-        android:layout_alignBottom="@+id/monday"
-        android:layout_toRightOf="@+id/monday"
-        android:layout_toEndOf="@+id/monday" />
-    <ToggleButton
-        android:id="@+id/wednesday"
-        android:background="@drawable/bg_button"
-        android:textSize="25dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="W"
-        android:textOn="W"
-        android:layout_alignBottom="@+id/tuesday"
-        android:layout_toRightOf="@+id/tuesday"
-        android:layout_toEndOf="@+id/tuesday" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+            <TimePicker
+                android:id="@+id/picker"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"/>
+            <ToggleButton
+                android:id="@+id/sunday"
+                android:background="@drawable/bg_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="S"
+                android:textOn="S"
+                android:textSize="25dp"
+                android:layout_below="@+id/picker"
+                android:layout_marginLeft="5dp"
+                android:checked="false" />
+            <ToggleButton
+                android:id="@+id/monday"
+                android:background="@drawable/bg_button"
+                android:textSize="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="M"
+                android:textOn="M"
+                android:layout_below="@+id/picker"
+                android:layout_toRightOf="@+id/sunday"
+                android:layout_toEndOf="@+id/sunday" />
 
-    <ToggleButton
-        android:id="@+id/thursday"
-        android:background="@drawable/bg_button"
-        android:textSize="25dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="T"
-        android:textOn="T"
-        android:layout_alignTop="@+id/wednesday"
-        android:layout_toRightOf="@+id/wednesday"
-        android:layout_toEndOf="@+id/wednesday" />
+            <Button
+                android:id="@+id/setalarmbutton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="SET ALARM"
+                android:layout_alignTop="@+id/cancel"
+                android:layout_alignLeft="@+id/ringtone"
+                android:layout_alignStart="@+id/ringtone"
+                android:layout_toLeftOf="@+id/wednesday"
+                android:layout_toStartOf="@+id/wednesday" />
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel Alarm"
+                android:layout_alignParentBottom="true"
+                android:layout_alignRight="@+id/ringtone"
+                android:layout_alignEnd="@+id/ringtone"
+                android:layout_toRightOf="@+id/wednesday"
+                android:layout_toEndOf="@+id/wednesday" />
+            <TextView
+                android:id="@+id/alarmprompt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/setalarmbutton"
+                android:layout_alignParentStart="true" />
 
-    <ToggleButton
-        android:id="@+id/friday"
-        android:background="@drawable/bg_button"
-        android:textSize="25dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="F"
-        android:textOn="F"
-        android:layout_alignBottom="@+id/thursday"
-        android:layout_toRightOf="@+id/thursday"
-        android:layout_toEndOf="@+id/thursday" />
+            <ToggleButton
+                android:id="@+id/tuesday"
+                android:background="@drawable/bg_button"
+                android:textSize="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="T"
+                android:textOn="T"
+                android:layout_alignBottom="@+id/monday"
+                android:layout_toRightOf="@+id/monday"
+                android:layout_toEndOf="@+id/monday" />
+            <ToggleButton
+                android:id="@+id/wednesday"
+                android:background="@drawable/bg_button"
+                android:textSize="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="W"
+                android:textOn="W"
+                android:layout_alignBottom="@+id/tuesday"
+                android:layout_toRightOf="@+id/tuesday"
+                android:layout_toEndOf="@+id/tuesday" />
 
-    <ToggleButton
-        android:id="@+id/saturday"
-        android:background="@drawable/bg_button"
-        android:textSize="25dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textOff="S"
-        android:textOn="S"
-        android:layout_alignBottom="@+id/friday"
-        android:layout_toRightOf="@+id/friday"
-        android:layout_toEndOf="@+id/friday" />
+            <ToggleButton
+                android:id="@+id/thursday"
+                android:background="@drawable/bg_button"
+                android:textSize="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="T"
+                android:textOn="T"
+                android:layout_alignTop="@+id/wednesday"
+                android:layout_toRightOf="@+id/wednesday"
+                android:layout_toEndOf="@+id/wednesday" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fun Mode"
-        android:textSize="12dp"
-        android:id="@+id/funmode"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/monday"
-        android:layout_toRightOf="@+id/sunday"
-        android:layout_toEndOf="@+id/sunday" />
+            <ToggleButton
+                android:id="@+id/friday"
+                android:background="@drawable/bg_button"
+                android:textSize="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="F"
+                android:textOn="F"
+                android:layout_alignBottom="@+id/thursday"
+                android:layout_toRightOf="@+id/thursday"
+                android:layout_toEndOf="@+id/thursday" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Normal Mode"
-        android:textSize="12dp"
-        android:id="@+id/normalmode"
-        android:layout_alignTop="@+id/funmode"
-        android:layout_toRightOf="@+id/funmode"
-        android:layout_toEndOf="@+id/funmode" />
+            <ToggleButton
+                android:id="@+id/saturday"
+                android:background="@drawable/bg_button"
+                android:textSize="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOff="S"
+                android:textOn="S"
+                android:layout_alignBottom="@+id/friday"
+                android:layout_toRightOf="@+id/friday"
+                android:layout_toEndOf="@+id/friday" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:text="Trick Mode"
-        android:id="@+id/trickmode"
-        android:layout_alignTop="@+id/normalmode"
-        android:layout_toRightOf="@+id/normalmode"
-        android:layout_toEndOf="@+id/normalmode" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fun Mode"
+                android:textSize="12dp"
+                android:id="@+id/funmode"
+                android:layout_below="@+id/monday"
+                android:layout_alignStart="@+id/monday" />
 
-    <Button
-        android:id="@+id/ringtone"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Select Ringtone"
-        android:layout_above="@+id/setalarmbutton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal Mode"
+                android:textSize="12dp"
+                android:id="@+id/normalmode"
+                android:layout_alignTop="@+id/funmode"
+                android:layout_toRightOf="@+id/funmode"
+                android:layout_toEndOf="@+id/funmode" />
 
-</RelativeLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="Trick Mode"
+                android:id="@+id/trickmode"
+                android:layout_alignTop="@+id/normalmode"
+                android:layout_toRightOf="@+id/normalmode"
+                android:layout_toEndOf="@+id/normalmode" />
+
+            <Button
+                android:id="@+id/ringtone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Ringtone"
+                android:layout_above="@+id/setalarmbutton"
+                android:layout_alignLeft="@+id/PreviewContainer"
+                android:layout_alignStart="@+id/PreviewContainer"
+                android:layout_alignRight="@+id/PreviewContainer"
+                android:layout_alignEnd="@+id/PreviewContainer" />
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/PreviewContainer"
+                android:layout_alignLeft="@+id/sunday"
+                android:layout_alignStart="@+id/sunday"
+                android:layout_below="@+id/funmode"
+                android:layout_above="@+id/ringtone"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:fillViewport="true" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

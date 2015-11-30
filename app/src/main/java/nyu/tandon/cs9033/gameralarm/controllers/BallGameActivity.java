@@ -5,6 +5,8 @@ package nyu.tandon.cs9033.gameralarm.controllers;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,17 +17,21 @@ import android.view.WindowManager;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import nyu.tandon.cs9033.gameralarm.R;
 import nyu.tandon.cs9033.gameralarm.views.BallGameView;
 
 
 public class BallGameActivity extends AppCompatActivity {
 
     private BallGameView BGV_instance = null;
+    private MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        player =  MediaPlayer.create(this, R.raw.ringtone1);
+        player.start();
         //Play game in full size of screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -40,9 +46,10 @@ public class BallGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 timeLimit.cancel();
-                //Intent startMain = new Intent(BallGameActivity.this, MainActivity.class);
+                player.stop();
+                Intent startNormal = new Intent(BallGameActivity.this, NormalAlarmActivity.class);
                 //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                //startActivity(startMain);
+                startActivity(startNormal);
                 finish();
             }
         };
@@ -55,9 +62,7 @@ public class BallGameActivity extends AppCompatActivity {
             public void run() {
                 if (!BGV_instance.mIsRunning) {
                     checkTime.cancel();
-                    //Intent startMain = new Intent(BallGameActivity.this, MainActivity.class);
-                    //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //startActivity(startMain);
+                    player.stop();
                     finish();
                 }
             }
