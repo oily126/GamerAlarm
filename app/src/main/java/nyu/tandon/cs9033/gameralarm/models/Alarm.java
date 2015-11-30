@@ -11,7 +11,8 @@ import java.util.Set;
  */
 public class Alarm implements Parcelable{
     private static String[] weekday = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-    private static String[] modeStr = {"Normal", "BallGame", "Tetris", "Math"};
+    private static String[] modeStr = {"Normal", "FunMode", "Math"};
+    private static String[] gameStr = {"BallGame", "JewelGame"};
     private int alarmId;
     private int time;
     private boolean repeat;
@@ -121,7 +122,12 @@ public class Alarm implements Parcelable{
     }
 
     public String getModeStr() {
-        return modeStr[mode / 10];
+        switch (mode / 10) {
+            case 0: return modeStr[0];
+            case 1: return gameStr[mode % 10];
+            case 2: return modeStr[2];
+            default: return "";
+        }
     }
 
     public ArrayList<Integer> getWeekBitmap() {
