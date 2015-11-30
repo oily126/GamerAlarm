@@ -37,8 +37,8 @@ public class AlarmReceiver extends BroadcastReceiver{
             context.startActivity(gameIntent);
         } else if(mode/10 ==1 && mode % 10 == 1) {
             Intent gameIntent = new Intent(context, JewelsActivity.class);
-            gameIntent.putExtra("score", 500);
-            gameIntent.putExtra("time", 60);
+            gameIntent.putExtra("score", 60);
+            gameIntent.putExtra("time", 15);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(gameIntent);
         }

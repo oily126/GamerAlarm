@@ -53,7 +53,7 @@ public class BallGameActivity extends AppCompatActivity {
                 finish();
             }
         };
-        timeLimit.schedule(timeTask, 16000);
+        timeLimit.schedule(timeTask, 15000);
 
         // Check game status every 10 milliseconds
         final Timer checkTime = new Timer();
@@ -89,7 +89,7 @@ public class BallGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        player.stop();
         ActivityManager activityManager = (ActivityManager) getApplicationContext()
                 .getSystemService(Context.ACTIVITY_SERVICE);
 
@@ -98,7 +98,7 @@ public class BallGameActivity extends AppCompatActivity {
         }
 
         BGV_instance.mIsRunning = false;
-
+        finish();
     }
 
     @Override
