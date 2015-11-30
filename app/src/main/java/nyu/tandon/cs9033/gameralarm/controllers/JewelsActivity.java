@@ -1076,13 +1076,15 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     @Override
     protected void onPause() {
-        super.onPause();
+        player.stop();
         this.mGameRunning = false;
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
+        player.start();
         this.mGameRunning = true;
+        super.onResume();
     }
 }

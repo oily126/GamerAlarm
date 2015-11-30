@@ -257,9 +257,11 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == ADD__ALARM) {
                 readAlarmList();
+                setAlarmVisible();
                 alarmListAdapter.notifyDataSetChanged();
             } else if (requestCode == EDIT__ALARM) {
                 readAlarmList();
+                setAlarmVisible();
                 alarmListAdapter.notifyDataSetChanged();
             } else if (requestCode == BACKGOUND_SELECTION) {
                 String[] proj = {MediaStore.Images.Media.DATA};
