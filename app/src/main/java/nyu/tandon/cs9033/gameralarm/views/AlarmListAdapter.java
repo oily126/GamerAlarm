@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import nyu.tandon.cs9033.gameralarm.R;
+import nyu.tandon.cs9033.gameralarm.controllers.MainActivity;
 
 /**
  * Created by oily on 10/30/2015.
@@ -75,7 +76,12 @@ public class AlarmListAdapter extends BaseAdapter {
         alarmItems.enableAlarm.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            //TODO enable or disable the corresponding alarm
+                //TODO enable or disable the corresponding alarm
+                if (isChecked == false) {
+                    MainActivity.disableAlarm(buttonView.getContext(), selectId);
+                } else {
+                    MainActivity.enableAlarm(buttonView.getContext(), selectId);
+                }
             }
         });
 

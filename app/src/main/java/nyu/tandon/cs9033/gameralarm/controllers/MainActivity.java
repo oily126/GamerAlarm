@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import nyu.tandon.cs9033.gameralarm.views.AlarmListAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private ArrayList<Alarm> alarmListArray;
+    private static ArrayList<Alarm> alarmListArray;
     private List<Map<String, Object>> alarmListItems = new ArrayList<Map<String, Object>>();;
     private AlarmListAdapter alarmListAdapter;
     private ListView alarmList;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         noAlarmImage = (ImageView) findViewById(R.id.noAlarm);
         noAlarmImage.setImageDrawable(getResources().getDrawable(R.drawable.alarm));
 
@@ -151,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         alarmListItems.clear();
         for (Alarm a : alarmListArray) {
             tmp = new HashMap<String, Object>();
+            tmp.put("alarmId", a.getAlarmId());
             tmp.put("alarmTime", a.getTimeStr());
             tmp.put("alarmWeek", a.getWeekStr());
             tmp.put("alarmMode", a.getModeStr());
@@ -224,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     private void getAbout() {
         new AlertDialog.Builder(this)
                 .setTitle("About the GamerAlarm")
-                .setMessage("This app is developed by Zhiyuan Hu, Baicheng Zhang, Ze Wang.")
+                .setMessage("This app is developed by Zhiyuan Hu, Baicheng Zhang, Zhe Wang.")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -272,5 +275,62 @@ public class MainActivity extends AppCompatActivity {
                 setPicAsBackground(path);
             }
         }
+    }
+
+    public static void disableAlarm(Context context, int id) {
+        Alarm alarm = alarmListArray.get(id);
+        ArrayList<Integer> days = alarm.getWeekBitmap();
+        if (days.size() == 0) {
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId() * 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+        } else {
+            for (int day : days) {
+                Intent intent = new Intent(context, AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId() * 10 + day, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
+            }
+        }
+    }
+
+    public static void enableAlarm(Context context, int id) {
+        Alarm alarm = alarmListArray.get(id);
+        ArrayList<Integer> days = alarm.getWeekBitmap();
+        if(days.size() ==0 ){
+            setAlarm(context, alarm.getAlarmId() * 10, 0, alarm);
+        } else {
+            for (int day : days) {
+                Log.i(AddAlarmActivity.TAG, String.valueOf(day));
+                setAlarm(context, alarm.getAlarmId() * 10 + day, day, alarm);
+            }
+
+        }
+    }
+
+    private static void setAlarm(Context context, int id, int dayOfWeek, Alarm alarm) {
+        Calendar calNow = Calendar.getInstance();
+        Calendar alarmCal = (Calendar) calNow.clone();
+
+        if(dayOfWeek !=0)
+            alarmCal.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+
+        alarmCal.set(Calendar.HOUR_OF_DAY, alarm.getTime() / 100);
+        alarmCal.set(Calendar.MINUTE, alarm.getTime() % 100);
+        alarmCal.set(Calendar.SECOND, 0);
+        alarmCal.set(Calendar.MILLISECOND, 0);
+
+        Long alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000;
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra("Mode", alarm.getMode()); //should pass the alarm to the receiver
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.i(AddAlarmActivity.TAG, "the alarmtime is " +String.valueOf(alarmTime));
+        Log.i(AddAlarmActivity.TAG, "current time is " + String.valueOf(System.currentTimeMillis()));
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        if(alarm.isRepeat())
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24*60*60*1000, pendingIntent);
+        else
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
     }
 }

@@ -30,6 +30,7 @@ public class BallGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         player =  MediaPlayer.create(this, R.raw.ringtone1);
         player.start();
         //Play game in full size of screen
