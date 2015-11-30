@@ -1,6 +1,8 @@
 package nyu.tandon.cs9033.gameralarm.controllers;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,6 +39,7 @@ import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import nyu.tandon.cs9033.gameralarm.R;
 import nyu.tandon.cs9033.gameralarm.models.BackgroundCell;
 import nyu.tandon.cs9033.gameralarm.models.BorderSprite;
 import nyu.tandon.cs9033.gameralarm.models.IConstants;
@@ -110,8 +113,14 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     private Texture mSparkTexture,mSpark2Texture;
     private TextureRegion mSparkTextureRegion,mSpark2TextureRegion;
 
+    private MediaPlayer player;
+
     @Override
     public Engine onLoadEngine() {
+        player =  MediaPlayer.create(this, R.raw.ringtone1);
+        player.setLooping(true);
+        player.start();
+
         this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         return new Engine(new EngineOptions(true, EngineOptions.ScreenOrientation.PORTRAIT,
                 new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera));
@@ -315,6 +324,9 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             @Override
             public void onTimePassed(TimerHandler bTimerHandler) {
                 JewelsActivity.this.mGameRunning = false;
+                player.stop();
+                Intent intent = new Intent(JewelsActivity.this, NormalAlarmActivity.class);
+                startActivity(intent);
                 JewelsActivity.this.finish();
             }
         }));
@@ -875,6 +887,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mScoreText.setText(String.valueOf(this.mScore));
         if (this.mScore >= this.mScoreLimit) {
             this.mGameRunning = false;
+            player.stop();
             this.finish();
         }
     }

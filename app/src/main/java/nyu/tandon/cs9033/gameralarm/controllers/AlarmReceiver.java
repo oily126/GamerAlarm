@@ -30,13 +30,15 @@ public class AlarmReceiver extends BroadcastReceiver{
             nomalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(nomalIntent);
         }
-        else if(mode/10 ==1){
+        else if(mode/10 ==1 && mode % 10 == 0){
             Log.i(AddAlarmActivity.class.toString(), "received");
             Intent gameIntent = new Intent(context, BallGameActivity.class);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(gameIntent);
-        } else if(mode/10 ==2) {
+        } else if(mode/10 ==1 && mode % 10 == 1) {
             Intent gameIntent = new Intent(context, JewelsActivity.class);
+            gameIntent.putExtra("score", 500);
+            gameIntent.putExtra("time", 60);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(gameIntent);
         }
