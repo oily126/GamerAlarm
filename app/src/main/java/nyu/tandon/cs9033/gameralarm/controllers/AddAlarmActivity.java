@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
@@ -44,6 +45,7 @@ public class AddAlarmActivity extends AppCompatActivity{
     int mode = 0;
     boolean isRepeat = false;
     private FunModePreviewFragment funModePreviewFragment;
+    private ScrollView scrollView;
     Alarm alarmToEdit;
 
     final static int REQUEST_CODE_1 = 1;
@@ -56,6 +58,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         this.mode = mode;
         getSupportFragmentManager().beginTransaction()
                 .remove(funModePreviewFragment).commit();
+        scrollView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -154,8 +157,10 @@ public class AddAlarmActivity extends AppCompatActivity{
                 //for the first demo, just start the ball game
                 //mode = 10;
                 funModePreviewFragment = new FunModePreviewFragment();
+                scrollView = (ScrollView) findViewById(R.id.PreviewContainer);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, funModePreviewFragment).commit();
+                scrollView.setVisibility(View.VISIBLE);
 //                Intent intent = new Intent(AddAlarmActivity.this, BallGameActivity.class);
 //                startActivity(intent);
             }

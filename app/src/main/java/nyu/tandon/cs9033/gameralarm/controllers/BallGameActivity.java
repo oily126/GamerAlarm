@@ -62,12 +62,13 @@ public class BallGameActivity extends AppCompatActivity {
             public void run() {
                 if (!BGV_instance.mIsRunning) {
                     checkTime.cancel();
+                    timeLimit.cancel();
                     player.stop();
                     finish();
                 }
             }
         };
-        timeLimit.schedule(checkTask, 0, 10);
+        checkTime.schedule(checkTask, 0, 10);
     }
 
 

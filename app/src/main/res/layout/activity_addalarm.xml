@@ -182,7 +182,8 @@
                 android:layout_above="@+id/ringtone"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:fillViewport="true" />
+                android:fillViewport="true"
+                android:visibility="invisible" />
 
         </RelativeLayout>
     </LinearLayout>
