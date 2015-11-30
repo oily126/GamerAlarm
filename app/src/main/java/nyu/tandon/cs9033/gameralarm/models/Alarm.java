@@ -40,6 +40,19 @@ public class Alarm implements Parcelable{
         this.enable = enable != 0;
     }
 
+    public Alarm(int alarmId, int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable) {
+        this.alarmId = alarmId;
+        this.time = time;
+        this.repeat = repeat;
+        this.week = 0;
+        for (int a: week) {
+            this.week += (int) Math.pow(2, a - 1);
+        }
+        this.mode = mode;
+        this.ringtone = ringtone;
+        this.enable = enable;
+    }
+    
     public Alarm(int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable) {
         this.alarmId = 0;
         this.time = time;

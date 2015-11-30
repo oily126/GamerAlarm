@@ -44,7 +44,7 @@ public class AddAlarmActivity extends AppCompatActivity{
     int mode = 0;
     boolean isRepeat = false;
     private FunModePreviewFragment funModePreviewFragment;
-
+    Alarm alarmToEdit;
 
     final static int REQUEST_CODE_1 = 1;
 
@@ -74,6 +74,36 @@ public class AddAlarmActivity extends AppCompatActivity{
             ((RelativeLayout) findViewById(R.id.addAlarmView)).setBackground(MainActivity.bgPic);
         }
 
+        //check whether there is any
+        alarmToEdit = getIntent().getParcelableExtra("alarm");
+        if(alarmToEdit != null){
+            //display the alarm time on time picker
+            int time = alarmToEdit.getTime();
+            timePicker.setCurrentHour(time/100);
+            timePicker.setCurrentMinute(time%100);
+            //display the weekdays on the toggle button.
+            ArrayList<Integer> days = alarmToEdit.getWeekBitmap();
+            for(int day : days){
+                switch (day){
+                    case 1: sun.setChecked(true);
+                        break;
+                    case 2: mon.setChecked(true);
+                        break;
+                    case 3: tues.setChecked(true);
+                        break;
+                    case 4: wed.setChecked(true);
+                        break;
+                    case 5: thur.setChecked(true);
+                        break;
+                    case 6: fri.setChecked(true);
+                        break;
+                    case 7: sat.setChecked(true);
+                        break;
+                }
+            }
+            mode = alarmToEdit.getMode();
+        }
+
         //SetAlarm button
         setButton = (Button)findViewById(R.id.setalarmbutton);
         setButton.setOnClickListener(new View.OnClickListener(){
@@ -82,7 +112,17 @@ public class AddAlarmActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Alarm alarm = createAlarm();
                 AlarmDatabaseHelper db = new AlarmDatabaseHelper(AddAlarmActivity.this);
-                int alarmID = (int) db.addAlarm(alarm);
+                int alarmID;
+                if(alarmToEdit!=null){
+                    //cancel the original alarm;
+                    deleteAlarmIntent(alarmToEdit);
+                    db.updateAlarm(alarm);
+                    alarmID = alarm.getAlarmId();
+                }
+                else{
+                    alarmID = (int) db.addAlarm(alarm);
+                }
+                db.close();
                 mode = alarm.getMode();
                 ArrayList<Integer> days = alarm.getWeekBitmap();
                 if(days.size() ==0 ){
@@ -92,7 +132,6 @@ public class AddAlarmActivity extends AppCompatActivity{
                     Log.i(AddAlarmActivity.TAG, String.valueOf(day));
                     setAlarm(alarmID * 10 + day, day);
                 }
-                db.close();
                 setResult(RESULT_OK);
                 finish();
             }});
@@ -143,7 +182,11 @@ public class AddAlarmActivity extends AppCompatActivity{
         int time = timePicker.getCurrentHour()*100 + timePicker.getCurrentMinute();
         //mode =
         isRepeat = weekdays.isEmpty()? false:true;
-        Alarm alarm = new Alarm(time, isRepeat, weekdays, mode, "default", true);
+        Alarm alarm;
+        if(alarmToEdit!= null)
+            alarm = new Alarm(alarmToEdit.getAlarmId(), time, isRepeat, weekdays, mode, "default", true);
+        else
+            alarm = new Alarm(time, isRepeat, weekdays, mode, "default", true);
         return alarm;
     }
 
@@ -268,5 +311,22 @@ public class AddAlarmActivity extends AppCompatActivity{
                 }
             }
         });
+    }
+    public void deleteAlarmIntent(Alarm alarm) {
+        ArrayList<Integer> days = alarm.getWeekBitmap();
+        if (days.size() == 0) {
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarm.getAlarmId() * 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+        } else {
+            for (int day : days) {
+                Intent intent = new Intent(this, AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarm.getAlarmId() * 10 + day, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
+            }
+        }
+
     }
 }
