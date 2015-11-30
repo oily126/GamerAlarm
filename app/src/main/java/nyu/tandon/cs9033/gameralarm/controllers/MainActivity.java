@@ -293,6 +293,10 @@ public class MainActivity extends AppCompatActivity {
                 alarmManager.cancel(pendingIntent);
             }
         }
+        AlarmDatabaseHelper helper = new AlarmDatabaseHelper(context);
+        alarm.setEnable(false);
+        helper.updateAlarm(alarm);
+        helper.close();
     }
 
     public static void enableAlarm(Context context, int id) {
@@ -307,6 +311,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        AlarmDatabaseHelper helper = new AlarmDatabaseHelper(context);
+        alarm.setEnable(true);
+        helper.updateAlarm(alarm);
+        helper.close();
     }
 
     private static void setAlarm(Context context, int id, int dayOfWeek, Alarm alarm) {

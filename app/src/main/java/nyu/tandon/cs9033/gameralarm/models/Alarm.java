@@ -176,4 +176,8 @@ public class Alarm implements Parcelable{
         dest.writeString(ringtone);
         if (enable) dest.writeInt(1); else dest.writeInt(0);
     }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
 }
