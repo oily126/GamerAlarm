@@ -333,14 +333,15 @@ public class MainActivity extends AppCompatActivity {
         if(dayOfWeek == 0)
             alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000;
         else
-            alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000*7;        Intent intent = new Intent(context, AlarmReceiver.class);
+            alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000*7;
+        Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("Mode", alarm.getMode()); //should pass the alarm to the receiver
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Log.i(AddAlarmActivity.TAG, "the alarmtime is " +String.valueOf(alarmTime));
         Log.i(AddAlarmActivity.TAG, "current time is " + String.valueOf(System.currentTimeMillis()));
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if(alarm.isRepeat())
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24*60*60*1000, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24*60*60*1000*7, pendingIntent);
         else
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
     }
