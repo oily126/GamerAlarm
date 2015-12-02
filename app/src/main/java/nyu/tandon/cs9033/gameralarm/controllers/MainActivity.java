@@ -329,8 +329,11 @@ public class MainActivity extends AppCompatActivity {
         alarmCal.set(Calendar.SECOND, 0);
         alarmCal.set(Calendar.MILLISECOND, 0);
 
-        Long alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000;
-        Intent intent = new Intent(context, AlarmReceiver.class);
+        long alarmTime;
+        if(dayOfWeek == 0)
+            alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000;
+        else
+            alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000*7;        Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("Mode", alarm.getMode()); //should pass the alarm to the receiver
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Log.i(AddAlarmActivity.TAG, "the alarmtime is " +String.valueOf(alarmTime));
