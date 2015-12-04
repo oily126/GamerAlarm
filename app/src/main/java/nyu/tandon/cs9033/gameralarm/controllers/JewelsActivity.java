@@ -57,7 +57,7 @@ import nyu.tandon.cs9033.gameralarm.models.JewelSprite;
 public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTouchListener, IConstants {
     /** size of the screen **/
     private static final int CAMERA_WIDTH = 320;
-    private static final int CAMERA_HEIGHT = 480;
+    private static final int CAMERA_HEIGHT = 526;
 
     private static final int LAYER_BACKGROUND = 0;
     private static final int LAYER_BG_CELL = LAYER_BACKGROUND + 1;
@@ -86,7 +86,6 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     protected Scene mMainScene;
 
     /** background **/
-    private int mCurBGNum;
     protected TextureRegion mBackgroundTextureRegion;
     private Texture mBackgroundTexture;
 
@@ -133,8 +132,10 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     @Override
     public Engine onLoadEngine() {
-        player =  MediaPlayer.create(this, R.raw.ringtone1);
-        player.setLooping(true);
+        if (player == null) {
+            player = MediaPlayer.create(this, R.raw.ringtone1);
+            player.setLooping(true);
+        }
         player.start();
 
         this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -146,8 +147,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     public void onLoadResources() {
         TextureRegionFactory.setAssetBasePath("gfx/");
 
-        this.mCurBGNum = MathUtils.random(1, 4);
-        String bgPath = "bground1.png";
+        String bgPath = "background.jpg";
         this.mBackgroundTexture = new Texture(512, 1024, TextureOptions.DEFAULT);
         this.mBackgroundTextureRegion = TextureRegionFactory.createFromAsset
                 (this.mBackgroundTexture, this, bgPath, 0, 0);
@@ -842,7 +842,8 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mMainScene.registerUpdateHandler(new IUpdateHandler() {
 
             @Override
-            public void reset() {}
+            public void reset() {
+            }
 
             @Override
             public void onUpdate(float pSecondsElapsed) {
@@ -1097,7 +1098,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     @Override
     protected void onPause() {
         this.mGameRunning = false;
-        if (player != null) player.stop();
+        if (player != null) player.pause();
         /*player.stop();
         this.mGameRunning = false;
         //this.mEngine.stop();
@@ -1108,9 +1109,13 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     @Override
     protected void onResume() {
-        this.mGameRunning = true;
-        if (player != null) player.start();
         super.onResume();
+        this.mGameRunning = true;
+        if (player == null) {
+            player =  MediaPlayer.create(this, R.raw.ringtone1);
+            player.setLooping(true);
+        }
+        player.start();
         /*this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
         if(this.mHasWindowFocused) {
             this.mRenderSurfaceView.onResume();

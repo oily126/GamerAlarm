@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,17 +31,17 @@ public class BallGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
+        Log.i("BallGame", "Create");
+        //Play game in full size of screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         player =  MediaPlayer.create(this, R.raw.ringtone1);
         player.start();
-        //Play game in full size of screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         //Play game in horizontal screen
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         BGV_instance = new BallGameView(this);
@@ -95,7 +96,8 @@ public class BallGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (player != null) player.stop();
+        Log.i("BallGame", "Pause");
+        if (player != null) player.pause();
         ActivityManager activityManager = (ActivityManager) getApplicationContext()
                 .getSystemService(Context.ACTIVITY_SERVICE);
 
@@ -108,10 +110,18 @@ public class BallGameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if (player != null) player.start();
-        BGV_instance.mIsRunning = true;
+    protected void onResume() {
+        super.onResume();
+        Log.i("BallGame", "Resume");
+        if (player == null) {
+            player =  MediaPlayer.create(this, R.raw.ringtone1);
+            player.setLooping(true);
+        }
+        player.start();
+        if (BGV_instance == null) {
+            BGV_instance = new BallGameView(this);
+            setContentView(BGV_instance);
+            BGV_instance.mIsRunning = true;
+        }
     }
-
 }
