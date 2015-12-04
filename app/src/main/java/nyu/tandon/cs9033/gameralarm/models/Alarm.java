@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Alarm implements Parcelable{
     private static String[] weekday = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-    private static String[] modeStr = {"Normal", "FunMode", "Math"};
+    private static String[] modeStr = {"Normal", "GameMode", "QuizMode"};
     private static String[] gameStr = {"BallGame", "JewelGame"};
     private int alarmId;
     private int time;

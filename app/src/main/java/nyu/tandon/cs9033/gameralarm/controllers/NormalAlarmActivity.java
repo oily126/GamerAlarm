@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import java.util.Calendar;
@@ -19,12 +20,17 @@ import nyu.tandon.cs9033.gameralarm.R;
  * Created by oily on 11/1/2015.
  */
 public class NormalAlarmActivity extends Activity {
-    private MediaPlayer player;
+    private MediaPlayer player = null;
     private static  final int snoozeID = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_alarm);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         Button btnSnooze = (Button) findViewById(R.id.snoozeAlarm);
         btnSnooze.setOnClickListener(new View.OnClickListener() {
@@ -56,5 +62,17 @@ public class NormalAlarmActivity extends Activity {
         player =  MediaPlayer.create(this, R.raw.ringtone1);
         player.setLooping(true);
         player.start();
+    }
+
+    @Override
+    protected void onResume() {
+        if (player != null) player.start();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if (player != null) player.stop();
+        super.onPause();
     }
 }

@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private final static int ADD__ALARM = 1;
     private final static int EDIT__ALARM = 2;
     private final static int BACKGOUND_SELECTION = 3;
+    private final static int SET_FONT_COLOR = 4;
     public static Drawable bgPic = null;
+    public static int bgColor = Color.WHITE;
+    public static int fontColor = Color.GRAY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         readAlarmList();
         if (MainActivity.bgPic != null) {
             ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackground(MainActivity.bgPic);
+            setFontColor();
+        } else {
+            ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackgroundColor(MainActivity.bgColor);
+            setFontColor();
         }
         alarmList = (ListView) findViewById(R.id.alarmList);
         alarmListAdapter = new AlarmListAdapter(this, alarmListItems);
@@ -130,7 +138,14 @@ public class MainActivity extends AppCompatActivity {
                                     case 0: /*background*/
                                         MainActivity.this.setUserBackground();
                                         break;
-                                    case 1: /*about*/
+                                    case 1: /*background restore default*/
+                                        ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackgroundColor(MainActivity.bgColor);
+                                        break;
+                                    case 2: /*set font color*/
+                                        Intent intent = new Intent(MainActivity.this, SetFontActivity.class);
+                                        startActivityForResult(intent, SET_FONT_COLOR);
+                                        break;
+                                    case 3: /*about*/
                                         MainActivity.this.getAbout();
                                         break;
                                     default:
@@ -273,11 +288,14 @@ public class MainActivity extends AppCompatActivity {
                 c.moveToFirst();
                 String path = c.getString(photocolumn);
                 setPicAsBackground(path);
+            } else if (requestCode == SET_FONT_COLOR) {
+                setFontColor();
             }
         }
     }
 
     public static void disableAlarm(Context context, int id) {
+        if (alarmListArray.size() <= id) return;
         Alarm alarm = alarmListArray.get(id);
         ArrayList<Integer> days = alarm.getWeekBitmap();
         if (days.size() == 0) {
@@ -300,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void enableAlarm(Context context, int id) {
+        if (alarmListArray.size() <= id) return;
         Alarm alarm = alarmListArray.get(id);
         ArrayList<Integer> days = alarm.getWeekBitmap();
         if(days.size() ==0 ){
@@ -344,5 +363,13 @@ public class MainActivity extends AppCompatActivity {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24*60*60*1000*7, pendingIntent);
         else
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+    }
+
+    private void setFontColor() {
+        ((TextView) findViewById(R.id.textView)).setTextColor(MainActivity.fontColor);
+        if (alarmListAdapter != null) {
+            alarmListAdapter = new AlarmListAdapter(this, alarmListItems);
+            alarmList.setAdapter(alarmListAdapter);
+        }
     }
 }

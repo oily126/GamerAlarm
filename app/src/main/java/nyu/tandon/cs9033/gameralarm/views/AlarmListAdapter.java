@@ -63,6 +63,11 @@ public class AlarmListAdapter extends BaseAdapter {
             alarmItems.alarmWeek = (TextView) convertView.findViewById(R.id.alarmWeek);
             alarmItems.alarmMode = (TextView) convertView.findViewById(R.id.alarmMode);
             alarmItems.enableAlarm = (SwitchCompat) convertView.findViewById(R.id.enableAlarm);
+
+            alarmItems.alarmTime.setTextColor(MainActivity.fontColor);
+            alarmItems.alarmWeek.setTextColor(MainActivity.fontColor);
+            alarmItems.alarmMode.setTextColor(MainActivity.fontColor);
+
             convertView.setTag(alarmItems);
         } else {
             alarmItems = (AlarmItemView) convertView.getTag();

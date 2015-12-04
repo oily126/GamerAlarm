@@ -24,13 +24,18 @@ import nyu.tandon.cs9033.gameralarm.views.BallGameView;
 public class BallGameActivity extends AppCompatActivity {
 
     private BallGameView BGV_instance = null;
-    private MediaPlayer player;
+    private MediaPlayer player = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
         player =  MediaPlayer.create(this, R.raw.ringtone1);
         player.start();
         //Play game in full size of screen
@@ -90,7 +95,7 @@ public class BallGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        player.stop();
+        if (player != null) player.stop();
         ActivityManager activityManager = (ActivityManager) getApplicationContext()
                 .getSystemService(Context.ACTIVITY_SERVICE);
 
@@ -105,6 +110,7 @@ public class BallGameActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        if (player != null) player.start();
         BGV_instance.mIsRunning = true;
     }
 

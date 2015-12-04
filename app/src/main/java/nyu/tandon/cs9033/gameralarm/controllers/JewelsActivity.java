@@ -1,12 +1,17 @@
 package nyu.tandon.cs9033.gameralarm.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Message;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.anddev.andengine.engine.Engine;
@@ -33,6 +38,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.engine.options.WakeLockOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,7 +119,17 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     private Texture mSparkTexture,mSpark2Texture;
     private TextureRegion mSparkTextureRegion,mSpark2TextureRegion;
 
-    private MediaPlayer player;
+    private MediaPlayer player = null;
+    private PowerManager.WakeLock mWakeLock = null;
+
+    @Override
+    protected void onCreate(Bundle pSavedInstanceState) {
+        super.onCreate(pSavedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+    }
 
     @Override
     public Engine onLoadEngine() {
@@ -327,6 +343,9 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                 player.stop();
                 Intent intent = new Intent(JewelsActivity.this, NormalAlarmActivity.class);
                 startActivity(intent);
+
+                //JewelsActivity.this.mEngine.stop();
+                //JewelsActivity.this.releaseWakeLock();
                 JewelsActivity.this.finish();
             }
         }));
@@ -721,8 +740,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                             &&  mHashMap.get(getKey(i, j)).getStyle() == mHashMap.get(getKey(i, j+k)).getStyle()
                             &&  mHashMap.get(getKey(i, j)).getState() == mHashMap.get(getKey(i, j+k)).getState();
                         k++);
-                    if(k >= 3)
-                    {
+                    if(k >= 3) {
                         this.addScore(k);
                         for(int n = 0; n < k; n++)
                         {
@@ -888,7 +906,9 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         if (this.mScore >= this.mScoreLimit) {
             this.mGameRunning = false;
             player.stop();
-            this.finish();
+            //this.mEngine.stop();
+            //this.releaseWakeLock();
+            finish();
         }
     }
 
@@ -1054,7 +1074,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         this.mScoreBGText.setScaleY(1.5f);
         this.mMainScene.getLayer(LAYER_SCORE).addEntity(this.mScoreBGText);
 
-        this.mScoreText = new ChangeableText(295, 336, this.mScoreFont, "0",7);
+        this.mScoreText = new ChangeableText(295, 336, this.mScoreFont, "0", 7);
         this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         this.mScoreText.setAlpha(1);
         this.mScoreText.setScaleY(1.5f);
@@ -1076,15 +1096,40 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     @Override
     protected void onPause() {
-        player.stop();
         this.mGameRunning = false;
-        finish();
+        if (player != null) player.stop();
+        /*player.stop();
+        this.mGameRunning = false;
+        //this.mEngine.stop();
+        //this.releaseWakeLock();
+        finish();*/
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         this.mGameRunning = true;
+        if (player != null) player.start();
         super.onResume();
+        /*this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
+        if(this.mHasWindowFocused) {
+            this.mRenderSurfaceView.onResume();
+            this.mEngine.start();
+        }*/
+    }
+
+    private void acquireWakeLock(WakeLockOptions pWakeLockOptions) {
+        final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
+        try {
+            this.mWakeLock.acquire();
+        } catch (final SecurityException e) {
+        }
+    }
+
+    private void releaseWakeLock() {
+        if(this.mWakeLock != null && this.mWakeLock.isHeld()) {
+            this.mWakeLock.release();
+        }
     }
 }

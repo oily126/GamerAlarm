@@ -2,6 +2,8 @@
 <resources>
     <string-array name="setting_items">
         <item>Background Setting</item>
+        <item>Background Restore</item>
+        <item>Font Setting</item>
         <item>About</item>
     </string-array>
 </resources>
