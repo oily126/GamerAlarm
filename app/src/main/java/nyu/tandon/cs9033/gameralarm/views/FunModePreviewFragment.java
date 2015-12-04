@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import nyu.tandon.cs9033.gameralarm.controllers.AddAlarmActivity;
  * Created by Byron on 11/25/15.
  */
 public class FunModePreviewFragment extends Fragment {
-    private ViewPager viewPager;
+    private CustomizedViewPager viewPager;
     private ViewGroup viewGroup;
     private AddAlarmActivity addAlarmActivity;
     private ImageView[] tips;
@@ -37,8 +38,9 @@ public class FunModePreviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.preview_fragment, container, false);
         viewGroup = (ViewGroup) v.findViewById(R.id.previewViewGroup);
-        viewPager = (ViewPager) v.findViewById(R.id.viewPager);
+        viewPager = (CustomizedViewPager) v.findViewById(R.id.viewPager);
         setModeButton = (Button) v.findViewById(R.id.SetModeButton);
+
 
         //Load image ID into imgIdArray
         imgIdArray.add(R.drawable.ball_game_preview);

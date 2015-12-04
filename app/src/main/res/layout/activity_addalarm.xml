@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
 
         <RelativeLayout
             android:orientation="vertical" android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:weightSum="1"
             android:id="@+id/addAlarmView">
 
@@ -51,27 +51,16 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="SET ALARM"
-                android:layout_alignTop="@+id/cancel"
-                android:layout_alignLeft="@+id/ringtone"
-                android:layout_alignStart="@+id/ringtone"
-                android:layout_toLeftOf="@+id/wednesday"
+                android:layout_below="@+id/ringtone"
                 android:layout_toStartOf="@+id/wednesday" />
             <Button
                 android:id="@+id/cancel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Cancel Alarm"
-                android:layout_alignParentBottom="true"
-                android:layout_alignRight="@+id/ringtone"
+                android:layout_alignTop="@+id/setalarmbutton"
                 android:layout_alignEnd="@+id/ringtone"
-                android:layout_toRightOf="@+id/wednesday"
-                android:layout_toEndOf="@+id/wednesday" />
-            <TextView
-                android:id="@+id/alarmprompt"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/setalarmbutton"
-                android:layout_alignParentStart="true" />
+                android:layout_alignStart="@+id/thursday" />
 
             <ToggleButton
                 android:id="@+id/tuesday"
@@ -135,7 +124,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fun Mode"
+                android:text="Game Mode"
                 android:textSize="12dp"
                 android:id="@+id/funmode"
                 android:layout_below="@+id/monday"
@@ -155,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
-                android:text="Trick Mode"
+                android:text="Quiz Mode"
                 android:id="@+id/trickmode"
                 android:layout_alignTop="@+id/normalmode"
                 android:layout_toRightOf="@+id/normalmode"
@@ -166,25 +155,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Select Ringtone"
-                android:layout_above="@+id/setalarmbutton"
-                android:layout_alignLeft="@+id/PreviewContainer"
-                android:layout_alignStart="@+id/PreviewContainer"
-                android:layout_alignRight="@+id/PreviewContainer"
-                android:layout_alignEnd="@+id/PreviewContainer" />
+                android:layout_below="@+id/PreviewContainer"
+                android:layout_alignEnd="@+id/saturday" />
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/PreviewContainer"
                 android:layout_alignLeft="@+id/sunday"
                 android:layout_alignStart="@+id/sunday"
                 android:layout_below="@+id/funmode"
-                android:layout_above="@+id/ringtone"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:fillViewport="true"
-                android:visibility="invisible" />
+                android:visibility="gone"
+                android:orientation="vertical"
+                />
 
         </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -39,13 +40,13 @@ public class AddAlarmActivity extends AppCompatActivity{
     Button trickMode;
     //toggle buttons for weekdays
     ToggleButton mon, tues, wed, thur, fri, sat, sun;
-    TextView textAlarmPrompt;
+    //TextView textAlarmPrompt;
     TimePicker timePicker;
     Set<Integer> weekdays;
     int mode = 0;
     boolean isRepeat = false;
     private FunModePreviewFragment funModePreviewFragment;
-    private ScrollView scrollView;
+    private LinearLayout scrollView;
     Alarm alarmToEdit;
 
     final static int REQUEST_CODE_1 = 1;
@@ -58,7 +59,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         this.mode = mode;
         getSupportFragmentManager().beginTransaction()
                 .remove(funModePreviewFragment).commit();
-        scrollView.setVisibility(View.INVISIBLE);
+        scrollView.setVisibility(View.GONE);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         weekdays = new HashSet<>();
         //time picker
         timePicker = (TimePicker)findViewById(R.id.picker);
-        textAlarmPrompt = (TextView)findViewById(R.id.alarmprompt);
+        //textAlarmPrompt = (TextView)findViewById(R.id.alarmprompt);
 
         //set listener for the weekday buttons:
         addListenerOnToggleButton();
@@ -157,10 +158,11 @@ public class AddAlarmActivity extends AppCompatActivity{
                 //for the first demo, just start the ball game
                 //mode = 10;
                 funModePreviewFragment = new FunModePreviewFragment();
-                scrollView = (ScrollView) findViewById(R.id.PreviewContainer);
+                scrollView = (LinearLayout) findViewById(R.id.PreviewContainer);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, funModePreviewFragment).commit();
                 scrollView.setVisibility(View.VISIBLE);
+                funMode.setClickable(false);
 //                Intent intent = new Intent(AddAlarmActivity.this, BallGameActivity.class);
 //                startActivity(intent);
             }
