@@ -204,11 +204,18 @@ public class AddAlarmActivity extends AppCompatActivity{
             public void onClick(View v) {
                 //for the first demo, just start the ball game
                 //mode = 10;
+                if (quizModePreviewFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(quizModePreviewFragment).commit();
+                }
+                if (funModePreviewFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(funModePreviewFragment).commit();
+                }
                 funModePreviewFragment = new FunModePreviewFragment();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, funModePreviewFragment).commit();
                 previewLinearLayout.setVisibility(View.VISIBLE);
-                funMode.setClickable(false);
 //                Intent intent = new Intent(AddAlarmActivity.this, BallGameActivity.class);
 //                startActivity(intent);
             }
@@ -221,7 +228,6 @@ public class AddAlarmActivity extends AppCompatActivity{
                 //for the first demo, just start the normal mode
                 mode = 0;
 
-
             }
         });
 
@@ -230,7 +236,14 @@ public class AddAlarmActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
-                mode = 20;
+                if (funModePreviewFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(funModePreviewFragment).commit();
+                }
+                if (quizModePreviewFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(quizModePreviewFragment).commit();
+                }
                 quizModePreviewFragment = new QuizModePreviewFragment();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, quizModePreviewFragment).commit();
