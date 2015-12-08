@@ -68,6 +68,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
 
     private int mScoreLimit;
     private int mTimeLimit;
+    private String path = "1";
 
     private boolean mGameRunning;
     private boolean mIsSwaping;
@@ -134,7 +135,8 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     @Override
     public Engine onLoadEngine() {
         if (player == null) {
-            createMediaPlayer(getIntent().getStringExtra("ringtone"));
+            if (getIntent().hasExtra("ringtone")) path = getIntent().getStringExtra("ringtone");
+            createMediaPlayer(path);
             player.setLooping(true);
         }
         player.start();
@@ -1117,7 +1119,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         super.onResume();
         this.mGameRunning = true;
         if (player == null) {
-            createMediaPlayer(getIntent().getStringExtra("ringtone"));
+            createMediaPlayer(path);
             player.setLooping(true);
         }
         player.start();

@@ -23,7 +23,7 @@ import nyu.tandon.cs9033.gameralarm.R;
 public class NormalAlarmActivity extends Activity {
     private MediaPlayer player = null;
     private static  final int snoozeID = -1;
-    private String path;
+    private String path = "1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class NormalAlarmActivity extends Activity {
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        path = getIntent().getStringExtra("ringtone");
+        if (getIntent().hasExtra("ringtone")) path = getIntent().getStringExtra("ringtone");
         Button btnSnooze = (Button) findViewById(R.id.snoozeAlarm);
         btnSnooze.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,21 +67,29 @@ public class NormalAlarmActivity extends Activity {
             }
         });
 
-        createMediaPlayer(getIntent().getStringExtra("ringtone"));
+        createMediaPlayer(path);
         player.setLooping(true);
         player.start();
     }
 
     @Override
     protected void onResume() {
-        if (player != null) player.pause();
         super.onResume();
+        if (player == null) {
+            createMediaPlayer(path);
+            player.setLooping(true);
+        }
+        player.start();
     }
 
     @Override
     protected void onPause() {
-        if (player != null) player.stop();
         super.onPause();
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
 
     private void createMediaPlayer(String path) {

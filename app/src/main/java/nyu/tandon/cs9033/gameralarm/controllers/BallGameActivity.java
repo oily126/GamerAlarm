@@ -31,7 +31,8 @@ public class BallGameActivity extends AppCompatActivity {
     private int TIME_LIMIT = 90000;
     private static Timer timeLimit;
     private static TimerTask timeTask;
-
+    private String path = "1";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -48,7 +49,9 @@ public class BallGameActivity extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        createMediaPlayer(getIntent().getStringExtra("ringtone"));
+        if (getIntent().hasExtra("ringtone")) path = getIntent().getStringExtra("ringtone");
+        createMediaPlayer(path);
+        player.setLooping(true);
         player.start();
 
         //Play game in horizontal screen
@@ -62,11 +65,14 @@ public class BallGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 timeLimit.cancel();
-                player.stop();
-                player.release();
-                player = null;
+                if (player != null) {
+                    player.stop();
+                    player.release();
+                    player = null;
+                }
                 Intent startNormal = new Intent(BallGameActivity.this, NormalAlarmActivity.class);
                 //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startNormal.putExtra("ringtone", BallGameActivity.this.path);
                 startActivity(startNormal);
                 finish();
             }
@@ -81,9 +87,11 @@ public class BallGameActivity extends AppCompatActivity {
                 if (!BGV_instance.mIsRunning) {
                     checkTime.cancel();
                     timeLimit.cancel();
-                    player.stop();
-                    player.release();
-                    player = null;
+                    if (player != null) {
+                        player.stop();
+                        player.release();
+                        player = null;
+                    }
                     finish();
                 }
             }
@@ -118,7 +126,11 @@ public class BallGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.i("BallGame", "Pause");
-        if (player != null) player.pause();
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
         BGV_instance.mIsRunning = false;
         super.onPause();
         //finish();
@@ -129,7 +141,7 @@ public class BallGameActivity extends AppCompatActivity {
         super.onResume();
         Log.i("BallGame", "Resume");
         if (player == null) {
-            createMediaPlayer(getIntent().getStringExtra("ringtone"));
+            createMediaPlayer(path);
             player.setLooping(true);
             player.start();
         }
