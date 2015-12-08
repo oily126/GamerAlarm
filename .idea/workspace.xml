@@ -10,24 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0467deb5-5034-41cc-add8-405521c7a869" name="Default" comment="Add fun mode preview">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/QuizActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/models/QuizQuestions.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/quiz_preview_fragment.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/res/layout/preview_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/game_preview_fragment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ballgame_background.jpg" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ballgame_background.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ballgame_hole.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ballgame_hole.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/AddAlarmActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/AddAlarmActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/AlarmDatabaseHelper.java" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/AlarmDatabaseHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/FunModePreviewFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/FunModePreviewFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/andEngine/andEngine.iml" afterPath="$PROJECT_DIR$/andEngine/andEngine.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/game_preview_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/game_preview_fragment.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GamerAlarm.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,11 +55,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BallGameActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java">
+      <file leaf-file-name="AddAlarmActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/AddAlarmActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="60" />
+              <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -82,17 +69,30 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/FunModePreviewFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+              <caret line="191" column="20" selection-start-line="191" selection-start-column="20" selection-end-line="191" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QuizActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/QuizActivity.java">
+      <file leaf-file-name="QuizModePreviewFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.79646015">
-              <caret line="89" column="60" selection-start-line="89" selection-start-column="60" selection-end-line="89" selection-end-column="60" />
+            <state vertical-scroll-proportion="-3.9115045">
+              <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game_preview_fragment.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/game_preview_fragment.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.24138">
+              <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -2402,12 +2402,12 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/quiz_preview_fragment.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/QuizActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/game_preview_fragment.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/AddAlarmActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/FunModePreviewFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java" />
       </list>
     </option>
   </component>
@@ -3200,13 +3200,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.1.0/support-v4-23.1.0-sources.jar!/android/support/v4/view/ViewPager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.16901408">
-          <caret line="90" column="13" selection-start-line="90" selection-start-column="13" selection-end-line="90" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/page_indicator_unfocused.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -3343,13 +3336,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15255" column="16" selection-start-line="15255" selection-start-column="16" selection-end-line="15255" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.1.0/appcompat-v7-23.1.0-sources.jar!/android/support/v7/widget/AppCompatTextView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3430,14 +3416,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45132744">
-          <caret line="197" column="66" selection-start-line="197" selection-start-column="66" selection-end-line="197" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/AlarmListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.53097343">
@@ -3446,18 +3424,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/FunModePreviewFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/QuizActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6902655">
+          <caret line="85" column="71" selection-start-line="85" selection-start-column="71" selection-end-line="85" selection-end-column="71" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/AddAlarmActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79646015">
-          <caret line="102" column="33" selection-start-line="102" selection-start-column="33" selection-end-line="102" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.28318584">
+          <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.1.0/support-v4-23.1.0-sources.jar!/android/support/v4/view/ViewPager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="259" column="21" selection-start-line="259" selection-start-column="21" selection-end-line="259" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -3467,24 +3453,40 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16044776">
-          <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
+        <state vertical-scroll-proportion="-11.24138">
+          <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/BallGameActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/AddAlarmActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="60" />
+          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/controllers/QuizActivity.java">
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79646015">
-          <caret line="89" column="60" selection-start-line="89" selection-start-column="60" selection-end-line="89" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5573" column="16" selection-start-line="5573" selection-start-column="16" selection-end-line="5573" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/FunModePreviewFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="191" column="20" selection-start-line="191" selection-start-column="20" selection-end-line="191" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nyu/tandon/cs9033/gameralarm/views/QuizModePreviewFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9115045">
+          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
           <folding />
         </state>
       </provider>

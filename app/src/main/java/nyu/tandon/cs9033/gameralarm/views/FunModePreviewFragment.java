@@ -38,14 +38,15 @@ public class FunModePreviewFragment extends Fragment {
     private SeekBar scoreLimit;
     private TextView timeLimitText;
     private TextView scoreLimitText;
-    private int timeLimitProgress;
-    private int scoreLimitProgress;
+    private int timeLimitProgress = 90;
+    private int scoreLimitProgress = 140;
     private int TIME_LIMIT_STEP = 5;
     private int TIME_LIMIT_MAX = 180;
     private int TIME_LIMIT_MIN = 60;
     private int SCORE_LIMIT_STEP = 20;
     private int SCORE_LIMIT_MAX = 500;
     private int SCORE_LIMIT_MIN = 120;
+    private int mode = 10;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,10 +99,8 @@ public class FunModePreviewFragment extends Fragment {
         setModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int mode = 10;
                 addAlarmActivity.setMode(mode);
                 addAlarmActivity.setTIME_LIMIT(timeLimitProgress * 1000);
-
             }
         });
 
@@ -123,26 +122,6 @@ public class FunModePreviewFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 timeLimitText.setText("Alarm Time Threshold(" +
                         String.valueOf(timeLimitProgress) + " Seconds):");
-            }
-        });
-
-        scoreLimitText.setText("Jewel Game Score Threshold:");
-        scoreLimit.setMax((SCORE_LIMIT_MAX - SCORE_LIMIT_MIN) / SCORE_LIMIT_STEP);
-        scoreLimit.setEnabled(true);
-        scoreLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                scoreLimitProgress = SCORE_LIMIT_MIN + (progress * SCORE_LIMIT_STEP);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                scoreLimitText.setText("Jewel Game Score Threshold(" +
-                        String.valueOf(scoreLimitProgress) + " Points):");
             }
         });
 
@@ -188,13 +167,43 @@ public class FunModePreviewFragment extends Fragment {
                 }
             }
 
+            if (arg0 == 1) {
+                scoreLimitText.setVisibility(View.VISIBLE);
+                scoreLimit.setVisibility(View.VISIBLE);
+                scoreLimitText.setText("Jewel Game Score Threshold:");
+                scoreLimit.setMax((SCORE_LIMIT_MAX - SCORE_LIMIT_MIN) / SCORE_LIMIT_STEP);
+                scoreLimit.setEnabled(true);
+                scoreLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        scoreLimitProgress = SCORE_LIMIT_MIN + (progress * SCORE_LIMIT_STEP);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        scoreLimitText.setText("Jewel Game Score Threshold(" +
+                                String.valueOf(scoreLimitProgress) + " Points):");
+                    }
+                });
+            } else {
+                scoreLimitText.setVisibility(View.GONE);
+                scoreLimit.setVisibility(View.GONE);
+                scoreLimit.setProgress(0);
+            }
+
             //If user click "Set Mode" button, send the Mode Value to parent activity
             setModeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int mode = 10;
                     addAlarmActivity.setMode(mode + arg0);
-                    addAlarmActivity.setTIME_LIMIT(timeLimitProgress*1000);
+                    addAlarmActivity.setTIME_LIMIT(timeLimitProgress * 1000);
+                    if (arg0 == 1) {
+                        addAlarmActivity.setSCORE_LIMIT(scoreLimitProgress);
+                    }
                 }
             });
 

@@ -40,12 +40,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:textSize="15sp" />
         <SeekBar
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:id="@+id/ScoreLimit"
             android:progress="0"
+            android:visibility="gone"
             android:layout_weight="1" />
     </LinearLayout>
 

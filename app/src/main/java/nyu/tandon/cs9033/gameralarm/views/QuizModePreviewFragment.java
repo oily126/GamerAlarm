@@ -37,8 +37,8 @@ public class QuizModePreviewFragment extends Fragment {
     private SeekBar rightNo;
     private TextView questionNoText;
     private TextView rightNoText;
-    private int questionNoProgress;
-    private int rightNoProgress;
+    private int questionNoProgress = 8;
+    private int rightNoProgress = 4;
     private int step = 1;
     private int QUESTION_NO_MAX = 10;
     private int QUESTION_NO_MIN = 6;
