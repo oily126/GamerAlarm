@@ -5,7 +5,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -263,7 +265,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         ringtoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddAlarmActivity.this, SetRingtoneActivity.class);
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);//pick one from the list
                 startActivityForResult(intent, REQUEST_RINGTONE);
             }
         });
@@ -302,7 +304,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         Intent intent = new Intent(this, AlarmReceiver.class);
 
         intent.putExtra("Mode", mode); //should pass the alarm to the receiver
-        intent.putExtra("Ringtone", ringtone);
+        intent.putExtra("ringtone", ringtone);
         intent.putExtra("TimeLimit", TIME_LIMIT);
         intent.putExtra("ScoreLimit", SCORE_LIMIT);
         intent.putExtra("TotalNumber", QUESTION_NO);
@@ -435,9 +437,16 @@ public class AddAlarmActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_RINGTONE) {
-                ringtone = data.getStringExtra("ringtone");
+        if (requestCode == REQUEST_RINGTONE) {
+            if (resultCode == RESULT_OK) {
+                String[] proj = {MediaStore.Audio.Media.DATA};
+                Cursor c = managedQuery(data.getData(), proj, null, null, null);
+                int musiccolumn = c.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+                c.moveToFirst();
+                ringtone = c.getString(musiccolumn);
+                Log.i(this.getClass().toString(), "ringtone " + ringtone);
+            } else {
+                ringtone = "1";
             }
         }
     }

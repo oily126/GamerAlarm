@@ -61,6 +61,7 @@ public class BallGameActivity extends AppCompatActivity {
                 timeLimit.cancel();
                 player.stop();
                 player.release();
+                player = null;
                 Intent startNormal = new Intent(BallGameActivity.this, NormalAlarmActivity.class);
                 //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startNormal);
@@ -79,6 +80,7 @@ public class BallGameActivity extends AppCompatActivity {
                     timeLimit.cancel();
                     player.stop();
                     player.release();
+                    player = null;
                     finish();
                 }
             }
@@ -134,6 +136,7 @@ public class BallGameActivity extends AppCompatActivity {
     }
 
     private void createMediaPlayer(String path) {
+        Log.i(BallGameActivity.class.toString(), path);
         try {
             int id = Integer.parseInt(path);
             if (id == 1) {

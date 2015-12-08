@@ -23,6 +23,7 @@ import nyu.tandon.cs9033.gameralarm.R;
 public class NormalAlarmActivity extends Activity {
     private MediaPlayer player = null;
     private static  final int snoozeID = -1;
+    private String path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,17 +34,20 @@ public class NormalAlarmActivity extends Activity {
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
+        path = getIntent().getStringExtra("ringtone");
         Button btnSnooze = (Button) findViewById(R.id.snoozeAlarm);
         btnSnooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NormalAlarmActivity.this.player.stop();
                 NormalAlarmActivity.this.player.release();
+                NormalAlarmActivity.this.player = null;
                 Calendar calNow = Calendar.getInstance();
                 Calendar alarmCal = (Calendar) calNow.clone();
                 alarmCal.set(Calendar.MINUTE, calNow.get(Calendar.MINUTE) + 1);
                 Intent intent = new Intent(NormalAlarmActivity.this, AlarmReceiver.class);
                 intent.putExtra("Mode", 0); //should pass the alarm to the receiver
+                intent.putExtra("ringtone", NormalAlarmActivity.this.path);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(NormalAlarmActivity.this, snoozeID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Long alarmTime = alarmCal.getTimeInMillis() >= System.currentTimeMillis() ? alarmCal.getTimeInMillis() : alarmCal.getTimeInMillis() + 24 * 3600 * 1000;
@@ -58,6 +62,7 @@ public class NormalAlarmActivity extends Activity {
             public void onClick(View v) {
                 NormalAlarmActivity.this.player.stop();
                 NormalAlarmActivity.this.player.release();
+                NormalAlarmActivity.this.player = null;
                 finish();
             }
         });
@@ -69,7 +74,7 @@ public class NormalAlarmActivity extends Activity {
 
     @Override
     protected void onResume() {
-        if (player != null) player.start();
+        if (player != null) player.pause();
         super.onResume();
     }
 
@@ -80,13 +85,14 @@ public class NormalAlarmActivity extends Activity {
     }
 
     private void createMediaPlayer(String path) {
+        Log.i(NormalAlarmActivity.class.toString(), path);
         try {
             int id = Integer.parseInt(path);
             if (id == 1) {
                 player = MediaPlayer.create(this, R.raw.ringtone1);
             } else {
                 if (id == 2) {
-                    player = MediaPlayer.create(this, R.raw.ringtone1);
+                    player = MediaPlayer.create(this, R.raw.ringtone2);
                 }
             }
         } catch (NumberFormatException e) {

@@ -343,6 +343,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
                 JewelsActivity.this.mGameRunning = false;
                 player.stop();
                 player.release();
+                player = null;
                 Intent intent = new Intent(JewelsActivity.this, NormalAlarmActivity.class);
                 startActivity(intent);
 
@@ -910,6 +911,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             this.mGameRunning = false;
             player.stop();
             player.release();
+            player = null;
             //this.mEngine.stop();
             //this.releaseWakeLock();
             finish();
