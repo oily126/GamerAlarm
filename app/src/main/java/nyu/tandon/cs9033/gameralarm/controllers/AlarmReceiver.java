@@ -51,7 +51,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         } else if(mode/10 ==1 && mode % 10 == 1) {
             Intent gameIntent = new Intent(context, JewelsActivity.class);
             gameIntent.putExtra("score", scoreLimit);
-            gameIntent.putExtra("time", timeLimit);
+            gameIntent.putExtra("time", timeLimit / 1000);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             gameIntent.putExtra("ringtone", ringtone);
             context.startActivity(gameIntent);
