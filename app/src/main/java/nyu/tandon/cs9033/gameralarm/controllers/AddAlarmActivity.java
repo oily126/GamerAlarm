@@ -1,5 +1,6 @@
 package nyu.tandon.cs9033.gameralarm.controllers;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -25,7 +26,9 @@ import java.util.Set;
 import nyu.tandon.cs9033.gameralarm.AlarmDatabaseHelper;
 import nyu.tandon.cs9033.gameralarm.R;
 import nyu.tandon.cs9033.gameralarm.models.Alarm;
+import nyu.tandon.cs9033.gameralarm.models.QuizQuestions;
 import nyu.tandon.cs9033.gameralarm.views.FunModePreviewFragment;
+import nyu.tandon.cs9033.gameralarm.views.QuizModePreviewFragment;
 
 /**
  * Created by Zhe Wang on 10/30/2015.
@@ -46,7 +49,12 @@ public class AddAlarmActivity extends AppCompatActivity{
     int mode = 0;
     boolean isRepeat = false;
     private FunModePreviewFragment funModePreviewFragment;
-    private LinearLayout scrollView;
+    private int TIME_LIMIT;
+    private int SCORE_LIMIT;
+    private QuizModePreviewFragment quizModePreviewFragment;
+    private int QUESTION_NO;
+    private int RIGHT_NO;
+    private LinearLayout previewLinearLayout;
     Alarm alarmToEdit;
 
     final static int REQUEST_CODE_1 = 1;
@@ -57,9 +65,47 @@ public class AddAlarmActivity extends AppCompatActivity{
 
     public void setMode(int mode) {
         this.mode = mode;
-        getSupportFragmentManager().beginTransaction()
-                .remove(funModePreviewFragment).commit();
-        scrollView.setVisibility(View.GONE);
+        if (funModePreviewFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(funModePreviewFragment).commit();
+        }
+        if (quizModePreviewFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(quizModePreviewFragment).commit();
+        }
+        previewLinearLayout.setVisibility(View.GONE);
+    }
+
+    public int getTIME_LIMIT() {
+        return TIME_LIMIT;
+    }
+
+    public void setTIME_LIMIT(int TIME_LIMIT) {
+        this.TIME_LIMIT = TIME_LIMIT;
+    }
+
+    public int getQUESTION_NO() {
+        return QUESTION_NO;
+    }
+
+    public void setQUESTION_NO(int QUESTION_NO) {
+        this.QUESTION_NO = QUESTION_NO;
+    }
+
+    public int getRIGHT_NO() {
+        return RIGHT_NO;
+    }
+
+    public void setRIGHT_NO(int RIGHT_NO) {
+        this.RIGHT_NO = RIGHT_NO;
+    }
+
+    public int getSCORE_LIMIT() {
+        return SCORE_LIMIT;
+    }
+
+    public void setSCORE_LIMIT(int SCORE_LIMIT) {
+        this.SCORE_LIMIT = SCORE_LIMIT;
     }
 
     @Override
@@ -69,6 +115,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         weekdays = new HashSet<>();
         //time picker
         timePicker = (TimePicker)findViewById(R.id.picker);
+        previewLinearLayout = (LinearLayout) findViewById(R.id.PreviewContainer);
         //textAlarmPrompt = (TextView)findViewById(R.id.alarmprompt);
 
         //set listener for the weekday buttons:
@@ -158,10 +205,9 @@ public class AddAlarmActivity extends AppCompatActivity{
                 //for the first demo, just start the ball game
                 //mode = 10;
                 funModePreviewFragment = new FunModePreviewFragment();
-                scrollView = (LinearLayout) findViewById(R.id.PreviewContainer);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, funModePreviewFragment).commit();
-                scrollView.setVisibility(View.VISIBLE);
+                previewLinearLayout.setVisibility(View.VISIBLE);
                 funMode.setClickable(false);
 //                Intent intent = new Intent(AddAlarmActivity.this, BallGameActivity.class);
 //                startActivity(intent);
@@ -174,12 +220,25 @@ public class AddAlarmActivity extends AppCompatActivity{
             public void onClick(View v) {
                 //for the first demo, just start the normal mode
                 mode = 0;
-//                Intent intent = new Intent(AddAlarmActivity.this, NormalAlarmActivity.class);
-//                startActivity(intent);
+
+
             }
         });
 
         trickMode = (Button) findViewById(R.id.trickmode);
+        trickMode.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mode = 20;
+                quizModePreviewFragment = new QuizModePreviewFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.PreviewContainer, quizModePreviewFragment).commit();
+                previewLinearLayout.setVisibility(View.VISIBLE);
+                //Intent intent = new Intent(AddAlarmActivity.this, QuizActivity.class);
+                //startActivity(intent);
+            }
+        });
 
 
     }

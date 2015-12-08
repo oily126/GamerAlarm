@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ import nyu.tandon.cs9033.gameralarm.controllers.AddAlarmActivity;
 /**
  * Created by Byron on 11/25/15.
  */
-public class FunModePreviewFragment extends Fragment {
+public class QuizModePreviewFragment extends Fragment {
     private CustomizedViewPager viewPager;
     private ViewGroup viewGroup;
     private AddAlarmActivity addAlarmActivity;
@@ -34,34 +33,32 @@ public class FunModePreviewFragment extends Fragment {
     private ImageView[] mImageViews;
     private List<Integer> imgIdArray = new ArrayList<Integer>();
     private Button setModeButton;
-    private SeekBar timeLimit;
-    private SeekBar scoreLimit;
-    private TextView timeLimitText;
-    private TextView scoreLimitText;
-    private int timeLimitProgress;
-    private int scoreLimitProgress;
-    private int TIME_LIMIT_STEP = 5;
-    private int TIME_LIMIT_MAX = 180;
-    private int TIME_LIMIT_MIN = 60;
-    private int SCORE_LIMIT_STEP = 20;
-    private int SCORE_LIMIT_MAX = 500;
-    private int SCORE_LIMIT_MIN = 120;
+    private SeekBar questionNo;
+    private SeekBar rightNo;
+    private TextView questionNoText;
+    private TextView rightNoText;
+    private int questionNoProgress;
+    private int rightNoProgress;
+    private int step = 1;
+    private int QUESTION_NO_MAX = 10;
+    private int QUESTION_NO_MIN = 6;
+    private int RIGHT_NO_MAX = 6;
+    private int RIGHT_NO_MIN = 3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.game_preview_fragment, container, false);
+        View v = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
         viewGroup = (ViewGroup) v.findViewById(R.id.previewViewGroup);
         viewPager = (CustomizedViewPager) v.findViewById(R.id.viewPager);
         setModeButton = (Button) v.findViewById(R.id.SetModeButton);
-        timeLimit = (SeekBar) v.findViewById(R.id.TimeLimit);
-        timeLimitText = (TextView) v.findViewById(R.id.TimeLimitText);
-        scoreLimit = (SeekBar) v.findViewById(R.id.ScoreLimit);
-        scoreLimitText = (TextView) v.findViewById(R.id.ScoreLimitText);
+        questionNo = (SeekBar) v.findViewById(R.id.questionNo);
+        rightNo = (SeekBar) v.findViewById(R.id.rightNo);
+        questionNoText = (TextView) v.findViewById(R.id.questionNoText);
+        rightNoText = (TextView) v.findViewById(R.id.rightNoText);
 
 
         //Load image ID into imgIdArray
         imgIdArray.add(R.drawable.ball_game_preview);
-        imgIdArray.add(R.drawable.jewel_game_preview);
 
         //Load ImageView into mImageViews
         mImageViews = new ImageView[imgIdArray.size()];
@@ -98,20 +95,21 @@ public class FunModePreviewFragment extends Fragment {
         setModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int mode = 10;
+                int mode = 20;
                 addAlarmActivity.setMode(mode);
-                addAlarmActivity.setTIME_LIMIT(timeLimitProgress * 1000);
-
+                addAlarmActivity.setQUESTION_NO(questionNoProgress);
+                addAlarmActivity.setRIGHT_NO(rightNoProgress);
             }
         });
 
-        timeLimitText.setText("Alarm Time Threshold:");
-        timeLimit.setMax((TIME_LIMIT_MAX - TIME_LIMIT_MIN) / TIME_LIMIT_STEP);
-        timeLimit.setEnabled(true);
-        timeLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        //Seek Bar of "Total number of questions"
+        questionNoText.setText("Total number of questions:");
+        questionNo.setMax((QUESTION_NO_MAX - QUESTION_NO_MIN) / step);
+        questionNo.setEnabled(true);
+        questionNo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                timeLimitProgress = TIME_LIMIT_MIN + (progress * TIME_LIMIT_STEP);
+                questionNoProgress = QUESTION_NO_MIN + (progress * step);
             }
 
             @Override
@@ -121,28 +119,30 @@ public class FunModePreviewFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                timeLimitText.setText("Alarm Time Threshold(" +
-                        String.valueOf(timeLimitProgress) + " Seconds):");
+                questionNoText.setText("Total number of questions(" +
+                        String.valueOf(questionNoProgress) + "):");
             }
         });
 
-        scoreLimitText.setText("Jewel Game Score Threshold:");
-        scoreLimit.setMax((SCORE_LIMIT_MAX - SCORE_LIMIT_MIN) / SCORE_LIMIT_STEP);
-        scoreLimit.setEnabled(true);
-        scoreLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        //Seek Bar of "Number of questions need to answer correctly"
+        rightNoText.setText("Number of questions need to answer correctly:");
+        rightNo.setMax((RIGHT_NO_MAX - RIGHT_NO_MIN) / step);
+        questionNo.setEnabled(true);
+        rightNo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                scoreLimitProgress = SCORE_LIMIT_MIN + (progress * SCORE_LIMIT_STEP);
+                rightNoProgress = RIGHT_NO_MIN + (progress * step);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                scoreLimitText.setText("Jewel Game Score Threshold(" +
-                        String.valueOf(scoreLimitProgress) + " Points):");
+                rightNoText.setText("Number of questions need to answer correctly(" +
+                        String.valueOf(rightNoProgress) + "):");
             }
         });
 
@@ -192,9 +192,10 @@ public class FunModePreviewFragment extends Fragment {
             setModeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int mode = 10;
+                    int mode = 20;
                     addAlarmActivity.setMode(mode + arg0);
-                    addAlarmActivity.setTIME_LIMIT(timeLimitProgress*1000);
+                    addAlarmActivity.setQUESTION_NO(questionNoProgress);
+                    addAlarmActivity.setRIGHT_NO(rightNoProgress);
                 }
             });
 

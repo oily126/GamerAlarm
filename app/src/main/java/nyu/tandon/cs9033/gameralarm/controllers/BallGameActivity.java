@@ -26,11 +26,16 @@ public class BallGameActivity extends AppCompatActivity {
 
     private BallGameView BGV_instance = null;
     private MediaPlayer player = null;
+    private int TIME_LIMIT = 60000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        TIME_LIMIT = intent.getParcelableExtra("TimeLimit");
+
         Log.i("BallGame", "Create");
         //Play game in full size of screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -60,7 +65,7 @@ public class BallGameActivity extends AppCompatActivity {
                 finish();
             }
         };
-        timeLimit.schedule(timeTask, 15000);
+        timeLimit.schedule(timeTask, TIME_LIMIT);
 
         // Check game status every 10 milliseconds
         final Timer checkTime = new Timer();
