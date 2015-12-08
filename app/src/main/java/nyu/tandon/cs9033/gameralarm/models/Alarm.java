@@ -20,6 +20,10 @@ public class Alarm implements Parcelable{
     private int mode;
     private String ringtone;
     private boolean enable;
+    private int timeLimit;
+    private int scoreLimit;
+    private int quesNum;
+    private int rightQues;
 
     public Alarm(int time, boolean repeat, int week, int mode, String ringtone, boolean enable) {
         this.alarmId = 0;
@@ -31,7 +35,8 @@ public class Alarm implements Parcelable{
         this.enable = enable;
     }
 
-    public Alarm(int alarmId, int time, int repeat, int week, int mode, String ringtone, int enable) {
+    public Alarm(int alarmId, int time, int repeat, int week, int mode, String ringtone, int enable ,
+                 int timeLimit, int scoreLimit, int quesNum, int rightQues) {
         this.alarmId = alarmId;
         this.time = time;
         this.repeat = repeat != 0;
@@ -39,9 +44,14 @@ public class Alarm implements Parcelable{
         this.mode = mode;
         this.ringtone = ringtone;
         this.enable = enable != 0;
+        this.timeLimit = timeLimit;
+        this.scoreLimit = scoreLimit;
+        this.quesNum = quesNum;
+        this.rightQues = rightQues;
     }
 
-    public Alarm(int alarmId, int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable) {
+    public Alarm(int alarmId, int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable,
+                 int timeLimit, int scoreLimit, int quesNum, int rightQues) {
         this.alarmId = alarmId;
         this.time = time;
         this.repeat = repeat;
@@ -52,9 +62,14 @@ public class Alarm implements Parcelable{
         this.mode = mode;
         this.ringtone = ringtone;
         this.enable = enable;
+        this.timeLimit = timeLimit;
+        this.scoreLimit = scoreLimit;
+        this.quesNum = quesNum;
+        this.rightQues = rightQues;
     }
     
-    public Alarm(int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable) {
+    public Alarm(int time, boolean repeat, Set<Integer> week, int mode, String ringtone, boolean enable
+                 ,int timeLimit, int scoreLimit, int quesNum, int rightQues) {
         this.alarmId = 0;
         this.time = time;
         this.repeat = repeat;
@@ -65,6 +80,10 @@ public class Alarm implements Parcelable{
         this.mode = mode;
         this.ringtone = ringtone;
         this.enable = enable;
+        this.timeLimit = timeLimit;
+        this.scoreLimit = scoreLimit;
+        this.quesNum = quesNum;
+        this.rightQues = rightQues;
     }
 
     public int getAlarmId() {
@@ -93,6 +112,22 @@ public class Alarm implements Parcelable{
 
     public boolean isEnable() {
         return enable;
+    }
+
+    public int getTimeLimit(){
+        return  timeLimit;
+    }
+
+    public int getScoreLimit(){
+        return  scoreLimit;
+    }
+
+    public int getQuesNum(){
+        return quesNum;
+    }
+
+    public int getRightQues(){
+        return rightQues;
     }
 
     public String getTimeStr() {
@@ -159,6 +194,10 @@ public class Alarm implements Parcelable{
         this.mode = p.readInt();
         this.ringtone = p.readString();
         this.enable = p.readInt() == 1;
+        this.timeLimit = p.readInt();
+        this.scoreLimit = p.readInt();
+        this.quesNum = p.readInt();
+        this.rightQues = p.readInt();
     }
 
     @Override
@@ -175,6 +214,10 @@ public class Alarm implements Parcelable{
         dest.writeInt(mode);
         dest.writeString(ringtone);
         if (enable) dest.writeInt(1); else dest.writeInt(0);
+        dest.writeInt(timeLimit);
+        dest.writeInt(scoreLimit);
+        dest.writeInt(quesNum);
+        dest.writeInt(rightQues);
     }
 
     public void setEnable(boolean enable) {

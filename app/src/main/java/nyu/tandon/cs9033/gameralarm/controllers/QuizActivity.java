@@ -72,8 +72,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_quiz);
 
         Intent intent = getIntent();
-        TOTAL_NUMBER = intent.getParcelableExtra("TotalNumber");
-        RIGHT_NUMBER = intent.getParcelableExtra("RightNumber");
+        TOTAL_NUMBER = intent.getIntExtra("TotalNumber", TOTAL_NUMBER);
+        RIGHT_NUMBER = intent.getIntExtra("RightNumber", RIGHT_NUMBER);
 
         question = (TextView) findViewById(R.id.question);
         option1 = (TextView) findViewById(R.id.selectOne);

@@ -48,7 +48,6 @@ public class AddAlarmActivity extends AppCompatActivity{
     int mode = 0;
     boolean isRepeat = false;
     private FunModePreviewFragment funModePreviewFragment;
-    private LinearLayout scrollView;
     String ringtone = "1";
     private int TIME_LIMIT;
     private int SCORE_LIMIT;
@@ -133,7 +132,11 @@ public class AddAlarmActivity extends AppCompatActivity{
             //display the alarm time on time picker
             int time = alarmToEdit.getTime();
             timePicker.setCurrentHour(time/100);
-            timePicker.setCurrentMinute(time%100);
+            timePicker.setCurrentMinute(time % 100);
+            TIME_LIMIT = alarmToEdit.getTimeLimit();
+            SCORE_LIMIT = alarmToEdit.getScoreLimit();
+            QUESTION_NO = alarmToEdit.getQuesNum();
+            RIGHT_NO = alarmToEdit.getRightQues();
             //display the weekdays on the toggle button.
             ArrayList<Integer> days = alarmToEdit.getWeekBitmap();
             for(int day : days){
@@ -216,7 +219,6 @@ public class AddAlarmActivity extends AppCompatActivity{
                             .remove(funModePreviewFragment).commit();
                 }
                 funModePreviewFragment = new FunModePreviewFragment();
-                scrollView = (LinearLayout) findViewById(R.id.PreviewContainer);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, funModePreviewFragment).commit();
                 previewLinearLayout.setVisibility(View.VISIBLE);
@@ -275,9 +277,9 @@ public class AddAlarmActivity extends AppCompatActivity{
         isRepeat = weekdays.isEmpty()? false:true;
         Alarm alarm;
         if(alarmToEdit!= null)
-            alarm = new Alarm(alarmToEdit.getAlarmId(), time, isRepeat, weekdays, mode, ringtone, true);
+            alarm = new Alarm(alarmToEdit.getAlarmId(), time, isRepeat, weekdays, mode, ringtone, true, TIME_LIMIT, SCORE_LIMIT, QUESTION_NO, RIGHT_NO);
         else
-            alarm = new Alarm(time, isRepeat, weekdays, mode, ringtone, true);
+            alarm = new Alarm(time, isRepeat, weekdays, mode, ringtone, true, TIME_LIMIT, SCORE_LIMIT, QUESTION_NO, RIGHT_NO);
         return alarm;
     }
 
@@ -298,8 +300,14 @@ public class AddAlarmActivity extends AppCompatActivity{
         else
             alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000*7;
         Intent intent = new Intent(this, AlarmReceiver.class);
+
         intent.putExtra("Mode", mode); //should pass the alarm to the receiver
         intent.putExtra("Ringtone", ringtone);
+        intent.putExtra("TimeLimit", TIME_LIMIT);
+        intent.putExtra("ScoreLimit", SCORE_LIMIT);
+        intent.putExtra("TotalNumber", QUESTION_NO);
+        intent.putExtra("RightNumber", RIGHT_NO);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Log.i(AddAlarmActivity.TAG, "the alarmtime is " +String.valueOf(alarmTime));
         Log.i(AddAlarmActivity.TAG, "current time is " + String.valueOf(System.currentTimeMillis()));

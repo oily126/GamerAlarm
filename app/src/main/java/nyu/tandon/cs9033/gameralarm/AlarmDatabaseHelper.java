@@ -18,6 +18,7 @@ import nyu.tandon.cs9033.gameralarm.models.QuizQuestions;
 public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "gameralarm";
+
     private static final String TABLE_ALARM = "alarm";
     private static final String COLUMN_ALARM_ID = "id";
     private static final String COLUMN_ALARM_TIME = "time";
@@ -26,6 +27,12 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ALARM_MODE = "mode";
     private static final String COLUMN_ALARM_RINGTONE = "ringtone";
     private static final String COLUMN_ALARM_ENABLE = "enable";
+    private static final String COLUMN_ALARM_TIMELIMIT = "timelimit";
+    private static final String COLUMN_ALARM_SCORELIMIT = "scorelimit";
+    private static final String COLUMN_ALARM_QUESNUM = "quesnum";
+    private static final String COLUMN_ALARM_RIGHTQUES = "rightques";
+
+
 
     public static final String TABLE_QUIZ = "quiz";
     private static final String COLUMN_QUESTION_ID = "qid";
@@ -51,7 +58,12 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_ALARM_WEEK + " integer, "
                 + COLUMN_ALARM_MODE + " integer, "
                 + COLUMN_ALARM_RINGTONE + " varchar(100), "
-                + COLUMN_ALARM_ENABLE + " integer)");
+                + COLUMN_ALARM_ENABLE + " integer, "
+                + COLUMN_ALARM_TIMELIMIT+ " integer, "
+                + COLUMN_ALARM_SCORELIMIT + " integer, "
+                + COLUMN_ALARM_QUESNUM  + " integer, "
+                + COLUMN_ALARM_RIGHTQUES + " integer)"
+        );
 
         db.execSQL("create table " + TABLE_QUIZ + "("
                 + COLUMN_QUESTION_ID + " integer primary key autoincrement, "
@@ -129,17 +141,23 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_ALARM_WEEK,
                 COLUMN_ALARM_MODE,
                 COLUMN_ALARM_RINGTONE,
-                COLUMN_ALARM_ENABLE
+                COLUMN_ALARM_ENABLE,
+                COLUMN_ALARM_TIMELIMIT,
+                COLUMN_ALARM_SCORELIMIT,
+                COLUMN_ALARM_QUESNUM,
+                COLUMN_ALARM_RIGHTQUES
         };
         Cursor c = getReadableDatabase().
                 query(TABLE_ALARM, name, null, null, null, null, null);
         if (c.getCount() > 0) {
             c.moveToFirst();
             while (!c.isLast()) {
-                list.add(new Alarm(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6)));
+                list.add(new Alarm(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6),
+                        c.getInt(7),c.getInt(8),c.getInt(9),c.getInt(10)));
                 c.moveToNext();
             }
-            list.add(new Alarm(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6)));
+            list.add(new Alarm(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getString(5), c.getInt(6),
+                    c.getInt(7),c.getInt(8),c.getInt(9),c.getInt(10)));
             return list;
         } else return list;
     }
@@ -152,6 +170,10 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ALARM_MODE, a.getMode());
         cv.put(COLUMN_ALARM_RINGTONE, a.getRingtone());
         if (a.isEnable()) cv.put(COLUMN_ALARM_ENABLE, 1); else cv.put(COLUMN_ALARM_ENABLE, 0);
+        cv.put(COLUMN_ALARM_TIMELIMIT, a.getTimeLimit());
+        cv.put(COLUMN_ALARM_SCORELIMIT, a.getScoreLimit());
+        cv.put(COLUMN_ALARM_QUESNUM, a.getQuesNum());
+        cv.put(COLUMN_ALARM_RIGHTQUES, a.getRightQues());
         return getWritableDatabase().insert(TABLE_ALARM, null, cv);
     }
 
@@ -176,6 +198,10 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ALARM_MODE, a.getMode());
         cv.put(COLUMN_ALARM_RINGTONE, a.getRingtone());
         if (a.isEnable()) cv.put(COLUMN_ALARM_ENABLE, 1); else cv.put(COLUMN_ALARM_ENABLE, 0);
+        cv.put(COLUMN_ALARM_TIMELIMIT, a.getTimeLimit());
+        cv.put(COLUMN_ALARM_SCORELIMIT, a.getScoreLimit());
+        cv.put(COLUMN_ALARM_QUESNUM, a.getQuesNum());
+        cv.put(COLUMN_ALARM_RIGHTQUES, a.getRightQues());
         return getWritableDatabase().update(TABLE_ALARM, cv, where, arg);
     }
 }

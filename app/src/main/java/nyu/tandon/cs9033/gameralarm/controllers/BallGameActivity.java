@@ -35,7 +35,7 @@ public class BallGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        TIME_LIMIT = intent.getParcelableExtra("TimeLimit");
+        TIME_LIMIT = intent.getIntExtra("TimeLimit", TIME_LIMIT);
 
         Log.i("BallGame", "Create");
         //Play game in full size of screen

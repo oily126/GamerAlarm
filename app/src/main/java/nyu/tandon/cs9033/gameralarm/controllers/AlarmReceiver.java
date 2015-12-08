@@ -19,6 +19,10 @@ public class AlarmReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent){
         int mode = intent.getIntExtra("Mode", -1);
         String ringtone = intent.getStringExtra("ringtone");
+        int timeLimit = intent.getIntExtra("TimeLimit", 90);
+        int scoreLimit = intent.getIntExtra("ScoreLimit", 140);
+        int quesNum = intent.getIntExtra("TotalNumber", 8);
+        int rightQues = intent.getIntExtra("RightNumber", 4);
         //normal mode
 
         if(mode/10 == 0){
@@ -27,21 +31,27 @@ public class AlarmReceiver extends BroadcastReceiver{
             //MediaPlayer player =  MediaPlayer.create(context, R.raw.ringtone1);
             //player.setLooping(true);
             //player.start();
-            Intent nomalIntent = new Intent(context, NormalAlarmActivity.class);
-            nomalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            nomalIntent.putExtra("ringtone", ringtone);
-            context.startActivity(nomalIntent);
+            Intent normalIntent = new Intent(context, NormalAlarmActivity.class);
+            normalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            normalIntent.putExtra("ringtone", ringtone);
+            normalIntent.putExtra("TimeLimit", timeLimit);
+            normalIntent.putExtra("ScoreLimit", scoreLimit);
+            normalIntent.putExtra("TotalNumber", quesNum);
+            normalIntent.putExtra("RightNumber", rightQues);
+            context.startActivity(normalIntent);
         }
         else if(mode/10 ==1 && mode % 10 == 0){
             Log.i(AddAlarmActivity.class.toString(), "received");
             Intent gameIntent = new Intent(context, BallGameActivity.class);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             gameIntent.putExtra("ringtone", ringtone);
+            gameIntent.putExtra("TimeLimit", timeLimit);
+            gameIntent.putExtra("ScoreLimit", scoreLimit);
             context.startActivity(gameIntent);
         } else if(mode/10 ==1 && mode % 10 == 1) {
             Intent gameIntent = new Intent(context, JewelsActivity.class);
-            gameIntent.putExtra("score", 120);
-            gameIntent.putExtra("time", 60);
+            gameIntent.putExtra("score", scoreLimit);
+            gameIntent.putExtra("time", timeLimit);
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             gameIntent.putExtra("ringtone", ringtone);
             context.startActivity(gameIntent);
