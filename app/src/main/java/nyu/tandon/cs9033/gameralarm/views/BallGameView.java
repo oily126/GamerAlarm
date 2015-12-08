@@ -20,8 +20,10 @@ import android.widget.Toast;
 import java.util.Random;
 
 import nyu.tandon.cs9033.gameralarm.R;
+import nyu.tandon.cs9033.gameralarm.controllers.BallGameActivity;
 
 public class BallGameView extends SurfaceView implements Callback, Runnable, SensorEventListener {
+    private BallGameActivity ballGameActivity = (BallGameActivity) getContext();
     /** Refresh screen every 50 frames **/
     public static final int TIME_IN_FRAME = 50;
 
@@ -120,22 +122,7 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
         /*mCanvas.drawText("X axis：" + mGX, 10, 20, mPaint);
         mCanvas.drawText("Y axis：" + mGY, 10, 40, mPaint);
         mCanvas.drawText("Z axis：" + mGZ, 10, 60, mPaint);*/
-        /*
-        Calculate the point on the circle using angle and radius of circle (x = r * cos(angle), y = r * sin(angle)).
-        deltaY = P2_y - P1_y
-        deltaX = P2_x - P1_x
-        angleInDegrees = arctan(deltaY / deltaX) * 180 / PI
-
-        //Code inside ACTION_MOVE case
-        mInitialX = event.getX();
-        mInitialY = event.getY();
-        float deltaX = circleCenter.x - mInitialX;
-        float deltaY = circleCenter.y - mInitialY;
-        double angleInRadian = Math.atan2(yDiff, xDiff);
-        PointF pointOnCircle = new PointF();
-        pointOnCircle.x = circleCenter.x + ((float)(circleRadius*(Math.cos(angleInRadian))));
-        pointOnCircle.y = circleCenter.y + ((float)(circleRadius*(Math.cos(angleInRadian))));
-         */
+        
     }
 
     @Override
@@ -214,10 +201,10 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
         }
 
         if (mBallPosX >= mHolePosX && mBallPosY >= mHolePosY && mBallUpperPosX <= mHoleUpperPosX && mBallUpperPosY <= mHoleUpperPosY ) {
-
             Toast.makeText(BallGameView.this.getContext(), "You Win!", Toast.LENGTH_LONG).show();
             mSensorMgr.unregisterListener(BallGameView.this);
             surfaceDestroyed(mSurfaceHolder);
+            ballGameActivity.gameFinish();
         }
     }
 

@@ -85,7 +85,6 @@ public class NormalAlarmActivity extends Activity {
     }
 
     private void createMediaPlayer(String path) {
-        Log.i(NormalAlarmActivity.class.toString(), path);
         try {
             int id = Integer.parseInt(path);
             if (id == 1) {

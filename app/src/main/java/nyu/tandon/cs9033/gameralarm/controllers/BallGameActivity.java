@@ -6,6 +6,7 @@ package nyu.tandon.cs9033.gameralarm.controllers;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ public class BallGameActivity extends AppCompatActivity {
 
     private BallGameView BGV_instance = null;
     private MediaPlayer player = null;
-    private int TIME_LIMIT = 60000;
+    private int TIME_LIMIT = 90000;
+    private static Timer timeLimit;
+    private static TimerTask timeTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,8 @@ public class BallGameActivity extends AppCompatActivity {
         setContentView(BGV_instance);
 
         // Set a timer to countdown of the time limit
-        final Timer timeLimit = new Timer();
-        TimerTask timeTask = new TimerTask() {
+        timeLimit = new Timer();
+        timeTask = new TimerTask() {
             @Override
             public void run() {
                 timeLimit.cancel();
@@ -71,7 +74,7 @@ public class BallGameActivity extends AppCompatActivity {
         timeLimit.schedule(timeTask, TIME_LIMIT);
 
         // Check game status every 10 milliseconds
-        final Timer checkTime = new Timer();
+        /*final Timer checkTime = new Timer();
         TimerTask checkTask = new TimerTask() {
             @Override
             public void run() {
@@ -85,11 +88,19 @@ public class BallGameActivity extends AppCompatActivity {
                 }
             }
         };
-        checkTime.schedule(checkTask, 0, 10);
+        checkTime.schedule(checkTask, 0, 10);*/
     }
 
+    public void gameFinish() {
+        timeTask.cancel();
+        timeLimit.cancel();
+        player.stop();
+        player.release();
+        player = null;
+        finish();
+    }
 
-    // Disable Back and Menu buttons
+    // Disable Back, Menu and "Recent apps" buttons
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -97,26 +108,20 @@ public class BallGameActivity extends AppCompatActivity {
                 return false;
             case KeyEvent.KEYCODE_MENU:
                 return false;
+            case KeyEvent.KEYCODE_APP_SWITCH:
+                return false;
             default:
                 return super.onKeyDown(keyCode, event);
         }
     }
 
-    // Disable "Recent apps button", only support API>11
     @Override
     protected void onPause() {
-        super.onPause();
         Log.i("BallGame", "Pause");
         if (player != null) player.pause();
-        ActivityManager activityManager = (ActivityManager) getApplicationContext()
-                .getSystemService(Context.ACTIVITY_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            activityManager.moveTaskToFront(getTaskId(), 0);
-        }
-
         BGV_instance.mIsRunning = false;
-        finish();
+        super.onPause();
+        //finish();
     }
 
     @Override
@@ -126,8 +131,8 @@ public class BallGameActivity extends AppCompatActivity {
         if (player == null) {
             createMediaPlayer(getIntent().getStringExtra("ringtone"));
             player.setLooping(true);
+            player.start();
         }
-        player.start();
         if (BGV_instance == null) {
             BGV_instance = new BallGameView(this);
             setContentView(BGV_instance);
@@ -136,7 +141,6 @@ public class BallGameActivity extends AppCompatActivity {
     }
 
     private void createMediaPlayer(String path) {
-        Log.i(BallGameActivity.class.toString(), path);
         try {
             int id = Integer.parseInt(path);
             if (id == 1) {
