@@ -40,6 +40,7 @@ import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -133,7 +134,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     @Override
     public Engine onLoadEngine() {
         if (player == null) {
-            player = MediaPlayer.create(this, R.raw.ringtone1);
+            createMediaPlayer(getIntent().getStringExtra("ringtone"));
             player.setLooping(true);
         }
         player.start();
@@ -341,6 +342,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             public void onTimePassed(TimerHandler bTimerHandler) {
                 JewelsActivity.this.mGameRunning = false;
                 player.stop();
+                player.release();
                 Intent intent = new Intent(JewelsActivity.this, NormalAlarmActivity.class);
                 startActivity(intent);
 
@@ -907,6 +909,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         if (this.mScore >= this.mScoreLimit) {
             this.mGameRunning = false;
             player.stop();
+            player.release();
             //this.mEngine.stop();
             //this.releaseWakeLock();
             finish();
@@ -1112,7 +1115,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         super.onResume();
         this.mGameRunning = true;
         if (player == null) {
-            player =  MediaPlayer.create(this, R.raw.ringtone1);
+            createMediaPlayer(getIntent().getStringExtra("ringtone"));
             player.setLooping(true);
         }
         player.start();
@@ -1135,6 +1138,27 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
     private void releaseWakeLock() {
         if(this.mWakeLock != null && this.mWakeLock.isHeld()) {
             this.mWakeLock.release();
+        }
+    }
+
+    private void createMediaPlayer(String path) {
+        try {
+            int id = Integer.parseInt(path);
+            if (id == 1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            } else {
+                if (id == 2) {
+                    player = MediaPlayer.create(this, R.raw.ringtone1);
+                }
+            }
+        } catch (NumberFormatException e) {
+            try {
+                player = new MediaPlayer();
+                player.setDataSource(path);
+                player.prepare();
+            } catch (IOException e1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            }
         }
     }
 }

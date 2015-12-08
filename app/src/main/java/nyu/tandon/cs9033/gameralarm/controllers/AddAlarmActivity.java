@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
@@ -41,6 +39,7 @@ public class AddAlarmActivity extends AppCompatActivity{
     Button funMode;
     Button normalMode;
     Button trickMode;
+    Button ringtoneBtn;
     //toggle buttons for weekdays
     ToggleButton mon, tues, wed, thur, fri, sat, sun;
     //TextView textAlarmPrompt;
@@ -49,6 +48,8 @@ public class AddAlarmActivity extends AppCompatActivity{
     int mode = 0;
     boolean isRepeat = false;
     private FunModePreviewFragment funModePreviewFragment;
+    private LinearLayout scrollView;
+    String ringtone = "1";
     private int TIME_LIMIT;
     private int SCORE_LIMIT;
     private QuizModePreviewFragment quizModePreviewFragment;
@@ -58,6 +59,7 @@ public class AddAlarmActivity extends AppCompatActivity{
     Alarm alarmToEdit;
 
     final static int REQUEST_CODE_1 = 1;
+    final static int REQUEST_RINGTONE = 2;
 
     public int getMode() {
         return mode;
@@ -153,6 +155,7 @@ public class AddAlarmActivity extends AppCompatActivity{
                 }
             }
             mode = alarmToEdit.getMode();
+            ringtone = alarmToEdit.getRingtone();
         }
 
         //SetAlarm button
@@ -205,6 +208,7 @@ public class AddAlarmActivity extends AppCompatActivity{
                 //for the first demo, just start the ball game
                 //mode = 10;
                 funModePreviewFragment = new FunModePreviewFragment();
+                scrollView = (LinearLayout) findViewById(R.id.PreviewContainer);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.PreviewContainer, funModePreviewFragment).commit();
                 previewLinearLayout.setVisibility(View.VISIBLE);
@@ -240,6 +244,14 @@ public class AddAlarmActivity extends AppCompatActivity{
             }
         });
 
+        ringtoneBtn = (Button) findViewById(R.id.ringtone);
+        ringtoneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddAlarmActivity.this, SetRingtoneActivity.class);
+                startActivityForResult(intent, REQUEST_RINGTONE);
+            }
+        });
 
     }
 
@@ -250,9 +262,9 @@ public class AddAlarmActivity extends AppCompatActivity{
         isRepeat = weekdays.isEmpty()? false:true;
         Alarm alarm;
         if(alarmToEdit!= null)
-            alarm = new Alarm(alarmToEdit.getAlarmId(), time, isRepeat, weekdays, mode, "default", true);
+            alarm = new Alarm(alarmToEdit.getAlarmId(), time, isRepeat, weekdays, mode, ringtone, true);
         else
-            alarm = new Alarm(time, isRepeat, weekdays, mode, "default", true);
+            alarm = new Alarm(time, isRepeat, weekdays, mode, ringtone, true);
         return alarm;
     }
 
@@ -274,6 +286,7 @@ public class AddAlarmActivity extends AppCompatActivity{
             alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000*7;
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra("Mode", mode); //should pass the alarm to the receiver
+        intent.putExtra("Ringtone", ringtone);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Log.i(AddAlarmActivity.TAG, "the alarmtime is " +String.valueOf(alarmTime));
         Log.i(AddAlarmActivity.TAG, "current time is " + String.valueOf(System.currentTimeMillis()));
@@ -397,5 +410,14 @@ public class AddAlarmActivity extends AppCompatActivity{
             }
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_RINGTONE) {
+                ringtone = data.getStringExtra("ringtone");
+            }
+        }
     }
 }

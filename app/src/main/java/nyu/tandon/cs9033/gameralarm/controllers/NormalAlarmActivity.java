@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import nyu.tandon.cs9033.gameralarm.R;
@@ -37,14 +38,15 @@ public class NormalAlarmActivity extends Activity {
             @Override
             public void onClick(View v) {
                 NormalAlarmActivity.this.player.stop();
+                NormalAlarmActivity.this.player.release();
                 Calendar calNow = Calendar.getInstance();
                 Calendar alarmCal = (Calendar) calNow.clone();
-                alarmCal.set(Calendar.MINUTE, calNow.get(Calendar.MINUTE)+1);
+                alarmCal.set(Calendar.MINUTE, calNow.get(Calendar.MINUTE) + 1);
                 Intent intent = new Intent(NormalAlarmActivity.this, AlarmReceiver.class);
                 intent.putExtra("Mode", 0); //should pass the alarm to the receiver
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(NormalAlarmActivity.this, snoozeID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                Long alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000;
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Long alarmTime = alarmCal.getTimeInMillis() >= System.currentTimeMillis() ? alarmCal.getTimeInMillis() : alarmCal.getTimeInMillis() + 24 * 3600 * 1000;
                 alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
                 finish();
             }
@@ -55,11 +57,12 @@ public class NormalAlarmActivity extends Activity {
             @Override
             public void onClick(View v) {
                 NormalAlarmActivity.this.player.stop();
+                NormalAlarmActivity.this.player.release();
                 finish();
             }
         });
 
-        player =  MediaPlayer.create(this, R.raw.ringtone1);
+        createMediaPlayer(getIntent().getStringExtra("ringtone"));
         player.setLooping(true);
         player.start();
     }
@@ -74,5 +77,26 @@ public class NormalAlarmActivity extends Activity {
     protected void onPause() {
         if (player != null) player.stop();
         super.onPause();
+    }
+
+    private void createMediaPlayer(String path) {
+        try {
+            int id = Integer.parseInt(path);
+            if (id == 1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            } else {
+                if (id == 2) {
+                    player = MediaPlayer.create(this, R.raw.ringtone1);
+                }
+            }
+        } catch (NumberFormatException e) {
+            try {
+                player = new MediaPlayer();
+                player.setDataSource(path);
+                player.prepare();
+            } catch (IOException e1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,7 +45,7 @@ public class BallGameActivity extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        player =  MediaPlayer.create(this, R.raw.ringtone1);
+        createMediaPlayer(getIntent().getStringExtra("ringtone"));
         player.start();
 
         //Play game in horizontal screen
@@ -59,6 +60,7 @@ public class BallGameActivity extends AppCompatActivity {
             public void run() {
                 timeLimit.cancel();
                 player.stop();
+                player.release();
                 Intent startNormal = new Intent(BallGameActivity.this, NormalAlarmActivity.class);
                 //startMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startNormal);
@@ -76,6 +78,7 @@ public class BallGameActivity extends AppCompatActivity {
                     checkTime.cancel();
                     timeLimit.cancel();
                     player.stop();
+                    player.release();
                     finish();
                 }
             }
@@ -119,7 +122,7 @@ public class BallGameActivity extends AppCompatActivity {
         super.onResume();
         Log.i("BallGame", "Resume");
         if (player == null) {
-            player =  MediaPlayer.create(this, R.raw.ringtone1);
+            createMediaPlayer(getIntent().getStringExtra("ringtone"));
             player.setLooping(true);
         }
         player.start();
@@ -129,4 +132,26 @@ public class BallGameActivity extends AppCompatActivity {
             BGV_instance.mIsRunning = true;
         }
     }
+
+    private void createMediaPlayer(String path) {
+        try {
+            int id = Integer.parseInt(path);
+            if (id == 1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            } else {
+                if (id == 2) {
+                    player = MediaPlayer.create(this, R.raw.ringtone1);
+                }
+            }
+        } catch (NumberFormatException e) {
+            try {
+                player = new MediaPlayer();
+                player.setDataSource(path);
+                player.prepare();
+            } catch (IOException e1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            }
+        }
+    }
+
 }

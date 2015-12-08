@@ -50,6 +50,10 @@
             android:name=".controllers.QuizActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".controllers.SetRingtoneActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

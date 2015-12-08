@@ -135,17 +135,17 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
-                                    case 0: /*background*/
+                                    case 0: //background
                                         MainActivity.this.setUserBackground();
                                         break;
-                                    case 1: /*background restore default*/
+                                    case 1: //background restore default
                                         ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackgroundColor(MainActivity.bgColor);
                                         break;
-                                    case 2: /*set font color*/
+                                    case 2: //set font color
                                         Intent intent = new Intent(MainActivity.this, SetFontActivity.class);
                                         startActivityForResult(intent, SET_FONT_COLOR);
                                         break;
-                                    case 3: /*about*/
+                                    case 3: //about
                                         MainActivity.this.getAbout();
                                         break;
                                     default:
