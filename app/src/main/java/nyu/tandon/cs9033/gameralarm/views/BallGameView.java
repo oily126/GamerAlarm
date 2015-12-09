@@ -12,6 +12,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -24,6 +25,7 @@ import nyu.tandon.cs9033.gameralarm.controllers.BallGameActivity;
 
 public class BallGameView extends SurfaceView implements Callback, Runnable, SensorEventListener {
     private BallGameActivity ballGameActivity = (BallGameActivity) getContext();
+    private Thread svTread;
     /** Refresh screen every 50 frames **/
     public static final int TIME_IN_FRAME = 50;
 
@@ -113,7 +115,6 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
 
 
     private void Draw() {
-
         /** Draw the game background **/
         mCanvas.drawBitmap(mBitmapBg, 0, 0, mPaint);
         /** Draw the game ball **/
@@ -122,12 +123,13 @@ public class BallGameView extends SurfaceView implements Callback, Runnable, Sen
         /*mCanvas.drawText("X axis：" + mGX, 10, 20, mPaint);
         mCanvas.drawText("Y axis：" + mGY, 10, 40, mPaint);
         mCanvas.drawText("Z axis：" + mGZ, 10, 60, mPaint);*/
-        
+
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        new Thread(this).start();
+        svTread = new Thread(this);
+        svTread.start();
         /** Get the current screen width and height **/
         mScreenWidth = this.getWidth();
         mScreenHeight = this.getHeight();

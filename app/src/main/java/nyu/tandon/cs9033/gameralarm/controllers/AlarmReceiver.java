@@ -34,10 +34,6 @@ public class AlarmReceiver extends BroadcastReceiver{
             Intent normalIntent = new Intent(context, NormalAlarmActivity.class);
             normalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             normalIntent.putExtra("ringtone", ringtone);
-            normalIntent.putExtra("TimeLimit", timeLimit);
-            normalIntent.putExtra("ScoreLimit", scoreLimit);
-            normalIntent.putExtra("TotalNumber", quesNum);
-            normalIntent.putExtra("RightNumber", rightQues);
             context.startActivity(normalIntent);
         }
         else if(mode/10 ==1 && mode % 10 == 0){
@@ -55,6 +51,13 @@ public class AlarmReceiver extends BroadcastReceiver{
             gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             gameIntent.putExtra("ringtone", ringtone);
             context.startActivity(gameIntent);
+        } else if(mode/20 ==1 && mode % 20 == 0) {
+            Intent quizIntent = new Intent(context, QuizActivity.class);
+            quizIntent.putExtra("ringtone", ringtone);
+            quizIntent.putExtra("TotalNumber", quesNum);
+            quizIntent.putExtra("RightNumber", rightQues);
+            quizIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(quizIntent);
         }
 
     }

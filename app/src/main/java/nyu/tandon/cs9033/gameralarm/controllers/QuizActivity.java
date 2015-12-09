@@ -5,18 +5,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -65,6 +64,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout[] relativeLayouts;
     private Set<Integer> set = new HashSet<Integer>();
     private Random random = new Random();
+    private String path = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +118,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //player =  MediaPlayer.create(this, R.raw.ringtone1);
-        //player.start();
+        if (getIntent().hasExtra("ringtone")) path = getIntent().getStringExtra("ringtone");
+        createMediaPlayer(path);
+        player.setLooping(true);
+        player.start();
 
         //Get all questions from database
         Cursor cursor = null;
@@ -145,6 +147,27 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         questionNo = 0;
         setQuestionView(qList.get(questionNo));
 
+    }
+
+    @Override
+    protected void onPause() {
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
+        super.onPause();
+        //finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player == null) {
+            createMediaPlayer(path);
+            player.setLooping(true);
+            player.start();
+        }
     }
 
     /*Listen all click events in view*/
@@ -194,7 +217,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
 
             } else {
-                //player.stop();
+                player.stop();
+                player.release();
+                player = null;
                 Intent startNormal = new Intent(QuizActivity.this, NormalAlarmActivity.class);
                 startActivity(startNormal);
                 finish();
@@ -279,6 +304,42 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         str = "Total: " + String.valueOf(questionNo + 1) + " questions.\nRight: " + String.valueOf(rightNo)
                 + " questions.";
         statistics.setText(str);
+    }
+
+    // Disable Back, Menu and "Recent apps" buttons
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                return false;
+            case KeyEvent.KEYCODE_MENU:
+                return false;
+            case KeyEvent.KEYCODE_APP_SWITCH:
+                return false;
+            default:
+                return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    private void createMediaPlayer(String path) {
+        try {
+            int id = Integer.parseInt(path);
+            if (id == 1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            } else {
+                if (id == 2) {
+                    player = MediaPlayer.create(this, R.raw.ringtone1);
+                }
+            }
+        } catch (NumberFormatException e) {
+            try {
+                player = new MediaPlayer();
+                player.setDataSource(path);
+                player.prepare();
+            } catch (IOException e1) {
+                player = MediaPlayer.create(this, R.raw.ringtone1);
+            }
+        }
     }
 
 }

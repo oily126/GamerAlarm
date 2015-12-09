@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -65,6 +66,7 @@ public class BallGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 timeLimit.cancel();
+                BGV_instance.mIsRunning = false;
                 if (player != null) {
                     player.stop();
                     player.release();
@@ -131,25 +133,24 @@ public class BallGameActivity extends AppCompatActivity {
             player.release();
             player = null;
         }
+
         BGV_instance.mIsRunning = false;
+        BGV_instance.setVisibility(View.GONE);
         super.onPause();
-        //finish();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         Log.i("BallGame", "Resume");
         if (player == null) {
             createMediaPlayer(path);
             player.setLooping(true);
             player.start();
         }
-        if (BGV_instance == null) {
-            BGV_instance = new BallGameView(this);
-            setContentView(BGV_instance);
-            BGV_instance.mIsRunning = true;
-        }
+
+        BGV_instance.setVisibility(View.VISIBLE);
+        BGV_instance.mIsRunning = true;
+        super.onResume();
     }
 
     private void createMediaPlayer(String path) {
