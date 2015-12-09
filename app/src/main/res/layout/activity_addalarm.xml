@@ -57,7 +57,7 @@
                 android:id="@+id/cancel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Cancel Alarm"
+                android:text="Cancel"
                 android:layout_alignTop="@+id/setalarmbutton"
                 android:layout_alignEnd="@+id/ringtone"
                 android:layout_alignStart="@+id/thursday" />
