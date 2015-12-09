@@ -5,7 +5,7 @@
 
     <nyu.tandon.cs9033.gameralarm.views.CustomizedViewPager
         android:id="@+id/viewPager"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         />
@@ -50,15 +50,21 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="30sp"
         android:text="Set Mode"
+        android:textAllCaps="false"
         android:textSize="16sp"
         android:id="@+id/SetModeButton"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
         android:layout_above="@id/previewViewGroup"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:background="#2DC5F7"
         android:clickable="true" />
 
 

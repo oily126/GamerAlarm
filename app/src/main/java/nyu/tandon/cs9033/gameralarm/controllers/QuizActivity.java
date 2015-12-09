@@ -36,7 +36,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView option2;
     private TextView option3;
     private TextView option4;
-    private static TextView statistics;
+    private TextView statistics;
     private TextView answerExplanation;
     private TextView questionResult;
     private ImageView image1;
@@ -48,12 +48,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout R3;
     private RelativeLayout R4;
     private Button submit;
-    private static int TOTAL_NUMBER = 8;
-    private static int RIGHT_NUMBER = 4;
-    private static int questionNo = 0;
-    private static int rightNo = 0;
-    private static int answerIndex;
-    private static int selectedIndex;
+    private int TOTAL_NUMBER = 8;
+    private int RIGHT_NUMBER = 4;
+    private int questionNo = 0;
+    private int rightNo = 0;
+    private int answerIndex;
+    private int selectedIndex;
     private MediaPlayer player;
     //private ViewPager viewPager;
     private String querySql;
@@ -220,6 +220,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 player.stop();
                 player.release();
                 player = null;
+                questionNo = 0;
+                rightNo = 0;
                 Intent startNormal = new Intent(QuizActivity.this, NormalAlarmActivity.class);
                 startActivity(startNormal);
                 finish();

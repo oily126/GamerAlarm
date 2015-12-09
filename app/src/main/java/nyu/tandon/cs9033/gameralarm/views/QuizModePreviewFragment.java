@@ -58,14 +58,15 @@ public class QuizModePreviewFragment extends Fragment {
 
 
         //Load image ID into imgIdArray
-        imgIdArray.add(R.drawable.ball_game_preview);
+        imgIdArray.add(R.drawable.quiz_mode_preview);
 
         //Load ImageView into mImageViews
         mImageViews = new ImageView[imgIdArray.size()];
         for(int i=0; i< imgIdArray.size(); i++){
             ImageView imageView = new ImageView(addAlarmActivity);
-            imageView.setBackgroundResource(imgIdArray.get(i));
-            imageView.setAdjustViewBounds(true);
+            imageView.setImageResource(imgIdArray.get(i));
+            //imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             mImageViews[i] = imageView;
         }
 
@@ -106,6 +107,7 @@ public class QuizModePreviewFragment extends Fragment {
         questionNoText.setText("Total number of questions:");
         questionNo.setMax((QUESTION_NO_MAX - QUESTION_NO_MIN) / step);
         questionNo.setEnabled(true);
+        questionNo.setProgress(0);
         questionNo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -127,7 +129,8 @@ public class QuizModePreviewFragment extends Fragment {
         //Seek Bar of "Number of questions need to answer correctly"
         rightNoText.setText("Number of questions need to answer correctly:");
         rightNo.setMax((RIGHT_NO_MAX - RIGHT_NO_MIN) / step);
-        questionNo.setEnabled(true);
+        rightNo.setEnabled(true);
+        rightNo.setProgress(0);
         rightNo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

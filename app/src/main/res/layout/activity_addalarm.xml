@@ -28,36 +28,52 @@
                 android:background="@drawable/bg_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="S"
-                android:textOn="S"
-                android:textSize="25dp"
+                android:textOff="Sun"
+                android:textOn="Sun"
+                android:textAllCaps="false"
+                android:textSize="22dp"
                 android:layout_below="@+id/picker"
                 android:layout_marginLeft="5dp"
                 android:checked="false" />
             <ToggleButton
                 android:id="@+id/monday"
                 android:background="@drawable/bg_button"
-                android:textSize="25dp"
+                android:textSize="22dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="M"
-                android:textOn="M"
+                android:textOff="Mon"
+                android:textOn="Mon"
+                android:textAllCaps="false"
                 android:layout_below="@+id/picker"
                 android:layout_toRightOf="@+id/sunday"
                 android:layout_toEndOf="@+id/sunday" />
 
             <Button
                 android:id="@+id/setalarmbutton"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="145sp"
+                android:layout_height="45sp"
                 android:text="SET ALARM"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:background="@drawable/buttonshape"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
                 android:layout_below="@+id/ringtone"
                 android:layout_toStartOf="@+id/wednesday" />
             <Button
                 android:id="@+id/cancel"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="145sp"
+                android:layout_height="45sp"
                 android:text="Cancel"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:background="@drawable/buttonshape"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
                 android:layout_alignTop="@+id/setalarmbutton"
                 android:layout_alignEnd="@+id/ringtone"
                 android:layout_alignStart="@+id/thursday" />
@@ -65,22 +81,24 @@
             <ToggleButton
                 android:id="@+id/tuesday"
                 android:background="@drawable/bg_button"
-                android:textSize="25dp"
+                android:textSize="22dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="T"
-                android:textOn="T"
+                android:textOff="Tue"
+                android:textOn="Tue"
+                android:textAllCaps="false"
                 android:layout_alignBottom="@+id/monday"
                 android:layout_toRightOf="@+id/monday"
                 android:layout_toEndOf="@+id/monday" />
             <ToggleButton
                 android:id="@+id/wednesday"
                 android:background="@drawable/bg_button"
-                android:textSize="25dp"
+                android:textSize="22dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="W"
-                android:textOn="W"
+                android:textOff="Wed"
+                android:textOn="Wed"
+                android:textAllCaps="false"
                 android:layout_alignBottom="@+id/tuesday"
                 android:layout_toRightOf="@+id/tuesday"
                 android:layout_toEndOf="@+id/tuesday" />
@@ -88,11 +106,12 @@
             <ToggleButton
                 android:id="@+id/thursday"
                 android:background="@drawable/bg_button"
-                android:textSize="25dp"
+                android:textSize="22dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="T"
-                android:textOn="T"
+                android:textOff="Thu"
+                android:textOn="Thu"
+                android:textAllCaps="false"
                 android:layout_alignTop="@+id/wednesday"
                 android:layout_toRightOf="@+id/wednesday"
                 android:layout_toEndOf="@+id/wednesday" />
@@ -100,11 +119,12 @@
             <ToggleButton
                 android:id="@+id/friday"
                 android:background="@drawable/bg_button"
-                android:textSize="25dp"
+                android:textSize="22dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="F"
-                android:textOn="F"
+                android:textOff="Fri"
+                android:textOn="Fri"
+                android:textAllCaps="false"
                 android:layout_alignBottom="@+id/thursday"
                 android:layout_toRightOf="@+id/thursday"
                 android:layout_toEndOf="@+id/thursday" />
@@ -112,51 +132,64 @@
             <ToggleButton
                 android:id="@+id/saturday"
                 android:background="@drawable/bg_button"
-                android:textSize="25dp"
+                android:textSize="22dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:textOff="S"
-                android:textOn="S"
+                android:textOff="Sat"
+                android:textOn="Sat"
+                android:textAllCaps="false"
                 android:layout_alignBottom="@+id/friday"
                 android:layout_toRightOf="@+id/friday"
                 android:layout_toEndOf="@+id/friday" />
-
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/modeContainer"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Game Mode"
-                android:textSize="12dp"
-                android:id="@+id/funmode"
-                android:layout_below="@+id/monday"
-                android:layout_alignStart="@+id/monday" />
+                android:orientation="horizontal"
+                android:layout_below="@+id/sunday"
+                android:layout_alignStart="@+id/sunday">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Normal Mode"
-                android:textSize="12dp"
-                android:id="@+id/normalmode"
-                android:layout_alignTop="@+id/funmode"
-                android:layout_toRightOf="@+id/funmode"
-                android:layout_toEndOf="@+id/funmode" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Game Mode"
+                    android:textSize="14dp"
+                    android:id="@+id/funmode"
+                    android:drawableLeft="@drawable/game_mode_button"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:text="Quiz Mode"
-                android:id="@+id/trickmode"
-                android:layout_alignTop="@+id/normalmode"
-                android:layout_toRightOf="@+id/normalmode"
-                android:layout_toEndOf="@+id/normalmode" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Normal Mode"
+                    android:textSize="14dp"
+                    android:id="@+id/normalmode"
+                    android:drawableLeft="@drawable/normal_mode_button"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="Quiz Mode"
+                    android:id="@+id/trickmode"
+                    android:drawableLeft="@drawable/quiz_mode_button"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/ringtone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Select Ringtone"
+                android:textSize="20sp"
+                android:drawableLeft="@drawable/set_ringtone_button"
                 android:layout_below="@+id/PreviewContainer"
-                android:layout_alignEnd="@+id/saturday" />
+                android:layout_alignEnd="@+id/saturday"
+                android:layout_alignStart="@+id/setalarmbutton" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -164,7 +197,7 @@
                 android:id="@+id/PreviewContainer"
                 android:layout_alignLeft="@+id/sunday"
                 android:layout_alignStart="@+id/sunday"
-                android:layout_below="@+id/funmode"
+                android:layout_below="@+id/modeContainer"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:visibility="gone"

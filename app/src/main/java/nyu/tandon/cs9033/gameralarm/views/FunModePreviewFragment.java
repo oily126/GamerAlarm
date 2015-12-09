@@ -68,8 +68,9 @@ public class FunModePreviewFragment extends Fragment {
         mImageViews = new ImageView[imgIdArray.size()];
         for(int i=0; i< imgIdArray.size(); i++){
             ImageView imageView = new ImageView(addAlarmActivity);
-            imageView.setBackgroundResource(imgIdArray.get(i));
-            imageView.setAdjustViewBounds(true);
+            imageView.setImageResource(imgIdArray.get(i));
+            //imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             mImageViews[i] = imageView;
         }
 
@@ -104,9 +105,11 @@ public class FunModePreviewFragment extends Fragment {
             }
         });
 
+        // the Seek Bar of setting time threshold of all games
         timeLimitText.setText("Alarm Time Threshold:");
         timeLimit.setMax((TIME_LIMIT_MAX - TIME_LIMIT_MIN) / TIME_LIMIT_STEP);
         timeLimit.setEnabled(true);
+        timeLimit.setProgress(0);
         timeLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -168,11 +171,13 @@ public class FunModePreviewFragment extends Fragment {
             }
 
             if (arg0 == 1) {
+                // the Seek Bar of setting score threshold of jewel game
                 scoreLimitText.setVisibility(View.VISIBLE);
                 scoreLimit.setVisibility(View.VISIBLE);
                 scoreLimitText.setText("Jewel Game Score Threshold:");
                 scoreLimit.setMax((SCORE_LIMIT_MAX - SCORE_LIMIT_MIN) / SCORE_LIMIT_STEP);
                 scoreLimit.setEnabled(true);
+                scoreLimit.setProgress(0);
                 scoreLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

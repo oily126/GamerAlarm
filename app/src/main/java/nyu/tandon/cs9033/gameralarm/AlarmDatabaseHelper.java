@@ -121,8 +121,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 		int ans[] = new int[4];
 		boolean accept = false;
 		String problem = new String();
-		for (i = 0; i <= 20; i++) {
-			for (j = 1; j <= 20; j++) {
+		for (i = 5; i <= 20; i++) {
+			for (j = 6; j <= 20; j++) {
 				for (op = 0; op < 4; op++) {
                     if (op == 3 && i % j != 0) break;
 					switch(op) {
@@ -157,7 +157,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 						} while (!accept);						
 					}
 					this.addQuestion(db, problem, String.valueOf(ans[0]), String.valueOf(ans[1]), String.valueOf(ans[2]), String.valueOf(ans[3]), 1, null);
-					Log.i(this.getClass().toString(), problem + String.valueOf(ans[0]) + String.valueOf(ans[1]) + String.valueOf(ans[2]) + String.valueOf(ans[3]));
 				}
 			}
 		}

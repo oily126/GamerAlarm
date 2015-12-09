@@ -212,6 +212,9 @@ public class AddAlarmActivity extends AppCompatActivity{
             public void onClick(View v) {
                 //for the first demo, just start the ball game
                 //mode = 10;
+                normalMode.setBackgroundResource(0);
+                trickMode.setBackgroundResource(0);
+                funMode.setBackgroundResource(R.color.button_color);
                 if (quizModePreviewFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .remove(quizModePreviewFragment).commit();
@@ -235,7 +238,17 @@ public class AddAlarmActivity extends AppCompatActivity{
             public void onClick(View v) {
                 //for the first demo, just start the normal mode
                 mode = 0;
-
+                funMode.setBackgroundResource(0);
+                trickMode.setBackgroundResource(0);
+                normalMode.setBackgroundResource(R.color.button_color);
+                if (funModePreviewFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(funModePreviewFragment).commit();
+                }
+                if (quizModePreviewFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(quizModePreviewFragment).commit();
+                }
             }
         });
 
@@ -244,6 +257,9 @@ public class AddAlarmActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
+                normalMode.setBackgroundResource(0);
+                funMode.setBackgroundResource(0);
+                trickMode.setBackgroundResource(R.color.button_color);
                 if (funModePreviewFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .remove(funModePreviewFragment).commit();
