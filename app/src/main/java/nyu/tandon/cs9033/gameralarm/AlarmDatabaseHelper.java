@@ -117,6 +117,50 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void populateQuizDB(SQLiteDatabase db){
+		int i, j, k, l, op;
+		int ans[] = new int[4];
+		boolean accept = false;
+		String problem = new String();
+		for (i = 0; i <= 20; i++) {
+			for (j = 1; j <= 20; j++) {
+				for (op = 0; op < 4; op++) {
+                    if (op == 3 && i % j != 0) break;
+					switch(op) {
+						case 0:
+							ans[0] = i + j;
+							problem = String.valueOf(i) + "+" + String.valueOf(j) + "=?";
+							break;
+						case 1:
+							ans[0] = i - j;
+							problem = String.valueOf(i) + "-" + String.valueOf(j) + "=?";
+							break;
+						case 2:
+							ans[0] = i * j;
+							problem = String.valueOf(i) + "*" + String.valueOf(j) + "=?";
+							break;
+						case 3:
+							ans[0] = i / j;
+							problem = String.valueOf(i) + "/" + String.valueOf(j) + "=?";
+							break;
+						default:
+							break;							
+					}
+					for (k = 1; k < 4; k++) {
+						do {
+							accept = true;
+							if (Math.random() > 0.5) ans[k] = ans[0] + (int)(Math.random() * 50 + 1);
+							else ans[k] = ans[0] + (int)(Math.random() * 50 + 1);
+							for (l = 0; l < k; l++) {
+								if (ans[l] == ans[k]) accept = false;
+								break;
+							}
+						} while (!accept);						
+					}
+					this.addQuestion(db, problem, String.valueOf(ans[0]), String.valueOf(ans[1]), String.valueOf(ans[2]), String.valueOf(ans[3]), 1, null);
+					Log.i(this.getClass().toString(), problem + String.valueOf(ans[0]) + String.valueOf(ans[1]) + String.valueOf(ans[2]) + String.valueOf(ans[3]));
+				}
+			}
+		}
         this.addQuestion(db, "14*15=?", "210", "215", "225", "205", 1, null);
         this.addQuestion(db, "19*19=?", "361", "362", "365", "367", 1, null);
         this.addQuestion(db, "21*19=?", "399", "398", "391", "401", 1, null);
