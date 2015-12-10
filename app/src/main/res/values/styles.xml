@@ -13,4 +13,11 @@
         <item name="android:indeterminateDrawable">@drawable/apptheme_scrubber_progress_horizontal_holo_light</item>
         <item name="android:thumb">@drawable/apptheme_scrubber_control_selector_holo_light</item>
     </style>
+
+    <style name="Color1SwitchStyle">
+        <item name="colorControlActivated">@color/button_color</item>
+        <item name="colorControlHighlight">@color/button_color</item>
+        <item name="colorSwitchThumbNormal">@color/button_color</item>
+
+    </style>
 </resources>
