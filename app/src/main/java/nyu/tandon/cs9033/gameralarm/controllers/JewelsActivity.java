@@ -917,6 +917,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
             //this.mEngine.stop();
             //this.releaseWakeLock();
             finish();
+            this.finishAffinity();
         }
     }
 

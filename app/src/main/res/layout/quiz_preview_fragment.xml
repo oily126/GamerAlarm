@@ -33,6 +33,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/questionNo"
             android:progress="0"
+            android:minHeight="5dp"
+            android:maxHeight="5dp"
+            style="@style/SeekBarAppTheme"
             android:layout_weight="1" />
         <TextView
             android:id="@+id/rightNoText"
@@ -45,6 +48,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/rightNo"
             android:progress="0"
+            android:minHeight="5dp"
+            android:maxHeight="5dp"
+            style="@style/SeekBarAppTheme"
             android:layout_weight="1" />
     </LinearLayout>
 

@@ -6,7 +6,8 @@
     <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true">
+        android:scrollbarThumbVertical="@drawable/apptheme_fastscroll_thumb_default_holo"
+        android:fillViewport="true">
 
         <RelativeLayout
             android:orientation="vertical" android:layout_width="fill_parent"

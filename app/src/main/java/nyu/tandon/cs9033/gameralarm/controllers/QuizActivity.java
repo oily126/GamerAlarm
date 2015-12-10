@@ -222,9 +222,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 player = null;
                 questionNo = 0;
                 rightNo = 0;
-                Intent startNormal = new Intent(QuizActivity.this, NormalAlarmActivity.class);
-                startActivity(startNormal);
                 finish();
+                this.finishAffinity();
             }
         }
     }

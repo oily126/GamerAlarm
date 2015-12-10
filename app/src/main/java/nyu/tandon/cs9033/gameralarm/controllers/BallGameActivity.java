@@ -108,6 +108,7 @@ public class BallGameActivity extends AppCompatActivity {
         player.release();
         player = null;
         finish();
+        this.finishAffinity();
     }
 
     // Disable Back, Menu and "Recent apps" buttons
