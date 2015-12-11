@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                                         break;
                                     case 1: //background restore default
                                         ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackgroundColor(MainActivity.bgColor);
+                                        MainActivity.bgPic = null;
                                         break;
                                     case 2: //set font color
                                         Intent intent = new Intent(MainActivity.this, SetFontActivity.class);

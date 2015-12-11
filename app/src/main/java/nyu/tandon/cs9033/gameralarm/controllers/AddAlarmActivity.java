@@ -126,6 +126,8 @@ public class AddAlarmActivity extends AppCompatActivity{
 
         if (MainActivity.bgPic != null) {
             ((RelativeLayout) findViewById(R.id.addAlarmView)).setBackground(MainActivity.bgPic);
+        } else {
+            ((RelativeLayout) findViewById(R.id.addAlarmView)).setBackgroundColor(MainActivity.bgColor);
         }
 
         //check whether there is any
