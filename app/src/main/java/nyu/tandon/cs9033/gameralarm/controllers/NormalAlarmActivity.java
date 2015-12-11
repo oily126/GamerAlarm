@@ -64,6 +64,7 @@ public class NormalAlarmActivity extends Activity {
                 NormalAlarmActivity.this.player.release();
                 NormalAlarmActivity.this.player = null;
                 finish();
+                NormalAlarmActivity.this.finishAffinity();
             }
         });
 

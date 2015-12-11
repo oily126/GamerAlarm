@@ -121,8 +121,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 		int ans[] = new int[4];
 		boolean accept = false;
 		String problem = new String();
-		for (i = 5; i <= 20; i++) {
-			for (j = 6; j <= 20; j++) {
+		for (i = 10; i <= 20; i++) {
+			for (j = 11; j <= 20; j++) {
 				for (op = 0; op < 4; op++) {
                     if (op == 3 && i % j != 0) break;
 					switch(op) {
@@ -160,10 +160,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 				}
 			}
 		}
-        this.addQuestion(db, "14*15=?", "210", "215", "225", "205", 1, null);
-        this.addQuestion(db, "19*19=?", "361", "362", "365", "367", 1, null);
-        this.addQuestion(db, "21*19=?", "399", "398", "391", "401", 1, null);
-        this.addQuestion(db, "(54/3)*4=?", "72", "64", "80", "68", 1, null);
+
         this.addQuestion(db, "Who has the most championships in NBA players?",
                 "Bill Russell", "Sam Jones", "Michael Jordan", "Tim Duncan", 2, null);
         this.addQuestion(db, "Name the only major team sport in the USA with no game clock? ",
@@ -172,7 +169,32 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
                 "Charlotte", "New Orleans", "Phoenix", "Orlando", 2, null);
         this.addQuestion(db, "The Commissioner's Trophy is awarded to the winner of which league? ",
                 "MLB", "NFL", "NBA", "NHL", 2, null);
-
+        this.addQuestion(db, "James Naismith invented which sport? ",
+                "Basketball", "Hockey", "Football", "Cricket", 2, null);
+        this.addQuestion(db, "How many years must a player be retired to be eligible for the Pro Football Hall of Fame? ",
+                "Five", "Four", "Six", "Ten", 2, null);
+        this.addQuestion(db, "How many football teams play in the Big Ten Conference? ",
+                "Eleven", "Ten", "Nine", "Eight", 2, null);
+        this.addQuestion(db, "How many of the five Dallas teams Tom Landry took to Super Bowls were victorious? ",
+                "Two", "Four", "Three", "One", 2, null);
+        this.addQuestion(db, "Who is the only coach to win both a NCAA and NBA championship? ",
+                "Larry Brown", "John Calipari", "Gregg Popovich", "Rick Pitino", 2, null);
+        this.addQuestion(db, "What City Are the Pelican in?",
+                "New Orleans", "Phoenix", "Orlando", "Miami", 2, null);
+        this.addQuestion(db, "How Many championships have the Boston Celtics won? ",
+                "21", "7", "18", "25", 2, null);
+        this.addQuestion(db, "What team has won the most NBA titles? ",
+                "The Boston Celtics.", "The Philadelphia 76ers.", "The Chicago Bulls.", "The Los Angeles Lakers.", 2, null);
+        this.addQuestion(db, "Michael Jordan is famous for wearing number 23. What other number has MJ worn during his NBA career? ",
+                "45", "32", "67", "99", 2, null);
+        this.addQuestion(db, "Who won the NBA's 2004 Slam Dunk Contest? ",
+                "Fred Jones.", "Lebron James.", "Vince Carter", "Jason Richardson.", 2, null);
+        this.addQuestion(db, "Which of the following is NOT the nickname of an NBA player? ",
+                "Dynamite.", "Big dog", "The answer", "The Truth", 2, null);
+        this.addQuestion(db, "Who is Dwight Howard favorite superhero? ",
+                "Superman", "Batman", "Ironman", "Spiderman", 2, null);
+        this.addQuestion(db, "Who is the NBA's all-time leading scorer? ",
+                "Kareem Abdul-Jabbar.", "Michael Jordan.", "Karl Malone.", "Wilt Chamberlain.", 2, null);
     }
 
     public ArrayList<Alarm> getAllAlarms() {
