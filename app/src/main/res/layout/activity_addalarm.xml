@@ -5,9 +5,14 @@
     android:layout_height="fill_parent">
     <ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="0dp"
         android:scrollbarThumbVertical="@drawable/apptheme_fastscroll_thumb_default_holo"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:layout_weight="1"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="10dp">
 
         <RelativeLayout
             android:orientation="vertical" android:layout_width="fill_parent"
@@ -62,7 +67,10 @@
                 android:shadowDy="0"
                 android:shadowRadius="5"
                 android:layout_below="@+id/ringtone"
-                android:layout_toStartOf="@+id/wednesday" />
+                android:layout_toStartOf="@+id/wednesday"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
             <Button
                 android:id="@+id/cancel"
                 android:layout_width="145sp"
@@ -77,7 +85,8 @@
                 android:shadowRadius="5"
                 android:layout_alignTop="@+id/setalarmbutton"
                 android:layout_alignEnd="@+id/ringtone"
-                android:layout_alignStart="@+id/thursday" />
+                android:layout_alignStart="@+id/thursday"
+                android:layout_margin="1dp" />
 
             <ToggleButton
                 android:id="@+id/tuesday"
@@ -190,7 +199,8 @@
                 android:drawableLeft="@drawable/set_ringtone_button"
                 android:layout_below="@+id/PreviewContainer"
                 android:layout_alignEnd="@+id/saturday"
-                android:layout_alignStart="@+id/setalarmbutton" />
+                android:layout_alignStart="@+id/setalarmbutton"
+                android:layout_margin="2dp" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
