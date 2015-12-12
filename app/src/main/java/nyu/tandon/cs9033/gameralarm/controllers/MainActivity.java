@@ -13,6 +13,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,8 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private final static int BACKGOUND_SELECTION = 3;
     private final static int SET_FONT_COLOR = 4;
     public static Drawable bgPic = null;
+    public static String bgPicLocation = null;
     public static int bgColor = Color.WHITE;
     public static int fontColor = Color.GRAY;
+    public static final String PREF_BGPIC = "bgpic";
+    public static final String PREF_FONT_COLOR = "fontcolor";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //addAlarmForTest();
         readAlarmList();
+        if (bgPicLocation == null) {
+            bgPicLocation = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getString(PREF_BGPIC, bgPicLocation);
+            if (bgPicLocation != null) {
+                setPicAsBackground(bgPicLocation);
+            }
+        }
+        fontColor = PreferenceManager.getDefaultSharedPreferences(this)
+                .getInt(PREF_FONT_COLOR, fontColor);
+        Log.i(TAG, String.valueOf(PreferenceManager.getDefaultSharedPreferences(this)
+                .getInt(PREF_FONT_COLOR, 0)));
         if (MainActivity.bgPic != null) {
             ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackground(MainActivity.bgPic);
             setFontColor();
@@ -72,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         alarmList = (ListView) findViewById(R.id.alarmList);
         alarmListAdapter = new AlarmListAdapter(this, alarmListItems);
         alarmList.setAdapter(alarmListAdapter);
+        alarmListAdapter.bindListView(alarmList);
         alarmList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -141,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                                     case 1: //background restore default
                                         ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackgroundColor(MainActivity.bgColor);
                                         MainActivity.bgPic = null;
+                                        MainActivity.bgPicLocation = null;
                                         break;
                                     case 2: //set font color
                                         Intent intent = new Intent(MainActivity.this, SetFontActivity.class);
@@ -255,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setPicAsBackground(String path) {
         Bitmap bm = BitmapFactory.decodeFile(path);
+        bgPicLocation = path;
         bgPic = new BitmapDrawable(this.getResources(), zoomImg(bm, 800, 450));
         ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackground(bgPic);
     }
@@ -289,8 +307,16 @@ public class MainActivity extends AppCompatActivity {
                 c.moveToFirst();
                 String path = c.getString(photocolumn);
                 setPicAsBackground(path);
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit()
+                        .putString(PREF_BGPIC, path)
+                        .commit();
             } else if (requestCode == SET_FONT_COLOR) {
                 setFontColor();
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit()
+                        .putInt(PREF_FONT_COLOR, fontColor)
+                        .commit();
             }
         }
     }
@@ -371,6 +397,7 @@ public class MainActivity extends AppCompatActivity {
         if (alarmListAdapter != null) {
             alarmListAdapter = new AlarmListAdapter(this, alarmListItems);
             alarmList.setAdapter(alarmListAdapter);
+            alarmListAdapter.bindListView(alarmList);
         }
     }
 }

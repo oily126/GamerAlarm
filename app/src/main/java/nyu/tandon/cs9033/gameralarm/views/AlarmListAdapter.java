@@ -1,12 +1,14 @@
 package nyu.tandon.cs9033.gameralarm.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ public class AlarmListAdapter extends BaseAdapter {
         public TextView alarmMode;
         public SwitchCompat enableAlarm;
     }
+    private ListView listview;
 
     public AlarmListAdapter(Context context, List<Map<String, Object>> listItems) {
         this.context = context;
@@ -77,6 +80,11 @@ public class AlarmListAdapter extends BaseAdapter {
         alarmItems.alarmWeek.setText((String) listItems.get(position).get("alarmWeek"));
         alarmItems.alarmMode.setText((String) listItems.get(position).get("alarmMode"));
         alarmItems.enableAlarm.setChecked((Boolean) listItems.get(position).get("enableAlarm"));
+        if ((Boolean) listItems.get(position).get("enableAlarm")) {
+            convertView.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            convertView.setBackgroundColor(Color.LTGRAY);
+        }
 
         alarmItems.enableAlarm.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
@@ -87,9 +95,27 @@ public class AlarmListAdapter extends BaseAdapter {
                 } else {
                     MainActivity.enableAlarm(buttonView.getContext(), selectId);
                 }
+                AlarmListAdapter.this.update(selectId, isChecked);
             }
         });
 
         return convertView;
+    }
+
+    public void bindListView(ListView view) {
+        this.listview = view;
+    }
+
+    private void update(int position, boolean isChecked) {
+        int newPos = position - listview.getFirstVisiblePosition();
+        if (newPos >= 0) {
+            View view = listview.getChildAt(newPos);
+            if (isChecked) {
+                view.setBackgroundColor(Color.TRANSPARENT);
+            } else {
+                view.setBackgroundColor(Color.LTGRAY);
+            }
+
+        }
     }
 }
