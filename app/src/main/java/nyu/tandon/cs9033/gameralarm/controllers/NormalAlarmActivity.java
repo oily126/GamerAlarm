@@ -53,6 +53,7 @@ public class NormalAlarmActivity extends Activity {
                 Long alarmTime = alarmCal.getTimeInMillis() >= System.currentTimeMillis() ? alarmCal.getTimeInMillis() : alarmCal.getTimeInMillis() + 24 * 3600 * 1000;
                 alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
                 finish();
+                NormalAlarmActivity.this.finishAffinity();
             }
         });
 
