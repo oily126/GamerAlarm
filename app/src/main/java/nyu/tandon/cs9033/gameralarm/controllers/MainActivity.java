@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         noAlarmImage = (ImageView) findViewById(R.id.noAlarm);
-        noAlarmImage.setImageDrawable(getResources().getDrawable(R.drawable.alarm));
+        noAlarmImage.setImageDrawable(getResources().getDrawable(R.drawable.mainpage_alarm));
 
         setAlarmVisible();
 
