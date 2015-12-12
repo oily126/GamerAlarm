@@ -57,6 +57,7 @@ public class AddAlarmActivity extends AppCompatActivity{
     private int QUESTION_NO;
     private int RIGHT_NO;
     private LinearLayout previewLinearLayout;
+    private LinearLayout blankLinearLayout;
     Alarm alarmToEdit;
 
     final static int REQUEST_CODE_1 = 1;
@@ -77,6 +78,7 @@ public class AddAlarmActivity extends AppCompatActivity{
                     .remove(quizModePreviewFragment).commit();
         }
         previewLinearLayout.setVisibility(View.GONE);
+        blankLinearLayout.setVisibility(View.VISIBLE);
     }
 
     public int getTIME_LIMIT() {
@@ -119,6 +121,7 @@ public class AddAlarmActivity extends AppCompatActivity{
         //time picker
         timePicker = (TimePicker)findViewById(R.id.picker);
         previewLinearLayout = (LinearLayout) findViewById(R.id.PreviewContainer);
+        blankLinearLayout = (LinearLayout) findViewById(R.id.BlankContainer);
         //textAlarmPrompt = (TextView)findViewById(R.id.alarmprompt);
 
         //set listener for the weekday buttons:
@@ -217,6 +220,7 @@ public class AddAlarmActivity extends AppCompatActivity{
                 normalMode.setBackgroundResource(0);
                 trickMode.setBackgroundResource(0);
                 funMode.setBackgroundResource(R.color.button_color);
+                blankLinearLayout.setVisibility(View.GONE);
                 if (quizModePreviewFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .remove(quizModePreviewFragment).commit();
@@ -243,6 +247,7 @@ public class AddAlarmActivity extends AppCompatActivity{
                 funMode.setBackgroundResource(0);
                 trickMode.setBackgroundResource(0);
                 normalMode.setBackgroundResource(R.color.button_color);
+                blankLinearLayout.setVisibility(View.VISIBLE);
                 if (funModePreviewFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .remove(funModePreviewFragment).commit();
@@ -262,6 +267,7 @@ public class AddAlarmActivity extends AppCompatActivity{
                 normalMode.setBackgroundResource(0);
                 funMode.setBackgroundResource(0);
                 trickMode.setBackgroundResource(R.color.button_color);
+                blankLinearLayout.setVisibility(View.GONE);
                 if (funModePreviewFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .remove(funModePreviewFragment).commit();

@@ -66,11 +66,10 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
-                android:layout_below="@+id/ringtone"
-                android:layout_toStartOf="@+id/wednesday"
                 android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginTop="1dp" />
+                android:layout_below="@+id/BlankContainer"
+                android:layout_alignStart="@+id/sunday"
+                android:layout_marginBottom="10dp" />
             <Button
                 android:id="@+id/cancel"
                 android:layout_width="145sp"
@@ -83,10 +82,12 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
+                android:layout_below="@+id/BlankContainer"
                 android:layout_alignTop="@+id/setalarmbutton"
                 android:layout_alignEnd="@+id/ringtone"
                 android:layout_alignStart="@+id/thursday"
-                android:layout_margin="1dp" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="1dp" />
 
             <ToggleButton
                 android:id="@+id/tuesday"
@@ -201,6 +202,16 @@
                 android:layout_alignEnd="@+id/saturday"
                 android:layout_alignStart="@+id/setalarmbutton"
                 android:layout_margin="2dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:id="@+id/BlankContainer"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:layout_below="@+id/ringtone"
+                android:layout_alignStart="@+id/modeContainer"
+                android:layout_alignParentEnd="true" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
