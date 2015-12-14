@@ -81,9 +81,13 @@ public class AlarmListAdapter extends BaseAdapter {
         alarmItems.alarmMode.setText((String) listItems.get(position).get("alarmMode"));
         alarmItems.enableAlarm.setChecked((Boolean) listItems.get(position).get("enableAlarm"));
         if ((Boolean) listItems.get(position).get("enableAlarm")) {
-            convertView.setBackgroundColor(Color.TRANSPARENT);
+            alarmItems.alarmTime.setTextColor(MainActivity.fontColor);
+            alarmItems.alarmWeek.setTextColor(MainActivity.fontColor);
+            alarmItems.alarmMode.setTextColor(MainActivity.fontColor);
         } else {
-            convertView.setBackgroundColor(Color.LTGRAY);
+            alarmItems.alarmTime.setTextColor(Color.LTGRAY);
+            alarmItems.alarmWeek.setTextColor(Color.LTGRAY);
+            alarmItems.alarmMode.setTextColor(Color.LTGRAY);
         }
 
         alarmItems.enableAlarm.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
@@ -110,10 +114,15 @@ public class AlarmListAdapter extends BaseAdapter {
         int newPos = position - listview.getFirstVisiblePosition();
         if (newPos >= 0) {
             View view = listview.getChildAt(newPos);
+            AlarmItemView a = ((AlarmItemView)view.getTag());
             if (isChecked) {
-                view.setBackgroundColor(Color.TRANSPARENT);
+                a.alarmTime.setTextColor(MainActivity.fontColor);
+                a.alarmWeek.setTextColor(MainActivity.fontColor);
+                a.alarmMode.setTextColor(MainActivity.fontColor);
             } else {
-                view.setBackgroundColor(Color.LTGRAY);
+                a.alarmTime.setTextColor(Color.LTGRAY);
+                a.alarmWeek.setTextColor(Color.LTGRAY);
+                a.alarmMode.setTextColor(Color.LTGRAY);
             }
 
         }

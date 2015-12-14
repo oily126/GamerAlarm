@@ -158,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
                                         ((RelativeLayout) findViewById(R.id.welcomeScreen)).setBackgroundColor(MainActivity.bgColor);
                                         MainActivity.bgPic = null;
                                         MainActivity.bgPicLocation = null;
+                                        PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                                .edit()
+                                                .putString(PREF_BGPIC, MainActivity.bgPicLocation)
+                                                .commit();
                                         break;
                                     case 2: //set font color
                                         Intent intent = new Intent(MainActivity.this, SetFontActivity.class);

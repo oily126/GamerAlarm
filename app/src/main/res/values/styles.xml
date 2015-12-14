@@ -17,7 +17,6 @@
     <style name="Color1SwitchStyle">
         <item name="colorControlActivated">@color/button_color</item>
         <item name="colorControlHighlight">@color/button_color</item>
-        <item name="colorSwitchThumbNormal">@color/button_color</item>
-
+        <item name="colorSwitchThumbNormal">#FFCCCCCC</item>
     </style>
 </resources>
