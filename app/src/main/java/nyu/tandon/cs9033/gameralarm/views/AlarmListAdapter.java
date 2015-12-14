@@ -114,7 +114,9 @@ public class AlarmListAdapter extends BaseAdapter {
         int newPos = position - listview.getFirstVisiblePosition();
         if (newPos >= 0) {
             View view = listview.getChildAt(newPos);
+            if (view == null) return;
             AlarmItemView a = ((AlarmItemView)view.getTag());
+            if (a == null) return;
             if (isChecked) {
                 a.alarmTime.setTextColor(MainActivity.fontColor);
                 a.alarmWeek.setTextColor(MainActivity.fontColor);

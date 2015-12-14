@@ -1120,6 +1120,7 @@ public class JewelsActivity extends BaseGameActivity implements Scene.IOnSceneTo
         super.onResume();
         this.mGameRunning = true;
         if (player == null) {
+            if (path == null) path = "1";
             createMediaPlayer(path);
             player.setLooping(true);
         }

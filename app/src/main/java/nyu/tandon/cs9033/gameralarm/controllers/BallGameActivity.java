@@ -144,6 +144,7 @@ public class BallGameActivity extends AppCompatActivity {
     protected void onResume() {
         Log.i("BallGame", "Resume");
         if (player == null) {
+            if (path == null) path = "1";
             createMediaPlayer(path);
             player.setLooping(true);
             player.start();

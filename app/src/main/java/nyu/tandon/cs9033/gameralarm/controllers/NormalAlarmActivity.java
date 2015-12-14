@@ -78,6 +78,7 @@ public class NormalAlarmActivity extends Activity {
     protected void onResume() {
         super.onResume();
         if (player == null) {
+            if (path == null) path = "1";
             createMediaPlayer(path);
             player.setLooping(true);
         }

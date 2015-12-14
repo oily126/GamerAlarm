@@ -19,6 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent){
         int mode = intent.getIntExtra("Mode", -1);
         String ringtone = intent.getStringExtra("ringtone");
+        if (ringtone == null) ringtone = "1";
         int timeLimit = intent.getIntExtra("TimeLimit", 90);
         int scoreLimit = intent.getIntExtra("ScoreLimit", 140);
         int quesNum = intent.getIntExtra("TotalNumber", 8);
