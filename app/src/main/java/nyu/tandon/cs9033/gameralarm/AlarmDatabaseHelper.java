@@ -251,6 +251,17 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete(TABLE_ALARM, where, arg);
     }
 
+    public int disableAlarmById(int id) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ALARM_ENABLE, 0);
+        String where = COLUMN_ALARM_ID + "=?";
+        String[] arg = new String[] {
+                String.valueOf(id)
+        };
+        Log.i(AlarmDatabaseHelper.this.toString(), String.valueOf(id));
+        return getWritableDatabase().update(TABLE_ALARM, cv, where, arg);
+    }
+
     public int updateAlarm(Alarm a) {
         ContentValues cv = new ContentValues();
         String where = COLUMN_ALARM_ID + "=?";

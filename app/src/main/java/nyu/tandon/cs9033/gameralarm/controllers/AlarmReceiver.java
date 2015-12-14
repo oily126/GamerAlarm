@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
+import nyu.tandon.cs9033.gameralarm.AlarmDatabaseHelper;
 import nyu.tandon.cs9033.gameralarm.R;
 
 /**
@@ -24,6 +25,14 @@ public class AlarmReceiver extends BroadcastReceiver{
         int scoreLimit = intent.getIntExtra("ScoreLimit", 140);
         int quesNum = intent.getIntExtra("TotalNumber", 8);
         int rightQues = intent.getIntExtra("RightNumber", 4);
+        boolean isRepeat = intent.getBooleanExtra("isRepeat", true);
+        int id = intent.getIntExtra("alarmId", -1);
+
+        if (id >= 0 && !isRepeat) {
+            AlarmDatabaseHelper helper = new AlarmDatabaseHelper(context);
+            helper.disableAlarmById(id);
+            helper.close();
+        }
         //normal mode
 
         if(mode/10 == 0){

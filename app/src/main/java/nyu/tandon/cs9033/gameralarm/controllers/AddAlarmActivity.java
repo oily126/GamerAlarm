@@ -333,10 +333,12 @@ public class AddAlarmActivity extends AppCompatActivity{
         intent.putExtra("ScoreLimit", SCORE_LIMIT);
         intent.putExtra("TotalNumber", QUESTION_NO);
         intent.putExtra("RightNumber", RIGHT_NO);
+        intent.putExtra("alarmId", (int)(id/10));
+        intent.putExtra("isRepeat", isRepeat);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.i(AddAlarmActivity.TAG, "the alarmtime is " +String.valueOf(alarmTime));
-        Log.i(AddAlarmActivity.TAG, "current time is " + String.valueOf(System.currentTimeMillis()));
+        Log.i("alarm time debug", "the alarmtime is " +String.valueOf(alarmTime));
+        Log.i("alarm time debug", "current time is " + String.valueOf(System.currentTimeMillis()));
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         if(isRepeat)
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24*60*60*1000*7, pendingIntent);

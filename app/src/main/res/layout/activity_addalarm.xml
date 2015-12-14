@@ -6,7 +6,6 @@
     <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="0dp"
-        android:scrollbarThumbVertical="@drawable/apptheme_fastscroll_thumb_default_holo"
         android:fillViewport="true"
         android:layout_weight="1"
         android:layout_marginLeft="1dp"
