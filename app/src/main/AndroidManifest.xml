@@ -37,6 +37,9 @@
         <receiver
             android:name=".controllers.AlarmReceiver"
             android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="nyu.tandon.cs9033.gameralarm.Alarm" />
+            </intent-filter>
         </receiver>
         <activity
             android:name=".controllers.JewelsActivity"

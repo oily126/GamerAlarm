@@ -36,6 +36,7 @@ import nyu.tandon.cs9033.gameralarm.views.QuizModePreviewFragment;
 public class AddAlarmActivity extends AppCompatActivity{
     public final static String EXTRA_MESSAGE = "nyu.tandon.cs9033.gameralarm.controllers.AddAlarmActivity.Message";
     public final static String TAG = "AddAlarmActivity";
+    public final static String ALARM_ACTION = "nyu.tandon.cs9033.gameralarm.Alarm";
     Button setButton;
     Button buttonCancelAlarm;
     Button funMode;
@@ -326,6 +327,9 @@ public class AddAlarmActivity extends AppCompatActivity{
         else
             alarmTime = alarmCal.getTimeInMillis()>=System.currentTimeMillis()? alarmCal.getTimeInMillis(): alarmCal.getTimeInMillis()+24*3600*1000*7;
         Intent intent = new Intent(this, AlarmReceiver.class);
+
+        //add the action:
+        intent.setAction("nyu.tandon.cs9033.gameralarm.Alarm");
 
         intent.putExtra("Mode", mode); //should pass the alarm to the receiver
         intent.putExtra("ringtone", ringtone);
