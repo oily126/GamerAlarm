@@ -134,40 +134,6 @@ public class AddAlarmActivity extends AppCompatActivity{
             ((RelativeLayout) findViewById(R.id.addAlarmView)).setBackgroundColor(MainActivity.bgColor);
         }
 
-        //check whether there is any
-        alarmToEdit = getIntent().getParcelableExtra("alarm");
-        if(alarmToEdit != null){
-            //display the alarm time on time picker
-            int time = alarmToEdit.getTime();
-            timePicker.setCurrentHour(time/100);
-            timePicker.setCurrentMinute(time % 100);
-            TIME_LIMIT = alarmToEdit.getTimeLimit();
-            SCORE_LIMIT = alarmToEdit.getScoreLimit();
-            QUESTION_NO = alarmToEdit.getQuesNum();
-            RIGHT_NO = alarmToEdit.getRightQues();
-            //display the weekdays on the toggle button.
-            ArrayList<Integer> days = alarmToEdit.getWeekBitmap();
-            for(int day : days){
-                switch (day){
-                    case 1: sun.setChecked(true);
-                        break;
-                    case 2: mon.setChecked(true);
-                        break;
-                    case 3: tues.setChecked(true);
-                        break;
-                    case 4: wed.setChecked(true);
-                        break;
-                    case 5: thur.setChecked(true);
-                        break;
-                    case 6: fri.setChecked(true);
-                        break;
-                    case 7: sat.setChecked(true);
-                        break;
-                }
-            }
-            mode = alarmToEdit.getMode();
-            ringtone = alarmToEdit.getRingtone();
-        }
 
         //SetAlarm button
         setButton = (Button)findViewById(R.id.setalarmbutton);
@@ -294,6 +260,52 @@ public class AddAlarmActivity extends AppCompatActivity{
                 startActivityForResult(intent, REQUEST_RINGTONE);
             }
         });
+
+        //check whether there is any edit alarm
+        alarmToEdit = getIntent().getParcelableExtra("alarm");
+        if(alarmToEdit != null){
+            //display the alarm time on time picker
+            int time = alarmToEdit.getTime();
+            timePicker.setCurrentHour(time/100);
+            timePicker.setCurrentMinute(time % 100);
+            TIME_LIMIT = alarmToEdit.getTimeLimit();
+            SCORE_LIMIT = alarmToEdit.getScoreLimit();
+            QUESTION_NO = alarmToEdit.getQuesNum();
+            RIGHT_NO = alarmToEdit.getRightQues();
+            //display the weekdays on the toggle button.
+            ArrayList<Integer> days = alarmToEdit.getWeekBitmap();
+            for(int day : days){
+                switch (day){
+                    case 1: sun.setChecked(true);
+                        break;
+                    case 2: mon.setChecked(true);
+                        break;
+                    case 3: tues.setChecked(true);
+                        break;
+                    case 4: wed.setChecked(true);
+                        break;
+                    case 5: thur.setChecked(true);
+                        break;
+                    case 6: fri.setChecked(true);
+                        break;
+                    case 7: sat.setChecked(true);
+                        break;
+                }
+            }
+            //extract the mode from the edit alarm
+            mode = alarmToEdit.getMode();
+            //display the mode on screen
+            switch (mode/10){
+                case 0: normalMode.setBackgroundResource(R.color.button_color);
+                    break;
+                case 1: funMode.setBackgroundResource(R.color.button_color);
+                    break;
+                case 2: trickMode.setBackgroundResource(R.color.button_color);
+                    break;
+            }
+
+            ringtone = alarmToEdit.getRingtone();
+        }
 
     }
 
